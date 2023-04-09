@@ -170,17 +170,13 @@ namespace PTGui_Language_Editor
                             isPro = false;
                             isError = false;
                         }
-                        else if (cmd.StartsWith("a ") || cmd == "/a")
+                        else
                         {
                             sb.Append('<');
                             sb.Append(cmd);
                             sb.Append('>');
                             AddText();
                             isError = false;
-                        }
-                        else
-                        {
-                            isError = true;
                         }
                     }
                     else

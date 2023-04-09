@@ -309,22 +309,9 @@ namespace PTGui_Language_Editor
         
         private void ShowString()
         {
-            //StringId.Text = EditorRef.Strings[showStringIndex].Id;
-            //StringRef.Document = PTGuiTextConverter.ConvertToFlowDocument(EditorRef.Strings[showStringIndex].Txt, y => EditorRef.Strings.FirstOrDefault(x => x.Id == y)?.Txt);
-
-            //if (EditorRef.Strings[showStringIndex].EditorTranslate?.Format == "html")
-            //{
-            //    var str = EditorRef.Strings[showStringIndex].EditorTranslate?.Txt?.Replace("<br>", "\n");
-            //    StringTrans.Text = str;
-            //}
-            //else
-            //{
-            //    StringTrans.Text = EditorRef.Strings[showStringIndex].EditorTranslate?.Txt;
-            //}
-
             var list = new List<OneString>();
 
-            for (int i = showStringIndex; i < showStringIndex + NumStringsPerPage && showStringIndex < EditorRef.Strings.Count(); i++)
+            for (int i = showStringIndex; i < showStringIndex + NumStringsPerPage && i < EditorRef.Strings.Count(); i++)
             {
                 var one = new OneString();
                 one.Id = "#" + EditorRef.Strings[i].Id;
@@ -350,26 +337,19 @@ namespace PTGui_Language_Editor
             Strings.ItemsSource = list;
         }
 
-        private void StringTransTextChanged(object sender, TextChangedEventArgs e)
+        private void Button_StringFirst(object sender, RoutedEventArgs e)
         {
-            if (EditorTrans == null)
-            {
-                return;
-            }
+            showStringIndex = 0;
 
-            //StringTransShow.Document = PTGuiTextConverter.ConvertToFlowDocument(StringTrans.Text, y => EditorTrans.Strings.FirstOrDefault(x => x.Id == y)?.Txt);
+            ShowString();
+        }
 
-            //if (EditorRef.Strings[showStringIndex].EditorTranslate?.Format == "html")
-            //{
-            //    var str = StringTrans.Text.Replace("\n", "<br>");
-            //    EditorRef.Strings[showStringIndex].EditorTranslate.Txt = str;
-            //}
-            //else
-            //{
-            //    EditorRef.Strings[showStringIndex].EditorTranslate.Txt = StringTrans.Text;
-            //}
+        private void Button_StringLast(object sender, RoutedEventArgs e)
+        {
+            showStringIndex = EditorRef.Strings.Count / NumStringsPerPage;
+            showStringIndex *= NumStringsPerPage;
 
-            //EditorRef.Strings[showStringIndex].EditorTranslate.Machinetranslated = null;
+            ShowString();
         }
 
         private void Button_StringPrev(object sender, RoutedEventArgs e)
@@ -405,6 +385,7 @@ namespace PTGui_Language_Editor
         private string? trans;
 
         public string Id { get; set; }
+        public string Format => EditorTranslate.Format;
         public FlowDocument Ref { get; set; }
         public FlowDocument TransShow
         {
