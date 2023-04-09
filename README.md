@@ -1,0 +1,1 @@
+# PTGui Language Editor
