@@ -24,7 +24,77 @@
                 VerticalAlignment="Top"
                 Click="Button_ClickSave"
                 Content="Save" />
-        <TabControl Margin="0,35,0,0">
+        <TabControl Margin="-1,40,-1,-1">
+            <TabItem Header="General">
+                <StackPanel>
+                    <Grid MinHeight="70"
+                          Margin="10"
+                          VerticalAlignment="Top">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="1*" />
+                            <ColumnDefinition Width="1*" />
+                        </Grid.ColumnDefinitions>
+                        <Border BorderBrush="#FFa0a0a0"
+                                BorderThickness="1">
+                            <Grid>
+                                <TextBlock Margin="10,0,0,0"
+                                           HorizontalAlignment="Left"
+                                           VerticalAlignment="Top"
+                                           Foreground="#ff999999"
+                                           Text="Contributers" />
+                                <TextBlock Margin="10,25,0,0"
+                                           HorizontalAlignment="Left"
+                                           VerticalAlignment="Top"
+                                           Text="Hugo Müller" />
+                            </Grid>
+                        </Border>
+                        <Border Grid.Column="1"
+                                BorderBrush="#FFa0a0a0"
+                                BorderThickness="0,1,1,1">
+                            <Grid>
+                                <TextBox Margin="10,25,0,20"
+                                         HorizontalAlignment="Left"
+                                         AcceptsReturn="True"
+                                         BorderThickness="0"
+                                         Text="Harald Bendschneider&#x0d;&#x0a;Helmuth E. Günther&#x0d;&#x0a;Thomas Bredenfeld&#x0d;&#x0a;Erik Krause&#x0d;&#x0a;Michael Göricke" />
+                            </Grid>
+                        </Border>
+                    </Grid>
+                    <Grid Height="70"
+                          Margin="10"
+                          VerticalAlignment="Top">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="1*" />
+                            <ColumnDefinition Width="1*" />
+                        </Grid.ColumnDefinitions>
+                        <Border BorderBrush="#FFa0a0a0"
+                                BorderThickness="1">
+                            <Grid>
+                                <TextBlock Margin="10,0,0,0"
+                                           HorizontalAlignment="Left"
+                                           VerticalAlignment="Top"
+                                           Foreground="#ff999999"
+                                           Text="Localized Language Name" />
+                                <TextBlock Margin="10,25,0,0"
+                                           HorizontalAlignment="Left"
+                                           VerticalAlignment="Top"
+                                           Text="English" />
+                            </Grid>
+                        </Border>
+                        <Border Grid.Column="1"
+                                BorderBrush="#FFa0a0a0"
+                                BorderThickness="0,1,1,1">
+                            <Grid>
+                                <TextBox Margin="10,25,0,0"
+                                         HorizontalAlignment="Left"
+                                         VerticalAlignment="Top"
+                                         BorderThickness="0"
+                                         Text="Deutsch" />
+                            </Grid>
+                        </Border>
+                    </Grid>
+                </StackPanel>
+            </TabItem>
             <TabItem Header="Strings">
                 <Grid>
                     <ScrollViewer Margin="10,10,0,50"
@@ -116,19 +186,33 @@
                     </ScrollViewer>
                     <Button Width="100"
                             Height="30"
-                            Margin="137,0,0,10"
+                            Margin="37,0,0,10"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Bottom"
+                            Click="Button_StringPrev"
+                            Content="First" />
+                    <Button Width="100"
+                            Height="30"
+                            Margin="147,0,0,10"
                             HorizontalAlignment="Left"
                             VerticalAlignment="Bottom"
                             Click="Button_StringPrev"
                             Content="Prev" />
-                    <Button Grid.ColumnSpan="2"
-                            Width="100"
+                    <Button Width="100"
                             Height="30"
-                            Margin="275,0,0,10"
+                            Margin="257,0,0,10"
                             HorizontalAlignment="Left"
                             VerticalAlignment="Bottom"
                             Click="Button_StringNext"
                             Content="Next" />
+                    <Button Grid.ColumnSpan="2"
+                            Width="100"
+                            Height="30"
+                            Margin="365,0,0,10"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Bottom"
+                            Click="Button_StringNext"
+                            Content="Last" />
                 </Grid>
             </TabItem>
             <TabItem Header="Tooltips">
@@ -150,30 +234,21 @@
                                 <Border Margin="0,0,0,0"
                                         BorderBrush="#FFa0a0a0"
                                         BorderThickness="1">
-                                    <FlowDocumentScrollViewer x:Name="TooltipRefLabel"
-                                                              VerticalScrollBarVisibility="Disabled">
-                                        <FlowDocumentScrollViewer.Resources>
-                                            <Style TargetType="{x:Type Paragraph}">
-                                                <Setter Property="Margin" Value="0,0,0,0" />
-                                                <Setter Property="FontFamily" Value="Segoe UI" />
-                                                <Setter Property="FontSize" Value="14" />
-                                            </Style>
-                                        </FlowDocumentScrollViewer.Resources>
-                                    </FlowDocumentScrollViewer>
-                                </Border>
-                                <Border Grid.Column="1"
-                                        Margin="0,0,0,0"
-                                        BorderBrush="#FFa0a0a0"
-                                        BorderThickness="0,1,1,1">
-                                    <FlowDocumentScrollViewer x:Name="TooltipTransLabelShow"
-                                                              VerticalScrollBarVisibility="Disabled">
-                                        <FlowDocumentScrollViewer.Resources>
-                                            <Style TargetType="{x:Type Paragraph}">
-                                                <Setter Property="Margin" Value="0,0,0,0" />
-                                                <Setter Property="FontFamily" Value="Segoe UI" />
-                                                <Setter Property="FontSize" Value="14" />
-                                            </Style>
-                                        </FlowDocumentScrollViewer.Resources>
+                                    <Grid>
+                                        <TextBlock Height="24"
+                                                   Margin="18,0,0,0"
+                                                   VerticalAlignment="Top"
+                                                   Foreground="#ff999999"
+                                                   Text="Label" />
+                                        <FlowDocumentScrollViewer x:Name="TooltipRefLabel"
+                                                                  VerticalScrollBarVisibility="Disabled">
+                                            <FlowDocumentScrollViewer.Resources>
+                                                <Style TargetType="{x:Type Paragraph}">
+                                                    <Setter Property="Margin" Value="0,0,0,0" />
+                                                    <Setter Property="FontFamily" Value="Segoe UI" />
+                                                    <Setter Property="FontSize" Value="14" />
+                                                </Style>
+                                            </FlowDocumentScrollViewer.Resources>
                                         <FlowDocument TextAlignment="Left">
                                             <Paragraph>
                                                 This is flow content and you can<Bold>edit me!</Bold>
@@ -182,7 +257,33 @@
                                                 This is flow content and you can<Bold>edit me!</Bold>
                                             </Paragraph>
                                         </FlowDocument>
-                                    </FlowDocumentScrollViewer>
+                                        </FlowDocumentScrollViewer>
+                                    </Grid>
+                                </Border>
+                                <Border Grid.Column="1"
+                                        Margin="0,0,0,0"
+                                        BorderBrush="#FFa0a0a0"
+                                        BorderThickness="0,1,1,1">
+                                        <FlowDocumentScrollViewer x:Name="TooltipTransLabelShow"
+                                                              VerticalScrollBarVisibility="Disabled">
+                                            <FlowDocumentScrollViewer.Resources>
+                                                <Style TargetType="{x:Type Paragraph}">
+                                                    <Setter Property="Margin" Value="0,0,0,0" />
+                                                    <Setter Property="FontFamily" Value="Segoe UI" />
+                                                    <Setter Property="FontSize" Value="14" />
+                                                </Style>
+                                            </FlowDocumentScrollViewer.Resources>
+                                            <FlowDocument TextAlignment="Left">
+                                                <Paragraph>
+                                                    This is flow content and you can
+                                                    <Bold>edit me!</Bold>
+                                                </Paragraph>
+                                                <Paragraph>
+                                                    This is flow content and you can
+                                                    <Bold>edit me!</Bold>
+                                                </Paragraph>
+                                            </FlowDocument>
+                                        </FlowDocumentScrollViewer>
                                 </Border>
                                 <Border Grid.Column="2"
                                         Margin="0,0,0,0"
@@ -207,16 +308,23 @@
                                 <Border Margin="0,0,0,0"
                                         BorderBrush="#FFa0a0a0"
                                         BorderThickness="1">
-                                    <FlowDocumentScrollViewer x:Name="TooltipRefHelpTxt"
+                                    <Grid>
+                                        <TextBlock Height="24"
+                                                   Margin="18,0,0,0"
+                                                   VerticalAlignment="Top"
+                                                   Foreground="#ff999999"
+                                                   Text="Help Text" />
+                                        <FlowDocumentScrollViewer x:Name="TooltipRefHelpTxt"
                                                               VerticalScrollBarVisibility="Disabled">
-                                        <FlowDocumentScrollViewer.Resources>
-                                            <Style TargetType="{x:Type Paragraph}">
-                                                <Setter Property="Margin" Value="0,0,0,0" />
-                                                <Setter Property="FontFamily" Value="Segoe UI" />
-                                                <Setter Property="FontSize" Value="14" />
-                                            </Style>
-                                        </FlowDocumentScrollViewer.Resources>
-                                    </FlowDocumentScrollViewer>
+                                            <FlowDocumentScrollViewer.Resources>
+                                                <Style TargetType="{x:Type Paragraph}">
+                                                    <Setter Property="Margin" Value="0,0,0,0" />
+                                                    <Setter Property="FontFamily" Value="Segoe UI" />
+                                                    <Setter Property="FontSize" Value="14" />
+                                                </Style>
+                                            </FlowDocumentScrollViewer.Resources>
+                                        </FlowDocumentScrollViewer>
+                                    </Grid>
                                 </Border>
                                 <Border Grid.Column="1"
                                         Margin="0,0,0,0"
@@ -264,16 +372,23 @@
                                 <Border Margin="0,0,0,0"
                                         BorderBrush="#FFa0a0a0"
                                         BorderThickness="1">
-                                    <FlowDocumentScrollViewer x:Name="TooltipRefMoreHelpTxt"
+                                    <Grid>
+                                        <TextBlock Height="24"
+                                                   Margin="18,0,0,0"
+                                                   VerticalAlignment="Top"
+                                                   Foreground="#ff999999"
+                                                   Text="More Help Text" />
+                                        <FlowDocumentScrollViewer x:Name="TooltipRefMoreHelpTxt"
                                                               VerticalScrollBarVisibility="Disabled">
-                                        <FlowDocumentScrollViewer.Resources>
-                                            <Style TargetType="{x:Type Paragraph}">
-                                                <Setter Property="Margin" Value="0,0,0,0" />
-                                                <Setter Property="FontFamily" Value="Segoe UI" />
-                                                <Setter Property="FontSize" Value="14" />
-                                            </Style>
-                                        </FlowDocumentScrollViewer.Resources>
-                                    </FlowDocumentScrollViewer>
+                                            <FlowDocumentScrollViewer.Resources>
+                                                <Style TargetType="{x:Type Paragraph}">
+                                                    <Setter Property="Margin" Value="0,0,0,0" />
+                                                    <Setter Property="FontFamily" Value="Segoe UI" />
+                                                    <Setter Property="FontSize" Value="14" />
+                                                </Style>
+                                            </FlowDocumentScrollViewer.Resources>
+                                        </FlowDocumentScrollViewer>
+                                    </Grid>
                                 </Border>
                                 <Border Grid.Column="1"
                                         Margin="0,0,0,0"
@@ -317,14 +432,14 @@
 
                     <Button Width="100"
                             Height="30"
-                            Margin="137,0,0,0"
+                            Margin="137,0,0,10"
                             HorizontalAlignment="Left"
                             VerticalAlignment="Bottom"
                             Click="Button_TooltipPrev"
                             Content="Prev" />
                     <Button Width="100"
                             Height="30"
-                            Margin="275,0,0,0"
+                            Margin="275,0,0,10"
                             HorizontalAlignment="Left"
                             VerticalAlignment="Bottom"
                             Click="Button_TooltipNext"
@@ -338,53 +453,54 @@
                                Margin="10,10,10,0"
                                VerticalAlignment="Top"
                                Text="the id" />
-                    <ScrollViewer Margin="10,34,0,50"
-                                  VerticalScrollBarVisibility="Auto">
-                        <Grid Margin="0,0,10,0">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="1*" />
-                                <ColumnDefinition Width="1*" />
-                                <ColumnDefinition Width="1*" />
-                            </Grid.ColumnDefinitions>
-                            <Border Margin="0,0,0,0"
-                                    BorderBrush="#FFa0a0a0"
-                                    BorderThickness="1">
-                                <FlowDocumentScrollViewer x:Name="HelpRef" VerticalScrollBarVisibility="Auto">
-                                    <FlowDocumentScrollViewer.Resources>
-                                        <Style TargetType="{x:Type Paragraph}">
-                                            <Setter Property="Margin" Value="0,0,0,0" />
-                                            <Setter Property="FontFamily" Value="Segoe UI" />
-                                            <Setter Property="FontSize" Value="14" />
-                                        </Style>
-                                    </FlowDocumentScrollViewer.Resources>
-                                </FlowDocumentScrollViewer>
-                            </Border>
-                            <Border Grid.Column="1"
-                                    Margin="0,0,0,0"
-                                    BorderBrush="#FFa0a0a0"
-                                    BorderThickness="0,1,1,1">
-                                <FlowDocumentScrollViewer x:Name="Rtb" VerticalScrollBarVisibility="Auto">
-                                    <FlowDocumentScrollViewer.Resources>
-                                        <Style TargetType="{x:Type Paragraph}">
-                                            <Setter Property="Margin" Value="0,0,0,0" />
-                                            <Setter Property="FontFamily" Value="Segoe UI" />
-                                            <Setter Property="FontSize" Value="14" />
-                                        </Style>
-                                    </FlowDocumentScrollViewer.Resources>
-                                    <FlowDocument TextAlignment="Left">
-                                        <Paragraph>
-                                            This is flow content and you can<Bold>edit me!</Bold>
-                                        </Paragraph>
-                                        <Paragraph>
-                                            This is flow content and you can<Bold>edit me!</Bold>
-                                        </Paragraph>
-                                    </FlowDocument>
-                                </FlowDocumentScrollViewer>
-                            </Border>
-                            <Border Grid.Column="2"
-                                    Margin="0,0,0,0"
-                                    BorderBrush="#FFa0a0a0"
-                                    BorderThickness="0,1,1,1">
+                    <Grid Margin="10,34,10,50">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="1*" />
+                            <ColumnDefinition Width="1*" />
+                            <ColumnDefinition Width="1*" />
+                        </Grid.ColumnDefinitions>
+                        <Border Margin="0,0,0,0"
+                                BorderBrush="#FFa0a0a0"
+                                BorderThickness="1">
+                            <FlowDocumentScrollViewer x:Name="HelpRef"
+                                                      VerticalScrollBarVisibility="Auto">
+                                <FlowDocumentScrollViewer.Resources>
+                                    <Style TargetType="{x:Type Paragraph}">
+                                        <Setter Property="Margin" Value="0,0,0,0" />
+                                        <Setter Property="FontFamily" Value="Segoe UI" />
+                                        <Setter Property="FontSize" Value="14" />
+                                    </Style>
+                                </FlowDocumentScrollViewer.Resources>
+                            </FlowDocumentScrollViewer>
+                        </Border>
+                        <Border Grid.Column="1"
+                                Margin="0,0,0,0"
+                                BorderBrush="#FFa0a0a0"
+                                BorderThickness="0,1,1,1">
+                            <FlowDocumentScrollViewer x:Name="Rtb"
+                                                      VerticalScrollBarVisibility="Auto">
+                                <FlowDocumentScrollViewer.Resources>
+                                    <Style TargetType="{x:Type Paragraph}">
+                                        <Setter Property="Margin" Value="0,0,0,0" />
+                                        <Setter Property="FontFamily" Value="Segoe UI" />
+                                        <Setter Property="FontSize" Value="14" />
+                                    </Style>
+                                </FlowDocumentScrollViewer.Resources>
+                                <FlowDocument TextAlignment="Left">
+                                    <Paragraph>
+                                        This is flow content and you can<Bold>edit me!</Bold>
+                                    </Paragraph>
+                                    <Paragraph>
+                                        This is flow content and you can<Bold>edit me!</Bold>
+                                    </Paragraph>
+                                </FlowDocument>
+                            </FlowDocumentScrollViewer>
+                        </Border>
+                        <Border Grid.Column="2"
+                                Margin="0,0,0,0"
+                                BorderBrush="#FFa0a0a0"
+                                BorderThickness="0,1,1,1">
+                            <ScrollViewer VerticalScrollBarVisibility="Auto">
                                 <TextBox x:Name="HelpTrans"
                                          Margin="10,17,10,17"
                                          AcceptsReturn="True"
@@ -393,9 +509,9 @@
                                          Text="Deutsch Übersetzung: %0 (danke!)"
                                          TextChanged="HelpTransTextChanged"
                                          TextWrapping="Wrap" />
-                            </Border>
-                        </Grid>
-                    </ScrollViewer>
+                            </ScrollViewer>
+                        </Border>
+                    </Grid>
                     <Button Width="100"
                             Height="30"
                             Margin="137,0,0,10"

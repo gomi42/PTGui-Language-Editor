@@ -163,7 +163,7 @@ namespace PTGui_Language_Editor
         ////////////////////////////////////////////////////////////////////////////////////////////
         private void ShowHelp()
         {
-            HelpId.Text = EditorRef.HelpPages[showHelpIndex].Id;
+            HelpId.Text = "#" + EditorRef.HelpPages[showHelpIndex].Id;
             HelpRef.Document = PTGuiTextConverter.ConvertToFlowDocument(EditorRef.HelpPages[showHelpIndex].Helptext, y => EditorRef.Strings.FirstOrDefault(x => x.Id == y)?.Txt);
 
             var str = EditorRef.HelpPages[showHelpIndex].EditorTranslate?.Helptext?.Replace("<br>", "\n");
@@ -210,7 +210,7 @@ namespace PTGui_Language_Editor
         ////////////////////////////////////////////////////////////////////////////////////////////
         private void ShowTooltip()
         {
-            TooltipId.Text = EditorRef.Tooltips[showTooltipIndex].Id;
+            TooltipId.Text = "#" + EditorRef.Tooltips[showTooltipIndex].Id;
 
             ShowTooltipLabel();
             ShowTooltipHelpText();
@@ -327,7 +327,7 @@ namespace PTGui_Language_Editor
             for (int i = showStringIndex; i < showStringIndex + NumStringsPerPage && showStringIndex < EditorRef.Strings.Count(); i++)
             {
                 var one = new OneString();
-                one.Id = EditorRef.Strings[i].Id;
+                one.Id = "#" + EditorRef.Strings[i].Id;
                 one.Ref = PTGuiTextConverter.ConvertToFlowDocument(EditorRef.Strings[i].Txt, y => EditorRef.Strings.FirstOrDefault(x => x.Id == y)?.Txt);
                 one.EditorTranslate = EditorRef.Strings[i].EditorTranslate;
                 one.TransStrings = EditorTrans.Strings;

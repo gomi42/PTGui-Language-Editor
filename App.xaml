@@ -3,5 +3,106 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:PTGui_Language_Editor"
              StartupUri="MainWindow.xaml">
-    <Application.Resources />
+    <Application.Resources>
+
+        <!--  colors  -->
+        <Color x:Key="DustyGrayColor">#FFA0A0A0</Color>
+        <Color x:Key="SelectionBackgroundColor">#FF808080</Color>
+        <Color x:Key="NaviButtonBackgroundColor">#FFECECEC</Color>
+
+        <!--  brushes  -->
+        <SolidColorBrush x:Key="DustyGrayBrush" Color="{StaticResource DustyGrayColor}" />
+        <SolidColorBrush x:Key="SelectionBackgroundBrush" Color="{StaticResource SelectionBackgroundColor}" />
+        <SolidColorBrush x:Key="NaviButtonBackgroundBrush" Color="{StaticResource NaviButtonBackgroundColor}" />
+
+
+        <Style x:Key="ButtonTabItemStyle"
+               TargetType="{x:Type TabItem}">
+            <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+            <Setter Property="Height" Value="24" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type TabItem}">
+                        <Grid x:Name="Root">
+                            <Border x:Name="Border"
+                                    Margin="-1,0,0,0"
+                                    Background="{StaticResource NaviButtonBackgroundBrush}"
+                                    BorderBrush="{StaticResource DustyGrayBrush}"
+                                    BorderThickness="1">
+                                <ContentPresenter x:Name="ContentSite"
+                                                  HorizontalAlignment="Center"
+                                                  VerticalAlignment="Center"
+                                                  ContentSource="Header"
+                                                  RecognizesAccessKey="True" />
+                            </Border>
+                            <VisualStateManager.VisualStateGroups>
+                                <VisualStateGroup x:Name="SelectionStates">
+                                    <VisualState x:Name="Unselected" />
+                                    <VisualState x:Name="Selected">
+                                        <Storyboard>
+                                            <ColorAnimation Storyboard.TargetName="Border"
+                                                            Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)"
+                                                            To="White"
+                                                            Duration="0" />
+                                            <ThicknessAnimation Storyboard.TargetName="Border"
+                                                                Storyboard.TargetProperty="BorderThickness"
+                                                                To="1,1,1,0"
+                                                                Duration="0" />
+                                            <ThicknessAnimation Storyboard.TargetName="Border"
+                                                                Storyboard.TargetProperty="Margin"
+                                                                To="-1,-2,0,0"
+                                                                Duration="0" />
+                                        </Storyboard>
+                                    </VisualState>
+                                </VisualStateGroup>
+                                <VisualStateGroup x:Name="CommonStates">
+                                    <VisualState x:Name="Normal" />
+                                    <VisualState x:Name="MouseOver" />
+                                    <VisualState x:Name="Disabled" />
+                                </VisualStateGroup>
+                            </VisualStateManager.VisualStateGroups>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style TargetType="{x:Type TabControl}">
+            <Setter Property="ItemContainerStyle" Value="{StaticResource ButtonTabItemStyle}" />
+            <Setter Property="Padding" Value="10" />
+            <Setter Property="HorizontalContentAlignment" Value="Center" />
+            <Setter Property="VerticalContentAlignment" Value="Center" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type TabControl}">
+                        <Grid KeyboardNavigation.TabNavigation="Local">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="*" />
+                            </Grid.RowDefinitions>
+                            <local:UniformTabPanel x:Name="HeaderPanel"
+                                                   Grid.Row="0"
+                                                   Margin="1,0,0,0"
+                                                   VerticalAlignment="Top"
+                                                   Panel.ZIndex="1"
+                                                   IsItemsHost="True"
+                                                   KeyboardNavigation.TabIndex="1" />
+                            <Border x:Name="Border"
+                                    Grid.Row="1"
+                                    Background="White"
+                                    BorderBrush="#FFABABB3"
+                                    BorderThickness="1,0,1,1"
+                                    KeyboardNavigation.DirectionalNavigation="Contained"
+                                    KeyboardNavigation.TabIndex="2"
+                                    KeyboardNavigation.TabNavigation="Local">
+                                <ContentControl x:Name="PART_SelectedContentHost"
+                                                Content="{TemplateBinding SelectedContent}" />
+                            </Border>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+    </Application.Resources>
 </Application>
