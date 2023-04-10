@@ -13,20 +13,21 @@
     <Grid>
         <Button Width="100"
                 Height="30"
-                Margin="0,0,110,0"
-                HorizontalAlignment="Right"
+                Margin="10,10,110,0"
+                HorizontalAlignment="Left"
                 VerticalAlignment="Top"
                 Click="Button_Click"
-                Content="Load JSON" />
+                Content="Load" />
         <Button Width="100"
                 Height="30"
-                HorizontalAlignment="Right"
+                Margin="120,10,110,0"
+                HorizontalAlignment="Left"
                 VerticalAlignment="Top"
                 Click="Button_ClickSave"
                 Content="Save" />
-        <TabControl Margin="-1,40,-1,-1">
+        <TabControl Margin="-1,60,-1,-1">
             <TabItem Header="General">
-                <StackPanel>
+                <StackPanel x:Name="GeneralTab">
                     <Grid MinHeight="70"
                           Margin="10"
                           VerticalAlignment="Top">
@@ -42,21 +43,21 @@
                                            VerticalAlignment="Top"
                                            Foreground="#ff999999"
                                            Text="Contributers" />
-                                <TextBlock Margin="10,25,0,0"
+                                <TextBlock Margin="10,25,10,0"
                                            HorizontalAlignment="Left"
                                            VerticalAlignment="Top"
-                                           Text="Hugo Müller" />
+                                           Text="{Binding EditorRef.Contributors}" />
                             </Grid>
                         </Border>
                         <Border Grid.Column="1"
                                 BorderBrush="#FFa0a0a0"
                                 BorderThickness="0,1,1,1">
                             <Grid>
-                                <TextBox Margin="10,25,0,20"
-                                         HorizontalAlignment="Left"
+                                <TextBox Margin="10,25,10,20"
                                          AcceptsReturn="True"
-                                         BorderThickness="0"
-                                         Text="Harald Bendschneider&#x0d;&#x0a;Helmuth E. Günther&#x0d;&#x0a;Thomas Bredenfeld&#x0d;&#x0a;Erik Krause&#x0d;&#x0a;Michael Göricke" />
+                                         BorderBrush="{x:Null}"
+                                         Text="{Binding EditorTrans.Contributors,
+                                                        UpdateSourceTrigger=PropertyChanged}" />
                             </Grid>
                         </Border>
                     </Grid>
@@ -75,31 +76,62 @@
                                            VerticalAlignment="Top"
                                            Foreground="#ff999999"
                                            Text="Localized Language Name" />
-                                <TextBlock Margin="10,25,0,0"
+                                <TextBlock Margin="10,25,10,0"
                                            HorizontalAlignment="Left"
                                            VerticalAlignment="Top"
-                                           Text="English" />
+                                           Text="{Binding EditorRef.LanguageMameLocalized}" />
                             </Grid>
                         </Border>
                         <Border Grid.Column="1"
                                 BorderBrush="#FFa0a0a0"
                                 BorderThickness="0,1,1,1">
                             <Grid>
-                                <TextBox Margin="10,25,0,0"
-                                         HorizontalAlignment="Left"
+                                <TextBox Margin="10,25,10,0"
                                          VerticalAlignment="Top"
-                                         BorderThickness="0"
-                                         Text="Deutsch" />
+                                         BorderBrush="{x:Null}"
+                                         Text="{Binding EditorTrans.LanguageMameLocalized}" />
+                            </Grid>
+                        </Border>
+                    </Grid>
+                    <Grid Height="70"
+                          Margin="10"
+                          VerticalAlignment="Top">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="1*" />
+                            <ColumnDefinition Width="1*" />
+                        </Grid.ColumnDefinitions>
+                        <Border BorderBrush="#FFa0a0a0"
+                                BorderThickness="1">
+                            <Grid>
+                                <TextBlock Margin="10,0,0,0"
+                                           HorizontalAlignment="Left"
+                                           VerticalAlignment="Top"
+                                           Foreground="#ff999999"
+                                           Text="Startup Message" />
+                                <TextBlock Margin="10,25,10,0"
+                                           HorizontalAlignment="Left"
+                                           VerticalAlignment="Top"
+                                           Text="{Binding EditorRef.StartupMessage}" />
+                            </Grid>
+                        </Border>
+                        <Border Grid.Column="1"
+                                BorderBrush="#FFa0a0a0"
+                                BorderThickness="0,1,1,1">
+                            <Grid>
+                                <TextBox Margin="10,25,10,0"
+                                         VerticalAlignment="Top"
+                                         BorderBrush="{x:Null}"
+                                         Text="{Binding EditorTrans.StartupMessage}" />
                             </Grid>
                         </Border>
                     </Grid>
                 </StackPanel>
             </TabItem>
             <TabItem Header="Strings">
-                <Grid>
+                <Grid x:Name="StringsTab">
                     <ScrollViewer Margin="10,10,0,50"
                                   VerticalScrollBarVisibility="Auto">
-                        <ItemsControl x:Name="Strings">
+                        <ItemsControl ItemsSource="{Binding DisplayPage}">
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate>
                                     <StackPanel Margin="0,0,0,0">
@@ -116,15 +148,13 @@
                                                         BorderBrush="#FFa0a0a0"
                                                         BorderThickness="1,0,1,1">
                                                     <Grid>
-                                                        <TextBlock x:Name="StringId"
-                                                                   Height="24"
+                                                        <TextBlock Height="24"
                                                                    Margin="18,0,0,0"
                                                                    VerticalAlignment="Top"
                                                                    Foreground="#ff999999"
                                                                    Text="{Binding Id}" />
-                                                        <FlowDocumentScrollViewer x:Name="StringRef"
-                                                                                  Margin="0,10,0,0"
-                                                                                  Document="{Binding Ref}"
+                                                        <FlowDocumentScrollViewer Margin="0,10,0,0"
+                                                                                  Document="{Binding RefPreview}"
                                                                                   VerticalScrollBarVisibility="Hidden">
                                                             <FlowDocumentScrollViewer.Resources>
                                                                 <Style TargetType="{x:Type Paragraph}">
@@ -141,9 +171,8 @@
                                                         Margin="0,0,0,0"
                                                         BorderBrush="#FFa0a0a0"
                                                         BorderThickness="0,0,1,1">
-                                                    <FlowDocumentScrollViewer x:Name="StringTransShow"
-                                                                              Margin="0,10,0,0"
-                                                                              Document="{Binding TransShow}"
+                                                    <FlowDocumentScrollViewer Margin="0,10,0,0"
+                                                                              Document="{Binding TransPreview}"
                                                                               VerticalScrollBarVisibility="Hidden">
                                                         <FlowDocumentScrollViewer.Resources>
                                                             <Style TargetType="{x:Type Paragraph}">
@@ -165,12 +194,11 @@
                                                                    VerticalAlignment="Top"
                                                                    Foreground="#ff999999"
                                                                    Text="{Binding Format}" />
-                                                        <TextBox x:Name="StringTrans"
-                                                                 Margin="15,27,10,17"
+                                                        <TextBox Margin="15,27,10,17"
                                                                  AcceptsReturn="True"
                                                                  BorderBrush="{x:Null}"
                                                                  FontSize="14"
-                                                                 Text="{Binding Trans,
+                                                                 Text="{Binding TransEdit,
                                                                                 UpdateSourceTrigger=PropertyChanged}"
                                                                  TextWrapping="Wrap" />
                                                     </Grid>
@@ -190,44 +218,15 @@
                             </ItemsControl.ItemTemplate>
                         </ItemsControl>
                     </ScrollViewer>
-                    <Button Width="100"
-                            Height="30"
-                            Margin="37,0,0,10"
-                            HorizontalAlignment="Left"
-                            VerticalAlignment="Bottom"
-                            Click="Button_StringFirst"
-                            Content="First" />
-                    <Button Width="100"
-                            Height="30"
-                            Margin="147,0,0,10"
-                            HorizontalAlignment="Left"
-                            VerticalAlignment="Bottom"
-                            Click="Button_StringPrev"
-                            Content="Prev" />
-                    <Button Width="100"
-                            Height="30"
-                            Margin="257,0,0,10"
-                            HorizontalAlignment="Left"
-                            VerticalAlignment="Bottom"
-                            Click="Button_StringNext"
-                            Content="Next" />
-                    <Button Grid.ColumnSpan="2"
-                            Width="100"
-                            Height="30"
-                            Margin="365,0,0,10"
-                            HorizontalAlignment="Left"
-                            VerticalAlignment="Bottom"
-                            Click="Button_StringLast"
-                            Content="Last" />
+                    <local:NaviControl />
                 </Grid>
             </TabItem>
             <TabItem Header="Tooltips">
-                <Grid>
-                    <TextBlock x:Name="TooltipId"
-                               Height="24"
+                <Grid x:Name="TooltipsTab">
+                    <TextBlock Height="24"
                                Margin="10,10,10,0"
                                VerticalAlignment="Top"
-                               Text="the id" />
+                               Text="{Binding Id}" />
                     <ScrollViewer Margin="10,34,0,50"
                                   VerticalScrollBarVisibility="Auto">
                         <StackPanel Margin="0,0,10,0">
@@ -246,7 +245,7 @@
                                                    VerticalAlignment="Top"
                                                    Foreground="#ff999999"
                                                    Text="Label" />
-                                        <FlowDocumentScrollViewer x:Name="TooltipRefLabel"
+                                        <FlowDocumentScrollViewer Document="{Binding RefLabelPreview}"
                                                                   VerticalScrollBarVisibility="Disabled">
                                             <FlowDocumentScrollViewer.Resources>
                                                 <Style TargetType="{x:Type Paragraph}">
@@ -255,14 +254,6 @@
                                                     <Setter Property="FontSize" Value="14" />
                                                 </Style>
                                             </FlowDocumentScrollViewer.Resources>
-                                            <FlowDocument TextAlignment="Left">
-                                                <Paragraph>
-                                                    This is flow content and you can<Bold>edit me!</Bold>
-                                                </Paragraph>
-                                                <Paragraph>
-                                                    This is flow content and you can<Bold>edit me!</Bold>
-                                                </Paragraph>
-                                            </FlowDocument>
                                         </FlowDocumentScrollViewer>
                                     </Grid>
                                 </Border>
@@ -270,7 +261,7 @@
                                         Margin="0,0,0,0"
                                         BorderBrush="#FFa0a0a0"
                                         BorderThickness="0,1,1,1">
-                                    <FlowDocumentScrollViewer x:Name="TooltipTransLabelShow"
+                                    <FlowDocumentScrollViewer Document="{Binding TransLabelPreview}"
                                                               VerticalScrollBarVisibility="Disabled">
                                         <FlowDocumentScrollViewer.Resources>
                                             <Style TargetType="{x:Type Paragraph}">
@@ -279,14 +270,6 @@
                                                 <Setter Property="FontSize" Value="14" />
                                             </Style>
                                         </FlowDocumentScrollViewer.Resources>
-                                        <FlowDocument TextAlignment="Left">
-                                            <Paragraph>
-                                                This is flow content and you can<Bold>edit me!</Bold>
-                                            </Paragraph>
-                                            <Paragraph>
-                                                This is flow content and you can<Bold>edit me!</Bold>
-                                            </Paragraph>
-                                        </FlowDocument>
                                     </FlowDocumentScrollViewer>
                                 </Border>
                                 <Border Grid.Column="2"
@@ -298,8 +281,8 @@
                                              AcceptsReturn="True"
                                              BorderBrush="{x:Null}"
                                              FontSize="14"
-                                             Text="Deutsch Übersetzung: %0 (danke!)"
-                                             TextChanged="TooltipTransLabelChanged"
+                                             Text="{Binding TransLabelEdit,
+                                                            UpdateSourceTrigger=PropertyChanged}"
                                              TextWrapping="Wrap" />
                                 </Border>
                             </Grid>
@@ -318,7 +301,7 @@
                                                    VerticalAlignment="Top"
                                                    Foreground="#ff999999"
                                                    Text="Help Text" />
-                                        <FlowDocumentScrollViewer x:Name="TooltipRefHelpTxt"
+                                        <FlowDocumentScrollViewer Document="{Binding RefHelpTextPreview}"
                                                                   VerticalScrollBarVisibility="Disabled">
                                             <FlowDocumentScrollViewer.Resources>
                                                 <Style TargetType="{x:Type Paragraph}">
@@ -334,7 +317,7 @@
                                         Margin="0,0,0,0"
                                         BorderBrush="#FFa0a0a0"
                                         BorderThickness="0,1,1,1">
-                                    <FlowDocumentScrollViewer x:Name="TooltipTransHelpTxtShow"
+                                    <FlowDocumentScrollViewer Document="{Binding TransHelpTextPreview}"
                                                               VerticalScrollBarVisibility="Disabled">
                                         <FlowDocumentScrollViewer.Resources>
                                             <Style TargetType="{x:Type Paragraph}">
@@ -343,14 +326,6 @@
                                                 <Setter Property="FontSize" Value="14" />
                                             </Style>
                                         </FlowDocumentScrollViewer.Resources>
-                                        <FlowDocument TextAlignment="Left">
-                                            <Paragraph>
-                                                This is flow content and you can<Bold>edit me!</Bold>
-                                            </Paragraph>
-                                            <Paragraph>
-                                                This is flow content and you can<Bold>edit me!</Bold>
-                                            </Paragraph>
-                                        </FlowDocument>
                                     </FlowDocumentScrollViewer>
                                 </Border>
                                 <Border Grid.Column="2"
@@ -362,8 +337,8 @@
                                              AcceptsReturn="True"
                                              BorderBrush="{x:Null}"
                                              FontSize="14"
-                                             Text="Deutsch Übersetzung: %0 (danke!)"
-                                             TextChanged="TooltipTransHelpTextChanged"
+                                             Text="{Binding TransHelpTextEdit,
+                                                            UpdateSourceTrigger=PropertyChanged}"
                                              TextWrapping="Wrap" />
                                 </Border>
                             </Grid>
@@ -382,7 +357,7 @@
                                                    VerticalAlignment="Top"
                                                    Foreground="#ff999999"
                                                    Text="More Help Text" />
-                                        <FlowDocumentScrollViewer x:Name="TooltipRefMoreHelpTxt"
+                                        <FlowDocumentScrollViewer Document="{Binding RefMoreHelpTextPreview}"
                                                                   VerticalScrollBarVisibility="Disabled">
                                             <FlowDocumentScrollViewer.Resources>
                                                 <Style TargetType="{x:Type Paragraph}">
@@ -398,7 +373,7 @@
                                         Margin="0,0,0,0"
                                         BorderBrush="#FFa0a0a0"
                                         BorderThickness="0,1,1,1">
-                                    <FlowDocumentScrollViewer x:Name="TooltipTransMoreHelpTxtShow"
+                                    <FlowDocumentScrollViewer Document="{Binding TransMoreHelpTextPreview}"
                                                               VerticalScrollBarVisibility="Disabled">
                                         <FlowDocumentScrollViewer.Resources>
                                             <Style TargetType="{x:Type Paragraph}">
@@ -407,14 +382,6 @@
                                                 <Setter Property="FontSize" Value="14" />
                                             </Style>
                                         </FlowDocumentScrollViewer.Resources>
-                                        <FlowDocument TextAlignment="Left">
-                                            <Paragraph>
-                                                This is flow content and you can<Bold>edit me!</Bold>
-                                            </Paragraph>
-                                            <Paragraph>
-                                                This is flow content and you can<Bold>edit me!</Bold>
-                                            </Paragraph>
-                                        </FlowDocument>
                                     </FlowDocumentScrollViewer>
                                 </Border>
                                 <Border Grid.Column="2"
@@ -426,37 +393,23 @@
                                              AcceptsReturn="True"
                                              BorderBrush="{x:Null}"
                                              FontSize="14"
-                                             Text="Deutsch Übersetzung: %0 (danke!)"
-                                             TextChanged="TooltipTransMoreHelpChanged"
+                                             Text="{Binding TransMoreHelpTextEdit,
+                                                            UpdateSourceTrigger=PropertyChanged}"
                                              TextWrapping="Wrap" />
                                 </Border>
                             </Grid>
                         </StackPanel>
                     </ScrollViewer>
 
-                    <Button Width="100"
-                            Height="30"
-                            Margin="137,0,0,10"
-                            HorizontalAlignment="Left"
-                            VerticalAlignment="Bottom"
-                            Click="Button_TooltipPrev"
-                            Content="Prev" />
-                    <Button Width="100"
-                            Height="30"
-                            Margin="275,0,0,10"
-                            HorizontalAlignment="Left"
-                            VerticalAlignment="Bottom"
-                            Click="Button_TooltipNext"
-                            Content="Next" />
+                    <local:NaviControl />
                 </Grid>
             </TabItem>
             <TabItem Header="Help">
-                <Grid>
-                    <TextBlock x:Name="HelpId"
-                               Height="24"
+                <Grid x:Name="HelpPagesTab">
+                    <TextBlock Height="24"
                                Margin="10,10,10,0"
                                VerticalAlignment="Top"
-                               Text="the id" />
+                               Text="{Binding Id}" />
                     <Grid Margin="10,34,10,50">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="1*" />
@@ -466,7 +419,7 @@
                         <Border Margin="0,0,0,0"
                                 BorderBrush="#FFa0a0a0"
                                 BorderThickness="1">
-                            <FlowDocumentScrollViewer x:Name="HelpRef"
+                            <FlowDocumentScrollViewer Document="{Binding RefHelpPagePreview}"
                                                       VerticalScrollBarVisibility="Auto">
                                 <FlowDocumentScrollViewer.Resources>
                                     <Style TargetType="{x:Type Paragraph}">
@@ -481,7 +434,7 @@
                                 Margin="0,0,0,0"
                                 BorderBrush="#FFa0a0a0"
                                 BorderThickness="0,1,1,1">
-                            <FlowDocumentScrollViewer x:Name="Rtb"
+                            <FlowDocumentScrollViewer Document="{Binding TransHelpPagePreview}"
                                                       VerticalScrollBarVisibility="Auto">
                                 <FlowDocumentScrollViewer.Resources>
                                     <Style TargetType="{x:Type Paragraph}">
@@ -490,14 +443,6 @@
                                         <Setter Property="FontSize" Value="14" />
                                     </Style>
                                 </FlowDocumentScrollViewer.Resources>
-                                <FlowDocument TextAlignment="Left">
-                                    <Paragraph>
-                                        This is flow content and you can<Bold>edit me!</Bold>
-                                    </Paragraph>
-                                    <Paragraph>
-                                        This is flow content and you can<Bold>edit me!</Bold>
-                                    </Paragraph>
-                                </FlowDocument>
                             </FlowDocumentScrollViewer>
                         </Border>
                         <Border Grid.Column="2"
@@ -510,28 +455,14 @@
                                          AcceptsReturn="True"
                                          BorderBrush="{x:Null}"
                                          FontSize="14"
-                                         Text="Deutsch Übersetzung: %0 (danke!)"
-                                         TextChanged="HelpTransTextChanged"
+                                         Text="{Binding TransHelpPageEdit,
+                                                        UpdateSourceTrigger=PropertyChanged}"
                                          TextWrapping="Wrap" />
                             </ScrollViewer>
                         </Border>
                     </Grid>
-                    <Button Width="100"
-                            Height="30"
-                            Margin="137,0,0,10"
-                            HorizontalAlignment="Left"
-                            VerticalAlignment="Bottom"
-                            Click="Button_ClickPrev"
-                            Content="Prev" />
-                    <Button Grid.ColumnSpan="2"
-                            Width="100"
-                            Height="30"
-                            Margin="275,0,0,10"
-                            HorizontalAlignment="Left"
-                            VerticalAlignment="Bottom"
-                            Click="Button_ClickNext"
-                            Content="Next" />
 
+                    <local:NaviControl />
                 </Grid>
             </TabItem>
         </TabControl>
