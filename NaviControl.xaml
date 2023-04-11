@@ -10,14 +10,14 @@
                 HorizontalAlignment="Center"
                 VerticalAlignment="Bottom"
                 Orientation="Horizontal">
-        <Button Width="50"
-                Height="30"
+        <Button Width="40"
+                Height="20"
                 Margin="0,0,10,0"
                 HorizontalAlignment="Left"
                 Command="{Binding FirstPage}"
                 Content="&lt;&lt;" />
-        <Button Width="50"
-                Height="30"
+        <Button Width="40"
+                Height="20"
                 Margin="0,0,10,0"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Bottom"
@@ -25,10 +25,11 @@
                 Content="&lt;" />
         <TextBox MinWidth="30"
                  VerticalAlignment="Center"
-                 Text="{Binding CurrentPageDisplay, UpdateSourceTrigger=PropertyChanged}" >
+                 Text="{Binding CurrentPageDisplay,
+                                UpdateSourceTrigger=PropertyChanged}">
             <TextBox.InputBindings>
-                <KeyBinding Key="Return" 
-                            Command="{Binding ReturnPressed}"/>
+                <KeyBinding Key="Return"
+                            Command="{Binding ReturnPressed}" />
             </TextBox.InputBindings>
         </TextBox>
         <TextBlock VerticalAlignment="Center"
@@ -36,16 +37,16 @@
         <TextBlock MinWidth="30"
                    VerticalAlignment="Center"
                    Text="{Binding MaxPages}" />
-        <Button Width="50"
-                Height="30"
+        <Button Width="40"
+                Height="20"
                 Margin="10,0,10,0"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Bottom"
                 Command="{Binding NextPage}"
                 Content="&gt;" />
         <Button Grid.ColumnSpan="2"
-                Width="50"
-                Height="30"
+                Width="40"
+                Height="20"
                 Margin="0,0,0,00"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Bottom"
