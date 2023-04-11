@@ -9,11 +9,13 @@
         <Color x:Key="DustyGrayColor">#FFA0A0A0</Color>
         <Color x:Key="SelectionBackgroundColor">#FF808080</Color>
         <Color x:Key="NaviButtonBackgroundColor">#FFECECEC</Color>
+        <Color x:Key="ContentBackgroundColor">#FFf8f8f8</Color>
 
         <!--  brushes  -->
         <SolidColorBrush x:Key="DustyGrayBrush" Color="{StaticResource DustyGrayColor}" />
         <SolidColorBrush x:Key="SelectionBackgroundBrush" Color="{StaticResource SelectionBackgroundColor}" />
         <SolidColorBrush x:Key="NaviButtonBackgroundBrush" Color="{StaticResource NaviButtonBackgroundColor}" />
+        <SolidColorBrush x:Key="ContentBackgroundBrush" Color="{StaticResource ContentBackgroundColor}" />
 
 
         <Style x:Key="ButtonTabItemStyle"
@@ -42,7 +44,7 @@
                                         <Storyboard>
                                             <ColorAnimation Storyboard.TargetName="Border"
                                                             Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)"
-                                                            To="White"
+                                                            To="{StaticResource ContentBackgroundColor}"
                                                             Duration="0" />
                                             <ThicknessAnimation Storyboard.TargetName="Border"
                                                                 Storyboard.TargetProperty="BorderThickness"
@@ -89,7 +91,7 @@
                                                    KeyboardNavigation.TabIndex="1" />
                             <Border x:Name="Border"
                                     Grid.Row="1"
-                                    Background="White"
+                                    Background="{StaticResource ContentBackgroundBrush}"
                                     BorderBrush="#FFABABB3"
                                     BorderThickness="1,0,1,1"
                                     KeyboardNavigation.DirectionalNavigation="Contained"

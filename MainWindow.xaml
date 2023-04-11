@@ -16,21 +16,22 @@
                 Margin="10,10,110,0"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Top"
-                Click="Button_Click"
+                Command="{Binding LoadData}"
                 Content="Load" />
         <Button Width="100"
                 Height="30"
                 Margin="120,10,110,0"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Top"
-                Click="Button_ClickSave"
+                Command="{Binding SaveData}"
                 Content="Save" />
         <TabControl Margin="-1,60,-1,-1">
             <TabItem Header="General">
-                <StackPanel x:Name="GeneralTab">
+                <StackPanel DataContext="{Binding GeneralViewModel}">
                     <Grid MinHeight="70"
                           Margin="10"
-                          VerticalAlignment="Top">
+                          VerticalAlignment="Top"
+                          Background="White">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="1*" />
                             <ColumnDefinition Width="1*" />
@@ -63,7 +64,8 @@
                     </Grid>
                     <Grid Height="70"
                           Margin="10"
-                          VerticalAlignment="Top">
+                          VerticalAlignment="Top"
+                          Background="White">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="1*" />
                             <ColumnDefinition Width="1*" />
@@ -95,7 +97,8 @@
                     </Grid>
                     <Grid Height="70"
                           Margin="10"
-                          VerticalAlignment="Top">
+                          VerticalAlignment="Top"
+                          Background="White">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="1*" />
                             <ColumnDefinition Width="1*" />
@@ -128,14 +131,14 @@
                 </StackPanel>
             </TabItem>
             <TabItem Header="Strings">
-                <Grid x:Name="StringsTab">
+                <Grid DataContext="{Binding StringsViewModel}">
                     <ScrollViewer Margin="10,10,0,50"
                                   VerticalScrollBarVisibility="Auto">
                         <ItemsControl ItemsSource="{Binding DisplayPage}">
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate>
                                     <StackPanel Margin="0,0,0,0">
-                                        <Grid>
+                                        <Grid Background="White">
                                             <Grid MinHeight="35"
                                                   Margin="0,0,0,0">
                                                 <Grid.ColumnDefinitions>
@@ -222,7 +225,7 @@
                 </Grid>
             </TabItem>
             <TabItem Header="Tooltips">
-                <Grid x:Name="TooltipsTab">
+                <Grid DataContext="{Binding TooltipsViewModel}">
                     <TextBlock Height="24"
                                Margin="10,10,10,0"
                                VerticalAlignment="Top"
@@ -230,7 +233,7 @@
                     <ScrollViewer Margin="10,34,0,50"
                                   VerticalScrollBarVisibility="Auto">
                         <StackPanel Margin="0,0,10,0">
-                            <Grid>
+                            <Grid Background="White">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="1*" />
                                     <ColumnDefinition Width="1*" />
@@ -286,7 +289,8 @@
                                              TextWrapping="Wrap" />
                                 </Border>
                             </Grid>
-                            <Grid Margin="0,10,0,0">
+                            <Grid Margin="0,10,0,0"
+                                  Background="White">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="1*" />
                                     <ColumnDefinition Width="1*" />
@@ -342,7 +346,8 @@
                                              TextWrapping="Wrap" />
                                 </Border>
                             </Grid>
-                            <Grid Margin="0,10,0,0">
+                            <Grid Margin="0,10,0,0"
+                                  Background="White">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="1*" />
                                     <ColumnDefinition Width="1*" />
@@ -405,12 +410,13 @@
                 </Grid>
             </TabItem>
             <TabItem Header="Help">
-                <Grid x:Name="HelpPagesTab">
+                <Grid DataContext="{Binding HelpViewModel}">
                     <TextBlock Height="24"
                                Margin="10,10,10,0"
                                VerticalAlignment="Top"
                                Text="{Binding Id}" />
-                    <Grid Margin="10,34,10,50">
+                    <Grid Margin="10,34,10,50"
+                          Background="White">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="1*" />
                             <ColumnDefinition Width="1*" />
