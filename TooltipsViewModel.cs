@@ -10,10 +10,9 @@ namespace PTGui_Language_Editor
 {
     public class TooltipsViewModel : ViewModelBaseNavi
     {
+        const int NumItemsPerPage = 10;
         private List<EditorRefTooltip> allDisplayrefTooltips = null!;
-        private EditorTransTooltip translateTooltip = null!;
-        private EditorRefTooltip currentRefTooltip = null!;
-        private bool setFromCode;
+        private List<OneTooltip> displayPage = null!;
 
         public List<EditorRefString> AllRefStrings { get; set; } = null!;
         public List<EditorTransString> AllTransStrings { get; set; } = null!;
@@ -30,14 +29,88 @@ namespace PTGui_Language_Editor
                 allDisplayrefTooltips = value;
 
                 CurrentPage = 0;
-                MaxPages = allDisplayrefTooltips.Count;
+                MaxPages = allDisplayrefTooltips.Count / NumItemsPerPage;
+
+                if (allDisplayrefTooltips.Count % NumItemsPerPage > 0)
+                {
+                    MaxPages++;
+                }
 
                 ShowPage(CurrentPage);
             }
         }
 
-        // Binding properties
+        public List<OneTooltip> DisplayPage
+        {
+            get
+            {
+                return displayPage;
+            }
+
+            set
+            {
+                displayPage = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        protected override void ShowPage(int currentPage)
+        {
+            var list = new List<OneTooltip>();
+            int showIndex = currentPage * NumItemsPerPage;
+
+            for (int i = showIndex; i < showIndex + NumItemsPerPage && i < AllDisplayRefTooltips.Count(); i++)
+            {
+                var one = new OneTooltip();
+                one.AllRefStrings = AllRefStrings;
+                one.AllTransStrings = AllTransStrings;
+                one.RefTooltip = AllDisplayRefTooltips[i];
+
+                list.Add(one);
+            }
+
+            DisplayPage = list;
+        }
+    }
+
+    public class OneTooltip : ViewModelBase
+    {
+        private EditorTransTooltip translateTooltip = null!;
+        private EditorRefTooltip currentRefTooltip = null!;
+        private bool setFromCode;
+
+        public List<EditorRefString> AllRefStrings { get; set; } = null!;
+        public List<EditorTransString> AllTransStrings { get; set; } = null!;
         public string Id => "#" + currentRefTooltip.Id;
+
+
+        public EditorRefTooltip RefTooltip
+        {
+            get
+            {
+                return currentRefTooltip;
+            }
+
+            set
+            {
+                setFromCode = true;
+
+                currentRefTooltip = value;
+                NotifyPropertyChanged(nameof(Id));
+                translateTooltip = currentRefTooltip.EditorTranslate!;
+
+                RefLabelPreview = PTGuiTextConverter.ConvertToFlowDocument(currentRefTooltip.Label, y => AllRefStrings.FirstOrDefault(x => x.Id == y)?.Txt);
+                TransLabelEdit = translateTooltip?.Label?.Replace("<br>", "\n");
+
+                RefHelpTextPreview = PTGuiTextConverter.ConvertToFlowDocument(currentRefTooltip.Helptext, y => AllRefStrings.FirstOrDefault(x => x.Id == y)?.Txt);
+                TransHelpTextEdit = translateTooltip?.Helptext?.Replace("<br>", "\n");
+
+                RefMoreHelpTextPreview = PTGuiTextConverter.ConvertToFlowDocument(currentRefTooltip.MoreHelptext, y => AllRefStrings.FirstOrDefault(x => x.Id == y)?.Txt);
+                TransMoreHelpTextEdit = translateTooltip?.MoreHelptext?.Replace("<br>", "\n");
+
+                setFromCode = false;
+            }
+        }
 
         //////////////////////////////////////
         private FlowDocument refLabelPreview = null!;
@@ -197,24 +270,5 @@ namespace PTGui_Language_Editor
             }
         }
 
-        protected override void ShowPage(int currentPage)
-        {
-            setFromCode = true;
-
-            currentRefTooltip = allDisplayrefTooltips[currentPage];
-            NotifyPropertyChanged(nameof(Id));
-            translateTooltip = currentRefTooltip.EditorTranslate!;
-
-            RefLabelPreview = PTGuiTextConverter.ConvertToFlowDocument(currentRefTooltip.Label, y => AllRefStrings.FirstOrDefault(x => x.Id == y)?.Txt);
-            TransLabelEdit = translateTooltip?.Label?.Replace("<br>", "\n");
-
-            RefHelpTextPreview = PTGuiTextConverter.ConvertToFlowDocument(currentRefTooltip.Helptext, y => AllRefStrings.FirstOrDefault(x => x.Id == y)?.Txt);
-            TransHelpTextEdit = translateTooltip?.Helptext?.Replace("<br>", "\n");
-
-            RefMoreHelpTextPreview = PTGuiTextConverter.ConvertToFlowDocument(currentRefTooltip.MoreHelptext, y => AllRefStrings.FirstOrDefault(x => x.Id == y)?.Txt);
-            TransMoreHelpTextEdit = translateTooltip?.MoreHelptext?.Replace("<br>", "\n");
-
-            setFromCode = false;
-        }
     }
 }

@@ -12,11 +12,11 @@ namespace PTGui_Language_Editor
         const int NumStringsPerPage = 10;
 
         private List<EditorRefString> allDisplayRefStrings = new List<EditorRefString>();
-        private List<OneString> displayStrings;
+        private List<OneString> displayPage;
 
         public StringsViewModel()
         {
-            displayStrings = new List<OneString>();
+            displayPage = new List<OneString>();
         }
 
         public List<EditorRefString> AllRefStrings { get; set; } = null!;
@@ -47,12 +47,12 @@ namespace PTGui_Language_Editor
         {
             get
             {
-                return displayStrings;
+                return displayPage;
             }
 
             set
             {
-                displayStrings = value;
+                displayPage = value;
                 NotifyPropertyChanged();
             }
         }

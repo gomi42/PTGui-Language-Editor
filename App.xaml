@@ -11,7 +11,7 @@
         <Color x:Key="NaviButtonBackgroundColor">#FFECECEC</Color>
         <Color x:Key="ContentBackgroundColor">#FFf8f8f8</Color>
         <Color x:Key="IdForegroundColor">#ff999999</Color>
-        <Color x:Key="CellBorderColor">#FFa0a0a0</Color>
+        <Color x:Key="CellBorderColor">#FFd0d0d0</Color>
         <Color x:Key="CellBackgroundColor">#FFFFFFFF</Color>
 
         <!--  brushes  -->

@@ -138,25 +138,33 @@
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate>
                                     <StackPanel Margin="0,0,0,0">
-                                        <Grid Background="{StaticResource CellBackgroundBrush}">
-                                            <Grid MinHeight="35"
-                                                  Margin="0,0,0,0">
+                                        <Grid Margin="0,0,0,15">
+                                            <Grid MinHeight="35">
                                                 <Grid.ColumnDefinitions>
                                                     <ColumnDefinition Width="1*" />
                                                     <ColumnDefinition Width="1*" />
                                                     <ColumnDefinition Width="1*" />
                                                 </Grid.ColumnDefinitions>
+                                                <Border x:Name="Border0"
+                                                        Grid.ColumnSpan="3"
+                                                        Height="24"
+                                                        Margin="0,0,10,0"
+                                                        VerticalAlignment="Top"
+                                                        Background="{StaticResource CellBackgroundBrush}"
+                                                        BorderBrush="{StaticResource CellBorderBrush}"
+                                                        BorderThickness="1,1,1,1">
+                                                    <TextBlock Margin="18,0,0,0"
+                                                               VerticalAlignment="Center"
+                                                               Foreground="{StaticResource IdForegroundBrush}"
+                                                               Text="{Binding Id}" />
+                                                </Border>
                                                 <Border x:Name="Border1"
-                                                        Margin="0,0,0,0"
+                                                        Margin="0,24,0,0"
+                                                        Background="{StaticResource CellBackgroundBrush}"
                                                         BorderBrush="{StaticResource CellBorderBrush}"
                                                         BorderThickness="1,0,1,1">
                                                     <Grid>
-                                                        <TextBlock Height="24"
-                                                                   Margin="18,0,0,0"
-                                                                   VerticalAlignment="Top"
-                                                                   Foreground="{StaticResource IdForegroundBrush}"
-                                                                   Text="{Binding Id}" />
-                                                        <FlowDocumentScrollViewer Margin="0,10,0,0"
+                                                        <FlowDocumentScrollViewer Margin="0,0,0,0"
                                                                                   Document="{Binding RefPreview}"
                                                                                   VerticalScrollBarVisibility="Hidden">
                                                             <FlowDocumentScrollViewer.Resources>
@@ -171,10 +179,11 @@
                                                 </Border>
                                                 <Border x:Name="Border2"
                                                         Grid.Column="1"
-                                                        Margin="0,0,0,0"
+                                                        Margin="0,24,0,0"
+                                                        Background="{StaticResource CellBackgroundBrush}"
                                                         BorderBrush="{StaticResource CellBorderBrush}"
                                                         BorderThickness="0,0,1,1">
-                                                    <FlowDocumentScrollViewer Margin="0,10,0,0"
+                                                    <FlowDocumentScrollViewer Margin="0,0,0,0"
                                                                               Document="{Binding TransPreview}"
                                                                               VerticalScrollBarVisibility="Hidden">
                                                         <FlowDocumentScrollViewer.Resources>
@@ -188,7 +197,8 @@
                                                 </Border>
                                                 <Border x:Name="Border3"
                                                         Grid.Column="2"
-                                                        Margin="0,0,10,0"
+                                                        Margin="0,24,10,0"
+                                                        Background="{StaticResource CellBackgroundBrush}"
                                                         BorderBrush="{StaticResource CellBorderBrush}"
                                                         BorderThickness="0,0,1,1">
                                                     <Grid>
@@ -197,7 +207,7 @@
                                                                    VerticalAlignment="Top"
                                                                    Foreground="#ff999999"
                                                                    Text="{Binding Format}" />
-                                                        <TextBox Margin="15,27,10,17"
+                                                        <TextBox Margin="15,17,10,17"
                                                                  AcceptsReturn="True"
                                                                  BorderBrush="{x:Null}"
                                                                  FontSize="14"
@@ -209,14 +219,6 @@
                                             </Grid>
                                         </Grid>
                                     </StackPanel>
-                                    <DataTemplate.Triggers>
-                                        <DataTrigger Binding="{Binding RelativeSource={RelativeSource PreviousData}}"
-                                                     Value="{x:Null}">
-                                            <Setter TargetName="Border1" Property="BorderThickness" Value="1" />
-                                            <Setter TargetName="Border2" Property="BorderThickness" Value="0,1,1,1" />
-                                            <Setter TargetName="Border3" Property="BorderThickness" Value="0,1,1,1" />
-                                        </DataTrigger>
-                                    </DataTemplate.Triggers>
                                 </DataTemplate>
                             </ItemsControl.ItemTemplate>
                         </ItemsControl>
@@ -226,203 +228,215 @@
             </TabItem>
             <TabItem Header="Tooltips">
                 <Grid DataContext="{Binding TooltipsViewModel}">
-                    <Border Height="24"
-                            Margin="10,10,10,0"
-                            VerticalAlignment="Top"
-                            Background="{StaticResource CellBackgroundBrush}"
-                            BorderBrush="{StaticResource CellBorderBrush}"
-                            BorderThickness="1,1,1,0">
-                        <TextBlock Margin="18,0,10,0"
-                                   VerticalAlignment="Center"
-                                   Foreground="{StaticResource IdForegroundBrush}"
-                                   Text="{Binding Id}" />
-                    </Border>
-                    <ScrollViewer Margin="10,34,0,50"
+                    <ScrollViewer Margin="10,10,0,50"
                                   VerticalScrollBarVisibility="Auto">
-                        <StackPanel Margin="0,0,10,0">
-                            <Grid Background="{StaticResource CellBackgroundBrush}">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="1*" />
-                                    <ColumnDefinition Width="1*" />
-                                    <ColumnDefinition Width="1*" />
-                                </Grid.ColumnDefinitions>
-                                <Border Margin="0,0,0,0"
-                                        BorderBrush="{StaticResource CellBorderBrush}"
-                                        BorderThickness="1,1,1,0">
-                                    <Grid>
-                                        <TextBlock Height="24"
-                                                   Margin="18,0,0,0"
-                                                   VerticalAlignment="Top"
-                                                   Foreground="{StaticResource IdForegroundBrush}"
-                                                   Text="Label" />
-                                        <FlowDocumentScrollViewer Document="{Binding RefLabelPreview}"
-                                                                  VerticalScrollBarVisibility="Disabled">
-                                            <FlowDocumentScrollViewer.Resources>
-                                                <Style TargetType="{x:Type Paragraph}">
-                                                    <Setter Property="Margin" Value="0,0,0,0" />
-                                                    <Setter Property="FontFamily" Value="Segoe UI" />
-                                                    <Setter Property="FontSize" Value="14" />
-                                                </Style>
-                                            </FlowDocumentScrollViewer.Resources>
-                                        </FlowDocumentScrollViewer>
+                        <ItemsControl ItemsSource="{Binding DisplayPage}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Grid Margin="0,0,10,15">
+                                        <Border Height="24"
+                                                Margin="0,0,0,0"
+                                                VerticalAlignment="Top"
+                                                Background="{StaticResource CellBackgroundBrush}"
+                                                BorderBrush="{StaticResource CellBorderBrush}"
+                                                BorderThickness="1,1,1,0">
+                                            <TextBlock Margin="18,0,10,0"
+                                                       VerticalAlignment="Center"
+                                                       Foreground="{StaticResource IdForegroundBrush}"
+                                                       Text="{Binding Id}" />
+                                        </Border>
+                                        <StackPanel Margin="0,24,0,0">
+                                            <Grid Background="{StaticResource CellBackgroundBrush}">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="1*" />
+                                                    <ColumnDefinition Width="1*" />
+                                                    <ColumnDefinition Width="1*" />
+                                                </Grid.ColumnDefinitions>
+                                                <Border Margin="0,0,0,0"
+                                                        BorderBrush="{StaticResource CellBorderBrush}"
+                                                        BorderThickness="1,1,1,0">
+                                                    <Grid>
+                                                        <TextBlock Height="24"
+                                                                   Margin="18,0,0,0"
+                                                                   VerticalAlignment="Top"
+                                                                   Foreground="{StaticResource IdForegroundBrush}"
+                                                                   Text="Label" />
+                                                        <FlowDocumentScrollViewer Document="{Binding RefLabelPreview}"
+                                                                                  VerticalScrollBarVisibility="Disabled">
+                                                            <FlowDocumentScrollViewer.Resources>
+                                                                <Style TargetType="{x:Type Paragraph}">
+                                                                    <Setter Property="Margin" Value="0,0,0,0" />
+                                                                    <Setter Property="FontFamily" Value="Segoe UI" />
+                                                                    <Setter Property="FontSize" Value="14" />
+                                                                </Style>
+                                                            </FlowDocumentScrollViewer.Resources>
+                                                        </FlowDocumentScrollViewer>
+                                                    </Grid>
+                                                </Border>
+                                                <Border Grid.Column="1"
+                                                        Margin="0,0,0,0"
+                                                        BorderBrush="{StaticResource CellBorderBrush}"
+                                                        BorderThickness="0,1,1,0">
+                                                    <FlowDocumentScrollViewer Document="{Binding TransLabelPreview}"
+                                                                              VerticalScrollBarVisibility="Disabled">
+                                                        <FlowDocumentScrollViewer.Resources>
+                                                            <Style TargetType="{x:Type Paragraph}">
+                                                                <Setter Property="Margin" Value="0,0,0,0" />
+                                                                <Setter Property="FontFamily" Value="Segoe UI" />
+                                                                <Setter Property="FontSize" Value="14" />
+                                                            </Style>
+                                                        </FlowDocumentScrollViewer.Resources>
+                                                    </FlowDocumentScrollViewer>
+                                                </Border>
+                                                <Border Grid.Column="2"
+                                                        Margin="0,0,0,0"
+                                                        BorderBrush="{StaticResource CellBorderBrush}"
+                                                        BorderThickness="0,1,1,0">
+                                                    <TextBox Margin="10,17,10,17"
+                                                             AcceptsReturn="True"
+                                                             BorderBrush="{x:Null}"
+                                                             FontSize="14"
+                                                             Text="{Binding TransLabelEdit,
+                                                                            UpdateSourceTrigger=PropertyChanged}"
+                                                             TextWrapping="Wrap" />
+                                                </Border>
+                                            </Grid>
+                                            <Grid Margin="0,0,0,0"
+                                                  Background="{StaticResource CellBackgroundBrush}">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="1*" />
+                                                    <ColumnDefinition Width="1*" />
+                                                    <ColumnDefinition Width="1*" />
+                                                </Grid.ColumnDefinitions>
+                                                <Border Margin="0,0,0,0"
+                                                        BorderBrush="{StaticResource CellBorderBrush}"
+                                                        BorderThickness="1,1,1,0">
+                                                    <Grid>
+                                                        <TextBlock Height="24"
+                                                                   Margin="18,0,0,0"
+                                                                   VerticalAlignment="Top"
+                                                                   Foreground="{StaticResource IdForegroundBrush}"
+                                                                   Text="Help Text" />
+                                                        <FlowDocumentScrollViewer Document="{Binding RefHelpTextPreview}"
+                                                                                  VerticalScrollBarVisibility="Disabled">
+                                                            <FlowDocumentScrollViewer.Resources>
+                                                                <Style TargetType="{x:Type Paragraph}">
+                                                                    <Setter Property="Margin" Value="0,0,0,0" />
+                                                                    <Setter Property="FontFamily" Value="Segoe UI" />
+                                                                    <Setter Property="FontSize" Value="14" />
+                                                                </Style>
+                                                            </FlowDocumentScrollViewer.Resources>
+                                                        </FlowDocumentScrollViewer>
+                                                    </Grid>
+                                                </Border>
+                                                <Border Grid.Column="1"
+                                                        Margin="0,0,0,0"
+                                                        BorderBrush="{StaticResource CellBorderBrush}"
+                                                        BorderThickness="0,1,1,0">
+                                                    <FlowDocumentScrollViewer Document="{Binding TransHelpTextPreview}"
+                                                                              VerticalScrollBarVisibility="Disabled">
+                                                        <FlowDocumentScrollViewer.Resources>
+                                                            <Style TargetType="{x:Type Paragraph}">
+                                                                <Setter Property="Margin" Value="0,0,0,0" />
+                                                                <Setter Property="FontFamily" Value="Segoe UI" />
+                                                                <Setter Property="FontSize" Value="14" />
+                                                            </Style>
+                                                        </FlowDocumentScrollViewer.Resources>
+                                                    </FlowDocumentScrollViewer>
+                                                </Border>
+                                                <Border Grid.Column="2"
+                                                        Margin="0,0,0,0"
+                                                        BorderBrush="{StaticResource CellBorderBrush}"
+                                                        BorderThickness="0,1,1,0">
+                                                    <TextBox Margin="10,17,0,17"
+                                                             AcceptsReturn="True"
+                                                             BorderBrush="{x:Null}"
+                                                             FontSize="14"
+                                                             Text="{Binding TransHelpTextEdit,
+                                                                            UpdateSourceTrigger=PropertyChanged}"
+                                                             TextWrapping="Wrap" />
+                                                </Border>
+                                            </Grid>
+                                            <Grid Margin="0,0,0,0"
+                                                  Background="{StaticResource CellBackgroundBrush}">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="1*" />
+                                                    <ColumnDefinition Width="1*" />
+                                                    <ColumnDefinition Width="1*" />
+                                                </Grid.ColumnDefinitions>
+                                                <Border Margin="0,0,0,0"
+                                                        BorderBrush="{StaticResource CellBorderBrush}"
+                                                        BorderThickness="1">
+                                                    <Grid>
+                                                        <TextBlock Height="24"
+                                                                   Margin="18,0,0,0"
+                                                                   VerticalAlignment="Top"
+                                                                   Foreground="{StaticResource IdForegroundBrush}"
+                                                                   Text="More Help Text" />
+                                                        <FlowDocumentScrollViewer Document="{Binding RefMoreHelpTextPreview}"
+                                                                                  VerticalScrollBarVisibility="Disabled">
+                                                            <FlowDocumentScrollViewer.Resources>
+                                                                <Style TargetType="{x:Type Paragraph}">
+                                                                    <Setter Property="Margin" Value="0,0,0,0" />
+                                                                    <Setter Property="FontFamily" Value="Segoe UI" />
+                                                                    <Setter Property="FontSize" Value="14" />
+                                                                </Style>
+                                                            </FlowDocumentScrollViewer.Resources>
+                                                        </FlowDocumentScrollViewer>
+                                                    </Grid>
+                                                </Border>
+                                                <Border Grid.Column="1"
+                                                        Margin="0,0,0,0"
+                                                        BorderBrush="{StaticResource CellBorderBrush}"
+                                                        BorderThickness="0,1,1,1">
+                                                    <FlowDocumentScrollViewer Document="{Binding TransMoreHelpTextPreview}"
+                                                                              VerticalScrollBarVisibility="Disabled">
+                                                        <FlowDocumentScrollViewer.Resources>
+                                                            <Style TargetType="{x:Type Paragraph}">
+                                                                <Setter Property="Margin" Value="0,0,0,0" />
+                                                                <Setter Property="FontFamily" Value="Segoe UI" />
+                                                                <Setter Property="FontSize" Value="14" />
+                                                            </Style>
+                                                        </FlowDocumentScrollViewer.Resources>
+                                                    </FlowDocumentScrollViewer>
+                                                </Border>
+                                                <Border Grid.Column="2"
+                                                        Margin="0,0,0,0"
+                                                        BorderBrush="{StaticResource CellBorderBrush}"
+                                                        BorderThickness="0,1,1,1">
+                                                    <TextBox Margin="10,17,0,17"
+                                                             AcceptsReturn="True"
+                                                             BorderBrush="{x:Null}"
+                                                             FontSize="14"
+                                                             Text="{Binding TransMoreHelpTextEdit,
+                                                                            UpdateSourceTrigger=PropertyChanged}"
+                                                             TextWrapping="Wrap" />
+                                                </Border>
+                                            </Grid>
+                                        </StackPanel>
                                     </Grid>
-                                </Border>
-                                <Border Grid.Column="1"
-                                        Margin="0,0,0,0"
-                                        BorderBrush="{StaticResource CellBorderBrush}"
-                                        BorderThickness="0,1,1,0">
-                                    <FlowDocumentScrollViewer Document="{Binding TransLabelPreview}"
-                                                              VerticalScrollBarVisibility="Disabled">
-                                        <FlowDocumentScrollViewer.Resources>
-                                            <Style TargetType="{x:Type Paragraph}">
-                                                <Setter Property="Margin" Value="0,0,0,0" />
-                                                <Setter Property="FontFamily" Value="Segoe UI" />
-                                                <Setter Property="FontSize" Value="14" />
-                                            </Style>
-                                        </FlowDocumentScrollViewer.Resources>
-                                    </FlowDocumentScrollViewer>
-                                </Border>
-                                <Border Grid.Column="2"
-                                        Margin="0,0,0,0"
-                                        BorderBrush="{StaticResource CellBorderBrush}"
-                                        BorderThickness="0,1,1,0">
-                                    <TextBox x:Name="TooltipTransLabel"
-                                             Margin="10,17,10,17"
-                                             AcceptsReturn="True"
-                                             BorderBrush="{x:Null}"
-                                             FontSize="14"
-                                             Text="{Binding TransLabelEdit,
-                                                            UpdateSourceTrigger=PropertyChanged}"
-                                             TextWrapping="Wrap" />
-                                </Border>
-                            </Grid>
-                            <Grid Margin="0,0,0,0"
-                                  Background="{StaticResource CellBackgroundBrush}">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="1*" />
-                                    <ColumnDefinition Width="1*" />
-                                    <ColumnDefinition Width="1*" />
-                                </Grid.ColumnDefinitions>
-                                <Border Margin="0,0,0,0"
-                                        BorderBrush="{StaticResource CellBorderBrush}"
-                                        BorderThickness="1,1,1,0">
-                                    <Grid>
-                                        <TextBlock Height="24"
-                                                   Margin="18,0,0,0"
-                                                   VerticalAlignment="Top"
-                                                   Foreground="{StaticResource IdForegroundBrush}"
-                                                   Text="Help Text" />
-                                        <FlowDocumentScrollViewer Document="{Binding RefHelpTextPreview}"
-                                                                  VerticalScrollBarVisibility="Disabled">
-                                            <FlowDocumentScrollViewer.Resources>
-                                                <Style TargetType="{x:Type Paragraph}">
-                                                    <Setter Property="Margin" Value="0,0,0,0" />
-                                                    <Setter Property="FontFamily" Value="Segoe UI" />
-                                                    <Setter Property="FontSize" Value="14" />
-                                                </Style>
-                                            </FlowDocumentScrollViewer.Resources>
-                                        </FlowDocumentScrollViewer>
-                                    </Grid>
-                                </Border>
-                                <Border Grid.Column="1"
-                                        Margin="0,0,0,0"
-                                        BorderBrush="{StaticResource CellBorderBrush}"
-                                        BorderThickness="0,1,1,0">
-                                    <FlowDocumentScrollViewer Document="{Binding TransHelpTextPreview}"
-                                                              VerticalScrollBarVisibility="Disabled">
-                                        <FlowDocumentScrollViewer.Resources>
-                                            <Style TargetType="{x:Type Paragraph}">
-                                                <Setter Property="Margin" Value="0,0,0,0" />
-                                                <Setter Property="FontFamily" Value="Segoe UI" />
-                                                <Setter Property="FontSize" Value="14" />
-                                            </Style>
-                                        </FlowDocumentScrollViewer.Resources>
-                                    </FlowDocumentScrollViewer>
-                                </Border>
-                                <Border Grid.Column="2"
-                                        Margin="0,0,0,0"
-                                        BorderBrush="{StaticResource CellBorderBrush}"
-                                        BorderThickness="0,1,1,0">
-                                    <TextBox x:Name="TooltipTransHelpTxt"
-                                             Margin="10,17,0,17"
-                                             AcceptsReturn="True"
-                                             BorderBrush="{x:Null}"
-                                             FontSize="14"
-                                             Text="{Binding TransHelpTextEdit,
-                                                            UpdateSourceTrigger=PropertyChanged}"
-                                             TextWrapping="Wrap" />
-                                </Border>
-                            </Grid>
-                            <Grid Margin="0,0,0,0"
-                                  Background="{StaticResource CellBackgroundBrush}">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="1*" />
-                                    <ColumnDefinition Width="1*" />
-                                    <ColumnDefinition Width="1*" />
-                                </Grid.ColumnDefinitions>
-                                <Border Margin="0,0,0,0"
-                                        BorderBrush="{StaticResource CellBorderBrush}"
-                                        BorderThickness="1">
-                                    <Grid>
-                                        <TextBlock Height="24"
-                                                   Margin="18,0,0,0"
-                                                   VerticalAlignment="Top"
-                                                   Foreground="{StaticResource IdForegroundBrush}"
-                                                   Text="More Help Text" />
-                                        <FlowDocumentScrollViewer Document="{Binding RefMoreHelpTextPreview}"
-                                                                  VerticalScrollBarVisibility="Disabled">
-                                            <FlowDocumentScrollViewer.Resources>
-                                                <Style TargetType="{x:Type Paragraph}">
-                                                    <Setter Property="Margin" Value="0,0,0,0" />
-                                                    <Setter Property="FontFamily" Value="Segoe UI" />
-                                                    <Setter Property="FontSize" Value="14" />
-                                                </Style>
-                                            </FlowDocumentScrollViewer.Resources>
-                                        </FlowDocumentScrollViewer>
-                                    </Grid>
-                                </Border>
-                                <Border Grid.Column="1"
-                                        Margin="0,0,0,0"
-                                        BorderBrush="{StaticResource CellBorderBrush}"
-                                        BorderThickness="0,1,1,1">
-                                    <FlowDocumentScrollViewer Document="{Binding TransMoreHelpTextPreview}"
-                                                              VerticalScrollBarVisibility="Disabled">
-                                        <FlowDocumentScrollViewer.Resources>
-                                            <Style TargetType="{x:Type Paragraph}">
-                                                <Setter Property="Margin" Value="0,0,0,0" />
-                                                <Setter Property="FontFamily" Value="Segoe UI" />
-                                                <Setter Property="FontSize" Value="14" />
-                                            </Style>
-                                        </FlowDocumentScrollViewer.Resources>
-                                    </FlowDocumentScrollViewer>
-                                </Border>
-                                <Border Grid.Column="2"
-                                        Margin="0,0,0,0"
-                                        BorderBrush="{StaticResource CellBorderBrush}"
-                                        BorderThickness="0,1,1,1">
-                                    <TextBox x:Name="TooltipTransMoreHelpTxt"
-                                             Margin="10,17,0,17"
-                                             AcceptsReturn="True"
-                                             BorderBrush="{x:Null}"
-                                             FontSize="14"
-                                             Text="{Binding TransMoreHelpTextEdit,
-                                                            UpdateSourceTrigger=PropertyChanged}"
-                                             TextWrapping="Wrap" />
-                                </Border>
-                            </Grid>
-                        </StackPanel>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
                     </ScrollViewer>
-
                     <local:NaviControl />
                 </Grid>
             </TabItem>
             <TabItem Header="Help">
                 <Grid DataContext="{Binding HelpViewModel}">
-                    <TextBlock Height="24"
-                               Margin="10,10,10,0"
-                               VerticalAlignment="Top"
-                               Foreground="{StaticResource IdForegroundBrush}"
-                               Text="{Binding Id}" />
+                    <Border x:Name="Border0"
+                            Grid.ColumnSpan="3"
+                            Height="24"
+                            Margin="10,10,10,0"
+                            VerticalAlignment="Top"
+                            Background="{StaticResource CellBackgroundBrush}"
+                            BorderBrush="{StaticResource CellBorderBrush}"
+                            BorderThickness="1,1,1,0">
+                        <TextBlock Margin="18,0,0,0"
+                                   VerticalAlignment="Center"
+                                   Foreground="{StaticResource IdForegroundBrush}"
+                                   Text="{Binding Id}" />
+                    </Border>
                     <Grid Margin="10,34,10,50"
                           Background="{StaticResource CellBackgroundBrush}">
                         <Grid.ColumnDefinitions>
@@ -431,7 +445,7 @@
                             <ColumnDefinition Width="1*" />
                         </Grid.ColumnDefinitions>
                         <Border Margin="0,0,0,0"
-                                BorderBrush="#FFa0a0a0"
+                                BorderBrush="{StaticResource CellBorderBrush}"
                                 BorderThickness="1">
                             <FlowDocumentScrollViewer Document="{Binding RefHelpPagePreview}"
                                                       VerticalScrollBarVisibility="Auto">
@@ -446,7 +460,7 @@
                         </Border>
                         <Border Grid.Column="1"
                                 Margin="0,0,0,0"
-                                BorderBrush="#FFa0a0a0"
+                                BorderBrush="{StaticResource CellBorderBrush}"
                                 BorderThickness="0,1,1,1">
                             <FlowDocumentScrollViewer Document="{Binding TransHelpPagePreview}"
                                                       VerticalScrollBarVisibility="Auto">
@@ -461,11 +475,10 @@
                         </Border>
                         <Border Grid.Column="2"
                                 Margin="0,0,0,0"
-                                BorderBrush="#FFa0a0a0"
+                                BorderBrush="{StaticResource CellBorderBrush}"
                                 BorderThickness="0,1,1,1">
                             <ScrollViewer VerticalScrollBarVisibility="Auto">
-                                <TextBox x:Name="HelpTrans"
-                                         Margin="10,17,10,17"
+                                <TextBox Margin="10,17,10,17"
                                          AcceptsReturn="True"
                                          BorderBrush="{x:Null}"
                                          FontSize="14"
