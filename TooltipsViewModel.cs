@@ -11,8 +11,14 @@ namespace PTGui_Language_Editor
     public class TooltipsViewModel : ViewModelBaseNavi
     {
         const int NumItemsPerPage = 10;
+        private Action setModified;
         private List<EditorRefTooltip> allDisplayrefTooltips = null!;
         private List<OneTooltip> displayPage = null!;
+
+        public TooltipsViewModel(Action setModifiedAction)
+        {
+            setModified = setModifiedAction;
+        }
 
         public List<EditorRefString> AllRefStrings { get; set; } = null!;
         public List<EditorTransString> AllTransStrings { get; set; } = null!;
@@ -61,7 +67,7 @@ namespace PTGui_Language_Editor
 
             for (int i = showIndex; i < showIndex + NumItemsPerPage && i < AllDisplayRefTooltips.Count(); i++)
             {
-                var one = new OneTooltip();
+                var one = new OneTooltip(setModified);
                 one.AllRefStrings = AllRefStrings;
                 one.AllTransStrings = AllTransStrings;
                 one.RefTooltip = AllDisplayRefTooltips[i];
@@ -75,9 +81,15 @@ namespace PTGui_Language_Editor
 
     public class OneTooltip : ViewModelBase
     {
+        private Action setModified;
         private EditorTransTooltip translateTooltip = null!;
         private EditorRefTooltip currentRefTooltip = null!;
         private bool setFromCode;
+
+        public OneTooltip(Action setModifiedAction)
+        {
+            setModified = setModifiedAction;
+        }
 
         public List<EditorRefString> AllRefStrings { get; set; } = null!;
         public List<EditorTransString> AllTransStrings { get; set; } = null!;
@@ -160,6 +172,7 @@ namespace PTGui_Language_Editor
                 if (!setFromCode)
                 {
                     translateTooltip.Machinetranslated = null;
+                    setModified();
                 }
 
                 NotifyPropertyChanged();
@@ -214,6 +227,7 @@ namespace PTGui_Language_Editor
                 if (!setFromCode)
                 {
                     translateTooltip.Machinetranslated = null;
+                    setModified();
                 }
 
                 NotifyPropertyChanged();
@@ -264,6 +278,7 @@ namespace PTGui_Language_Editor
                 if (!setFromCode)
                 {
                     translateTooltip.Machinetranslated = null;
+                    setModified();
                 }
 
                 NotifyPropertyChanged();

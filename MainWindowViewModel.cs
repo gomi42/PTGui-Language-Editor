@@ -2,24 +2,25 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Net;
-using System.Text;
 using System.Text.Encodings.Web;
-using System.Text.Json.Serialization;
 using System.Text.Json;
-using System.Threading.Tasks;
-using System.Windows;
+using System.Text.Json.Serialization;
+using System.Windows.Forms;
 using System.Windows.Input;
 
 namespace PTGui_Language_Editor
 {
     public class MainWindowViewModel : ViewModelBase
     {
+        string languageFilesRoot = @"D:\Programme\Pano, Web\PtGui Localization";
         JsonRoot RefJsonRoot = null!;
         JsonRoot TransJsonRoot = null!;
         EditorTrans EditorTrans = null!;
         EditorRef EditorRef = null!;
 
+        private List<string> languageFiles = null!;
+        private string? selectedLanguageFile;
+        private DelegateCommand returnSearch;
         private DelegateCommand loadData;
         private DelegateCommand saveData;
         private GeneralViewModel generalViewModel;
@@ -31,6 +32,29 @@ namespace PTGui_Language_Editor
         {
             loadData = new DelegateCommand(OnLoadData);
             saveData = new DelegateCommand(OnSaveData);
+            returnSearch = new DelegateCommand(OnReturnSearch);
+            ScanLanugageFiles();
+        }
+
+        public List<string> LanguageFiles
+        {
+            get => languageFiles;
+            set
+            {
+                languageFiles = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        public string? SelectedLanguageFile
+        {
+            get => selectedLanguageFile;
+            set
+            {
+                selectedLanguageFile = value;
+                NotifyPropertyChanged();
+                EditLanguage();
+            }
         }
 
         public GeneralViewModel GeneralViewModel
@@ -75,29 +99,71 @@ namespace PTGui_Language_Editor
 
         public ICommand LoadData => loadData;
         public ICommand SaveData => saveData;
+        public ICommand ReturnSearch => returnSearch;
+
+        private void ScanLanugageFiles()
+        {
+            var files = Directory.GetFiles(languageFilesRoot, "*.nhloc");
+            var list = new List<string>();
+
+            foreach (var file in files)
+            {
+                var filename = Path.GetFileNameWithoutExtension(file);
+
+                if (filename != "en_us")
+                {
+                    list.Add(filename);
+                }
+            }
+
+            LanguageFiles = list;
+            SelectedLanguageFile = list.FirstOrDefault(x => x == "de_de");
+        }
+
+        public string SearchText { get; set; }
 
         private void OnLoadData()
         {
+            var dialog = new FolderBrowserDialog();
+            {
+                DialogResult result = dialog.ShowDialog();
+                
+                if (result == DialogResult.OK)
+                {
+                    languageFilesRoot = dialog.SelectedPath;
+                    LoadLanguageFiles();
+                }
+            }
+
+        }
+
+        private void EditLanguage()
+        {
+            if (!Directory.Exists(languageFilesRoot))
+            {
+                return;
+            }
+
             LoadLanguageFiles();
             BuildEditorTransData();
             BuildEditorRefData();
 
             ShowGeneral();
-            ShowHelp();
-            ShowTooltip();
             ShowString();
+            ShowTooltip();
+            ShowHelp();
         }
 
         // https://code-maze.com/csharp-read-and-process-json-file/
 
         private void LoadLanguageFiles()
         {
-            using (FileStream json = File.OpenRead(@"D:\Programme\Pano, Web\PtGui Localization\en_us.nhloc"))
+            using (FileStream json = File.OpenRead(Path.Combine(languageFilesRoot, "en_us.nhloc")))
             {
                 RefJsonRoot = JsonSerializer.Deserialize<JsonRoot>(json, JsonSerializerOptions.Default) ?? null!;
             }
 
-            using (FileStream json = File.OpenRead(@"D:\Programme\Pano, Web\PtGui Localization\de_de.nhloc"))
+            using (FileStream json = File.OpenRead(Path.Combine(languageFilesRoot, SelectedLanguageFile + ".nhloc")))
             {
                 TransJsonRoot = JsonSerializer.Deserialize<JsonRoot>(json, JsonSerializerOptions.Default) ?? null!;
             }
@@ -191,7 +257,7 @@ namespace PTGui_Language_Editor
 
         private void ShowGeneral()
         {
-            var vm = new GeneralViewModel();
+            var vm = new GeneralViewModel(SetModified);
             vm.EditorRef = EditorRef;
             vm.EditorTrans = EditorTrans;
             GeneralViewModel = vm;
@@ -201,7 +267,7 @@ namespace PTGui_Language_Editor
 
         private void ShowHelp()
         {
-            var vm = new HelpPagesViewModel();
+            var vm = new HelpPagesViewModel(SetModified);
             vm.AllRefStrings = EditorRef.Strings;
             vm.AllTransStrings = EditorTrans.Strings;
             vm.AllDisplayRefHelpPages = EditorRef.HelpPages;
@@ -210,7 +276,7 @@ namespace PTGui_Language_Editor
 
         private void ShowTooltip()
         {
-            var vm = new TooltipsViewModel();
+            var vm = new TooltipsViewModel(SetModified);
             vm.AllRefStrings = EditorRef.Strings;
             vm.AllTransStrings = EditorTrans.Strings;
             vm.AllDisplayRefTooltips = EditorRef.Tooltips;
@@ -220,7 +286,7 @@ namespace PTGui_Language_Editor
 
         private void ShowString()
         {
-            var vm = new StringsViewModel();
+            var vm = new StringsViewModel(SetModified);
             vm.AllRefStrings = EditorRef.Strings;
             vm.AllTransStrings = EditorTrans.Strings;
             vm.AllDisplayRefStrings = EditorRef.Strings;
@@ -238,6 +304,72 @@ namespace PTGui_Language_Editor
                 DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull
             };
             JsonSerializer.Serialize(json, TransJsonRoot, jso);
+        }
+
+        private void OnReturnSearch()
+        {
+            var search = SearchText;
+
+            if (string.IsNullOrEmpty(search))
+            {
+                StringsViewModel.AllDisplayRefStrings = EditorRef.Strings;
+                TooltipsViewModel.AllDisplayRefTooltips = EditorRef.Tooltips;
+                HelpViewModel.AllDisplayRefHelpPages = EditorRef.HelpPages;
+                return;
+            }
+
+            //////////////
+            var strings = new List<EditorRefString>();
+
+            foreach (var str in EditorRef.Strings)
+            {
+                if (str.Id.Contains(search, StringComparison.InvariantCultureIgnoreCase)
+                    || str.Txt != null && str.Txt.Contains(search, StringComparison.InvariantCultureIgnoreCase)
+                    || str.EditorTranslate.Txt != null && str.EditorTranslate.Txt.Contains(search, StringComparison.InvariantCultureIgnoreCase))
+                {
+                    strings.Add(str);
+                }
+            }
+
+            StringsViewModel.AllDisplayRefStrings = strings;
+
+            //////////////
+            var tooltips = new List<EditorRefTooltip>();
+
+            foreach (var str in EditorRef.Tooltips)
+            {
+                if (str.Id.Contains(search, StringComparison.InvariantCultureIgnoreCase)
+                    || str.Label != null && str.Label.Contains(search, StringComparison.InvariantCultureIgnoreCase)
+                    || str.Helptext != null && str.Helptext.Contains(search, StringComparison.InvariantCultureIgnoreCase)
+                    || str.MoreHelptext != null && str.MoreHelptext.Contains(search, StringComparison.InvariantCultureIgnoreCase)
+                    || str.EditorTranslate.Label != null && str.EditorTranslate.Label.Contains(search, StringComparison.InvariantCultureIgnoreCase)
+                    || str.EditorTranslate.Helptext != null && str.EditorTranslate.Helptext.Contains(search, StringComparison.InvariantCultureIgnoreCase)
+                    || str.EditorTranslate.MoreHelptext != null && str.EditorTranslate.MoreHelptext.Contains(search, StringComparison.InvariantCultureIgnoreCase))
+                {
+                    tooltips.Add(str);
+                }
+            }
+
+            TooltipsViewModel.AllDisplayRefTooltips = tooltips;
+
+            //////////////
+            var helppages = new List<EditorRefHelpPage>();
+
+            foreach (var str in EditorRef.HelpPages)
+            {
+                if (str.Id.Contains(search, StringComparison.InvariantCultureIgnoreCase)
+                    || str.Helptext.Contains(search, StringComparison.InvariantCultureIgnoreCase)
+                    || str.EditorTranslate.Helptext.Contains(search, StringComparison.InvariantCultureIgnoreCase))
+                {
+                    helppages.Add(str);
+                }
+            }
+
+            HelpViewModel.AllDisplayRefHelpPages = helppages;
+        }
+
+        private void SetModified()
+        {
         }
     }
 }

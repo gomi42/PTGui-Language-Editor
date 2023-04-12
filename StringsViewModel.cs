@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Security.Policy;
 using System.Windows.Documents;
@@ -10,12 +11,14 @@ namespace PTGui_Language_Editor
     public class StringsViewModel : ViewModelBaseNavi
     {
         const int NumStringsPerPage = 10;
-
+        
+        private Action setModified;
         private List<EditorRefString> allDisplayRefStrings = new List<EditorRefString>();
         private List<OneString> displayPage;
 
-        public StringsViewModel()
+        public StringsViewModel(Action setModifiedAction)
         {
+            setModified = setModifiedAction;
             displayPage = new List<OneString>();
         }
 
@@ -64,7 +67,7 @@ namespace PTGui_Language_Editor
 
             for (int i = showIndex; i < showIndex + NumStringsPerPage && i < AllDisplayRefStrings.Count(); i++)
             {
-                var one = new OneString();
+                var one = new OneString(setModified);
                 one.AllRefStrings = AllRefStrings;
                 one.AllTransStrings = AllTransStrings;
                 one.RefString = AllDisplayRefStrings[i];
@@ -78,11 +81,17 @@ namespace PTGui_Language_Editor
 
     public class OneString : ViewModelBase
     {
+        private Action setModified;
         private FlowDocument transPreview = null!;
         private string? transEdit;
         private EditorRefString refString = null!;
         private EditorTransString translateString = null!;
         private bool setFromCode;
+
+        public OneString(Action setModifiedAction)
+        {
+            setModified = setModifiedAction;
+        }
 
         public List<EditorRefString> AllRefStrings { get; set; } = null!;
         public List<EditorTransString> AllTransStrings { get; set; } = null!;
@@ -148,6 +157,7 @@ namespace PTGui_Language_Editor
                 if (!setFromCode)
                 {
                     translateString.Machinetranslated = null;
+                    setModified();
                 }
             }
         }

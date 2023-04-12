@@ -11,23 +11,50 @@
         UseLayoutRounding="True"
         mc:Ignorable="d">
     <Grid>
-        <Button Width="70"
-                Height="20"
-                Margin="10,10,110,0"
-                HorizontalAlignment="Left"
+        <Border Height="75"
+                Margin="0,0,0,0"
                 VerticalAlignment="Top"
-                Command="{Binding LoadData}"
-                Content="Load" />
-        <Button Width="70"
-                Height="20"
-                Margin="90,10,110,0"
-                HorizontalAlignment="Left"
-                VerticalAlignment="Top"
-                Command="{Binding SaveData}"
-                Content="Save" />
+                Background="{StaticResource ContentBackgroundBrush}"
+                BorderBrush="#FFABABB3"
+                BorderThickness="0">
+            <Grid Margin="0,6,0,0">
+                <Button Width="70"
+                        Height="22"
+                        Margin="10,9,110,0"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Top"
+                        Command="{Binding LoadData}"
+                        Content="Load" />
+                <Button Width="70"
+                        Height="22"
+                        Margin="90,9,0,0"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Top"
+                        Command="{Binding SaveData}"
+                        Content="Save" />
+                <ComboBox Width="105"
+                          Margin="196,9,0,0"
+                          HorizontalAlignment="Left"
+                          VerticalAlignment="Top"
+                          ItemsSource="{Binding LanguageFiles}"
+                          SelectedItem="{Binding SelectedLanguageFile}" />
+                <TextBox Height="22"
+                         Margin="349,9,10,0"
+                         VerticalAlignment="Top"
+                         Text="{Binding SearchText,
+                                        UpdateSourceTrigger=PropertyChanged}">
+                    <TextBox.InputBindings>
+                        <KeyBinding Key="Return"
+                                    Command="{Binding ReturnSearch}" />
+                    </TextBox.InputBindings>
+                </TextBox>
+            </Grid>
+        </Border>
+
         <TabControl Margin="-1,60,-1,-1">
             <TabItem Header="General">
-                <StackPanel DataContext="{Binding GeneralViewModel}">
+                <StackPanel Margin="0,19,0,0"
+                            DataContext="{Binding GeneralViewModel}">
                     <Grid MinHeight="70"
                           Margin="10"
                           VerticalAlignment="Top"
@@ -47,7 +74,7 @@
                                 <TextBlock Margin="10,25,10,0"
                                            HorizontalAlignment="Left"
                                            VerticalAlignment="Top"
-                                           Text="{Binding EditorRef.Contributors}" />
+                                           Text="{Binding RefContributors}" />
                             </Grid>
                         </Border>
                         <Border Grid.Column="1"
@@ -57,7 +84,7 @@
                                 <TextBox Margin="10,25,10,20"
                                          AcceptsReturn="True"
                                          BorderBrush="{x:Null}"
-                                         Text="{Binding EditorTrans.Contributors,
+                                         Text="{Binding TransContributors,
                                                         UpdateSourceTrigger=PropertyChanged}" />
                             </Grid>
                         </Border>
@@ -81,7 +108,7 @@
                                 <TextBlock Margin="10,25,10,0"
                                            HorizontalAlignment="Left"
                                            VerticalAlignment="Top"
-                                           Text="{Binding EditorRef.LanguageMameLocalized}" />
+                                           Text="{Binding RefLanguageMameLocalized}" />
                             </Grid>
                         </Border>
                         <Border Grid.Column="1"
@@ -91,11 +118,11 @@
                                 <TextBox Margin="10,25,10,0"
                                          VerticalAlignment="Top"
                                          BorderBrush="{x:Null}"
-                                         Text="{Binding EditorTrans.LanguageMameLocalized}" />
+                                         Text="{Binding TransLanguageMameLocalized}" />
                             </Grid>
                         </Border>
                     </Grid>
-                    <Grid Height="70"
+                    <Grid MinHeight="70"
                           Margin="10"
                           VerticalAlignment="Top"
                           Background="{StaticResource CellBackgroundBrush}">
@@ -114,7 +141,7 @@
                                 <TextBlock Margin="10,25,10,0"
                                            HorizontalAlignment="Left"
                                            VerticalAlignment="Top"
-                                           Text="{Binding EditorRef.StartupMessage}" />
+                                           Text="{Binding RefStartupMessage}" />
                             </Grid>
                         </Border>
                         <Border Grid.Column="1"
@@ -124,7 +151,7 @@
                                 <TextBox Margin="10,25,10,0"
                                          VerticalAlignment="Top"
                                          BorderBrush="{x:Null}"
-                                         Text="{Binding EditorTrans.StartupMessage}" />
+                                         Text="{Binding TransStartupMessage}" />
                             </Grid>
                         </Border>
                     </Grid>
@@ -145,24 +172,16 @@
                                                     <ColumnDefinition Width="1*" />
                                                     <ColumnDefinition Width="1*" />
                                                 </Grid.ColumnDefinitions>
-                                                <Border x:Name="Border0"
-                                                        Grid.ColumnSpan="3"
-                                                        Height="24"
-                                                        Margin="0,0,10,0"
-                                                        VerticalAlignment="Top"
+                                                <TextBlock Height="24"
+                                                           Margin="3,0,0,0"
+                                                           VerticalAlignment="Top"
+                                                           Foreground="{StaticResource IdForegroundBrush}"
+                                                           Text="{Binding Id}" />
+                                                <Border x:Name="Border1"
+                                                        Margin="0,19,0,0"
                                                         Background="{StaticResource CellBackgroundBrush}"
                                                         BorderBrush="{StaticResource CellBorderBrush}"
                                                         BorderThickness="1,1,1,1">
-                                                    <TextBlock Margin="18,0,0,0"
-                                                               VerticalAlignment="Center"
-                                                               Foreground="{StaticResource IdForegroundBrush}"
-                                                               Text="{Binding Id}" />
-                                                </Border>
-                                                <Border x:Name="Border1"
-                                                        Margin="0,24,0,0"
-                                                        Background="{StaticResource CellBackgroundBrush}"
-                                                        BorderBrush="{StaticResource CellBorderBrush}"
-                                                        BorderThickness="1,0,1,1">
                                                     <Grid>
                                                         <FlowDocumentScrollViewer Margin="0,0,0,0"
                                                                                   Document="{Binding RefPreview}"
@@ -179,10 +198,10 @@
                                                 </Border>
                                                 <Border x:Name="Border2"
                                                         Grid.Column="1"
-                                                        Margin="0,24,0,0"
+                                                        Margin="0,19,0,0"
                                                         Background="{StaticResource CellBackgroundBrush}"
                                                         BorderBrush="{StaticResource CellBorderBrush}"
-                                                        BorderThickness="0,0,1,1">
+                                                        BorderThickness="0,1,1,1">
                                                     <FlowDocumentScrollViewer Margin="0,0,0,0"
                                                                               Document="{Binding TransPreview}"
                                                                               VerticalScrollBarVisibility="Hidden">
@@ -197,10 +216,10 @@
                                                 </Border>
                                                 <Border x:Name="Border3"
                                                         Grid.Column="2"
-                                                        Margin="0,24,10,0"
+                                                        Margin="0,19,10,0"
                                                         Background="{StaticResource CellBackgroundBrush}"
                                                         BorderBrush="{StaticResource CellBorderBrush}"
-                                                        BorderThickness="0,0,1,1">
+                                                        BorderThickness="0,1,1,1">
                                                     <Grid>
                                                         <TextBlock Height="24"
                                                                    Margin="18,0,0,0"
@@ -234,18 +253,11 @@
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate>
                                     <Grid Margin="0,0,10,15">
-                                        <Border Height="24"
-                                                Margin="0,0,0,0"
-                                                VerticalAlignment="Top"
-                                                Background="{StaticResource CellBackgroundBrush}"
-                                                BorderBrush="{StaticResource CellBorderBrush}"
-                                                BorderThickness="1,1,1,0">
-                                            <TextBlock Margin="18,0,10,0"
-                                                       VerticalAlignment="Center"
-                                                       Foreground="{StaticResource IdForegroundBrush}"
-                                                       Text="{Binding Id}" />
-                                        </Border>
-                                        <StackPanel Margin="0,24,0,0">
+                                        <TextBlock Margin="3,0,10,0"
+                                                   VerticalAlignment="Top"
+                                                   Foreground="{StaticResource IdForegroundBrush}"
+                                                   Text="{Binding Id}" />
+                                        <StackPanel Margin="0,19,0,0">
                                             <Grid Background="{StaticResource CellBackgroundBrush}">
                                                 <Grid.ColumnDefinitions>
                                                     <ColumnDefinition Width="1*" />
@@ -424,20 +436,11 @@
             </TabItem>
             <TabItem Header="Help">
                 <Grid DataContext="{Binding HelpViewModel}">
-                    <Border x:Name="Border0"
-                            Grid.ColumnSpan="3"
-                            Height="24"
-                            Margin="10,10,10,0"
-                            VerticalAlignment="Top"
-                            Background="{StaticResource CellBackgroundBrush}"
-                            BorderBrush="{StaticResource CellBorderBrush}"
-                            BorderThickness="1,1,1,0">
-                        <TextBlock Margin="18,0,0,0"
-                                   VerticalAlignment="Center"
-                                   Foreground="{StaticResource IdForegroundBrush}"
-                                   Text="{Binding Id}" />
-                    </Border>
-                    <Grid Margin="10,34,10,50"
+                    <TextBlock Margin="13,10,0,0"
+                               VerticalAlignment="Top"
+                               Foreground="{StaticResource IdForegroundBrush}"
+                               Text="{Binding Id}" />
+                    <Grid Margin="10,29,10,50"
                           Background="{StaticResource CellBackgroundBrush}">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="1*" />

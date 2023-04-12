@@ -9,10 +9,15 @@ namespace PTGui_Language_Editor
 {
     public class HelpPagesViewModel : ViewModelBaseNavi
     {
+        private Action setModified;
         private List<EditorRefHelpPage> allDisplayRefHelPages = null!;
-        private EditorTransHelpPage translateHelpPage = null!;
-        private EditorRefHelpPage currentRefHelpPage = null!;
+        private EditorRefHelpPage? currentRefHelpPage;
         private bool setFromCode;
+
+        public HelpPagesViewModel(Action setModifiedAction)
+        {
+            setModified = setModifiedAction;
+        }
 
         public List<EditorRefString> AllRefStrings { get; set; } = null!;
         public List<EditorTransString> AllTransStrings { get; set; } = null!;
@@ -36,7 +41,7 @@ namespace PTGui_Language_Editor
         }
 
         // Binding properties
-        public string Id => "#" + currentRefHelpPage.Id;
+        public string Id => currentRefHelpPage != null ? "#" + currentRefHelpPage.Id : string.Empty;
 
         //////////////////////////////////////
         private FlowDocument refHelpPagePreview = null!;
@@ -66,27 +71,38 @@ namespace PTGui_Language_Editor
                 NotifyPropertyChanged();
             }
         }
+
         public string? TransHelpPageEdit
         {
             get => transHelpPageEdit;
             set
             {
                 transHelpPageEdit = value;
-                TransHelpPagePreview = PTGuiTextConverter.ConvertToFlowDocument(transHelpPageEdit, y => AllTransStrings.FirstOrDefault(x => x.Id == y)?.Txt);
 
                 if (!string.IsNullOrEmpty(transHelpPageEdit))
                 {
-                    translateHelpPage.Helptext = transHelpPageEdit.Replace("\n", "<br>");
-                }
-                else
-                {
-                    translateHelpPage.Helptext = null;
-                }
+                    TransHelpPagePreview = PTGuiTextConverter.ConvertToFlowDocument(transHelpPageEdit, y => AllTransStrings.FirstOrDefault(x => x.Id == y)?.Txt);
+                    var translateHelpPage = currentRefHelpPage?.EditorTranslate;
 
-                if (!setFromCode)
-                {
-                    translateHelpPage.Machinetranslated = null;
+                    if (!string.IsNullOrEmpty(transHelpPageEdit))
+                    {
+                        translateHelpPage.Helptext = transHelpPageEdit.Replace("\n", "<br>");
+                    }
+                    else
+                    {
+                        translateHelpPage.Helptext = null;
+                    }
+
+                    if (!setFromCode)
+                    {
+                        translateHelpPage.Machinetranslated = null;
+                        setModified();
+                    }
                 }
+                    else
+                    {
+                        TransHelpPagePreview = new FlowDocument();
+                    }
 
                 NotifyPropertyChanged();
             }
@@ -96,13 +112,22 @@ namespace PTGui_Language_Editor
         {
             setFromCode = true;
 
-            currentRefHelpPage = allDisplayRefHelPages[currentPage];
+            if (allDisplayRefHelPages.Count != 0)
+            {
+                currentRefHelpPage = allDisplayRefHelPages[currentPage];
+
+                RefHelpPagePreview = PTGuiTextConverter.ConvertToFlowDocument(currentRefHelpPage.Helptext, y => AllRefStrings.FirstOrDefault(x => x.Id == y)?.Txt);
+                var translateHelpPage = currentRefHelpPage.EditorTranslate;
+                TransHelpPageEdit = translateHelpPage?.Helptext?.Replace("<br>", "\n");
+            }
+            else
+            {
+                currentRefHelpPage = null;
+                RefHelpPagePreview = new FlowDocument();
+                TransHelpPageEdit = string.Empty;
+            }
+
             NotifyPropertyChanged(nameof(Id));
-            translateHelpPage = currentRefHelpPage.EditorTranslate!;
-
-            RefHelpPagePreview = PTGuiTextConverter.ConvertToFlowDocument(currentRefHelpPage.Helptext, y => AllRefStrings.FirstOrDefault(x => x.Id == y)?.Txt);
-            TransHelpPageEdit = translateHelpPage?.Helptext?.Replace("<br>", "\n");
-
             setFromCode = false;
         }
     }

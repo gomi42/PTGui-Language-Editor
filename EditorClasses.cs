@@ -9,55 +9,22 @@ namespace PTGui_Language_Editor
     {
         public JsonRoot Json { get; set; } = null!;
         
-        public string Contributors
+        public List<string>? Contributors
         {
-            get
-            {
-                if (Json.contributors == null)
-                {
-                    return string.Empty;
-                }
-
-                return string.Join("\n", Json.contributors);
-            }
-            
-            set
-            {
-                if (string.IsNullOrEmpty(value))
-                {
-                    Json.contributors = null;
-                }
-                else
-                {
-                    Json.contributors = value.Split('\n').ToList();
-                }
-            }
+            get => Json.contributors;
+            set => Json.contributors = value;
         }
 
         public string? LanguageMameLocalized
         {
-            get
-            {
-                return Json.languagenamelocalized;
-            }
-
-            set
-            {
-                Json.languagenamelocalized = value;
-            }
+            get => Json.languagenamelocalized;
+            set => Json.languagenamelocalized = value;
         }
 
         public string? StartupMessage
         {
-            get
-            {
-                return Json.startupmsg;
-            }
-
-            set
-            {
-                Json.startupmsg = value;
-            }
+            get => Json.startupmsg;
+            set => Json.startupmsg = value;
         }
     }
 

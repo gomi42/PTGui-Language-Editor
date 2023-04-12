@@ -6,6 +6,7 @@
     <RootNamespace>PTGui_Language_Editor</RootNamespace>
     <Nullable>enable</Nullable>
     <UseWPF>true</UseWPF>
+    <UseWindowsForms>true</UseWindowsForms>
   </PropertyGroup>
 
 </Project>
