@@ -21,6 +21,7 @@ namespace PTGui_Language_Editor
         static bool isWindows;
         static bool isPro;
         static bool isError;
+        static bool isHyperlink;
 
         public static FlowDocument ConvertToFlowDocument(string? text, Func<string, string?> replaceId)
         {
@@ -59,13 +60,17 @@ namespace PTGui_Language_Editor
                 return;
             }
 
-            if (!isBold)
+            if (isBold)
             {
-                run = new Run(sb.ToString());
+                run = new Bold(new Run(sb.ToString()));
+            }
+            else if (isHyperlink)
+            {
+                run = new Underline(new Run(sb.ToString()));
             }
             else
             {
-                run = new Bold(new Run(sb.ToString()));
+                run = new Run(sb.ToString());
             }
 
             if (isRed)
@@ -169,6 +174,14 @@ namespace PTGui_Language_Editor
                             isWindows = false;
                             isPro = false;
                             isError = false;
+                        }
+                        else if (cmd.StartsWith("a "))
+                        {
+                            isHyperlink = true;
+                        }
+                        else if (cmd == "/a")
+                        {
+                            isHyperlink = false;
                         }
                         else
                         {
