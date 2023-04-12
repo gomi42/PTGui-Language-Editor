@@ -11,13 +11,13 @@
         UseLayoutRounding="True"
         mc:Ignorable="d">
     <Grid>
-        <Border Height="75"
+        <Border Height="45"
                 Margin="0,0,0,0"
                 VerticalAlignment="Top"
                 Background="{StaticResource ContentBackgroundBrush}"
                 BorderBrush="#FFABABB3"
                 BorderThickness="0">
-            <Grid Margin="0,6,0,0">
+            <Grid Margin="0,3,0,0">
                 <Button Width="70"
                         Height="22"
                         Margin="10,9,110,0"
