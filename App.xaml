@@ -7,9 +7,9 @@
 
         <!--  colors  -->
         <Color x:Key="DustyGrayColor">#FFd0d0d0</Color>
-        <Color x:Key="SelectionBackgroundColor">#FFf8f8f8</Color>
-        <Color x:Key="NaviButtonBackgroundColor">#FFededed</Color>
-        <Color x:Key="ContentBackgroundColor">#FFf8f8f8</Color>
+        <Color x:Key="SelectionBackgroundColor">#FFededed</Color>
+        <Color x:Key="NaviButtonBackgroundColor">#FFf8f8f8</Color>
+        <Color x:Key="ContentBackgroundColor">#FFededed</Color>
         <Color x:Key="IdForegroundColor">#ff999999</Color>
         <Color x:Key="CellBorderColor">#FFd0d0d0</Color>
         <Color x:Key="CellBackgroundColor">#FFFFFFFF</Color>
@@ -37,11 +37,12 @@
                                     Background="{StaticResource NaviButtonBackgroundBrush}"
                                     BorderBrush="{StaticResource DustyGrayBrush}"
                                     BorderThickness="1">
-                                <ContentPresenter x:Name="ContentSite" TextElement.FontSize="14"
+                                <ContentPresenter x:Name="ContentSite"
                                                   HorizontalAlignment="Center"
                                                   VerticalAlignment="Center"
                                                   ContentSource="Header"
-                                                  RecognizesAccessKey="True" />
+                                                  RecognizesAccessKey="True"
+                                                  TextElement.FontSize="14" />
                             </Border>
                             <VisualStateManager.VisualStateGroups>
                                 <VisualStateGroup x:Name="SelectionStates">

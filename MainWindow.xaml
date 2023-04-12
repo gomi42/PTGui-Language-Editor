@@ -15,32 +15,41 @@
                 Margin="0,0,0,0"
                 VerticalAlignment="Top"
                 Background="{StaticResource ContentBackgroundBrush}"
-                BorderBrush="#FFABABB3"
-                BorderThickness="0">
-            <Grid Margin="0,3,0,0">
+                BorderBrush="{StaticResource CellBorderBrush}"
+                BorderThickness="0,0,0,1">
+            <DockPanel Margin="0,0,0,0">
                 <Button Width="70"
                         Height="22"
-                        Margin="10,9,110,0"
+                        Margin="10,0,0,0"
                         HorizontalAlignment="Left"
-                        VerticalAlignment="Top"
+                        VerticalAlignment="Center"
                         Command="{Binding LoadData}"
                         Content="Load" />
                 <Button Width="70"
                         Height="22"
-                        Margin="90,9,0,0"
+                        Margin="9,0,0,0"
                         HorizontalAlignment="Left"
-                        VerticalAlignment="Top"
+                        VerticalAlignment="Center"
                         Command="{Binding SaveData}"
                         Content="Save" />
-                <ComboBox Width="105"
-                          Margin="196,9,0,0"
+                <Rectangle Stroke="{StaticResource CellBorderBrush}" Width="1" Margin="15,7,0,7"/>
+                <TextBlock Margin="15,0,0,0"
+                           HorizontalAlignment="Stretch"
+                           VerticalAlignment="Center"
+                           Text="Language:" />
+                <ComboBox Width="87"
+                          Margin="5,0,0,0"
                           HorizontalAlignment="Left"
-                          VerticalAlignment="Top"
+                          VerticalAlignment="Center"
                           ItemsSource="{Binding LanguageFiles}"
                           SelectedItem="{Binding SelectedLanguageFile}" />
+                <TextBlock Margin="15,0,0,0"
+                           HorizontalAlignment="Stretch"
+                           VerticalAlignment="Center"
+                           Text="Filter:" />
                 <TextBox Height="22"
-                         Margin="349,9,10,0"
-                         VerticalAlignment="Top"
+                         Margin="5,0,10,0"
+                         VerticalAlignment="Center"
                          Text="{Binding SearchText,
                                         UpdateSourceTrigger=PropertyChanged}">
                     <TextBox.InputBindings>
@@ -48,7 +57,7 @@
                                     Command="{Binding ReturnSearch}" />
                     </TextBox.InputBindings>
                 </TextBox>
-            </Grid>
+            </DockPanel>
         </Border>
 
         <TabControl Margin="-1,60,-1,-1">

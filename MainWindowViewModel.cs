@@ -17,9 +17,11 @@ namespace PTGui_Language_Editor
         JsonRoot TransJsonRoot = null!;
         EditorTrans EditorTrans = null!;
         EditorRef EditorRef = null!;
+        bool isModified;
 
         private List<string> languageFiles = null!;
         private string? selectedLanguageFile;
+        private string searchText = string.Empty;
         private DelegateCommand returnSearch;
         private DelegateCommand loadData;
         private DelegateCommand saveData;
@@ -31,7 +33,7 @@ namespace PTGui_Language_Editor
         public MainWindowViewModel()
         {
             loadData = new DelegateCommand(OnLoadData);
-            saveData = new DelegateCommand(OnSaveData);
+            saveData = new DelegateCommand(OnSaveData, CanSaveData);
             returnSearch = new DelegateCommand(OnReturnSearch);
             ScanLanugageFiles();
         }
@@ -76,8 +78,8 @@ namespace PTGui_Language_Editor
                 NotifyPropertyChanged();
             }
         }
-        
-        public TooltipsViewModel TooltipsViewModel 
+
+        public TooltipsViewModel TooltipsViewModel
         {
             get => tooltipsViewModel;
             set
@@ -120,14 +122,22 @@ namespace PTGui_Language_Editor
             SelectedLanguageFile = list.FirstOrDefault(x => x == "de_de");
         }
 
-        public string SearchText { get; set; }
+        public string SearchText
+        {
+            get => searchText;
+            set
+            {
+                searchText = value;
+                NotifyPropertyChanged();
+            }
+        }
 
         private void OnLoadData()
         {
             var dialog = new FolderBrowserDialog();
             {
                 DialogResult result = dialog.ShowDialog();
-                
+
                 if (result == DialogResult.OK)
                 {
                     languageFilesRoot = dialog.SelectedPath;
@@ -152,6 +162,15 @@ namespace PTGui_Language_Editor
             ShowString();
             ShowTooltip();
             ShowHelp();
+
+            SearchText = string.Empty;
+            isModified = false;
+            saveData.RaiseCanExecuteChanged();
+        }
+
+        private string GetCurrentLanguageFilename()
+        {
+            return Path.Combine(languageFilesRoot, SelectedLanguageFile + ".nhloc");
         }
 
         // https://code-maze.com/csharp-read-and-process-json-file/
@@ -163,7 +182,7 @@ namespace PTGui_Language_Editor
                 RefJsonRoot = JsonSerializer.Deserialize<JsonRoot>(json, JsonSerializerOptions.Default) ?? null!;
             }
 
-            using (FileStream json = File.OpenRead(Path.Combine(languageFilesRoot, SelectedLanguageFile + ".nhloc")))
+            using (FileStream json = File.OpenRead(GetCurrentLanguageFilename()))
             {
                 TransJsonRoot = JsonSerializer.Deserialize<JsonRoot>(json, JsonSerializerOptions.Default) ?? null!;
             }
@@ -295,7 +314,7 @@ namespace PTGui_Language_Editor
 
         private void OnSaveData()
         {
-            using FileStream json = File.OpenWrite(@"D:\Programme\Pano, Web\PtGui Localization\de_de2.nhloc");
+            using FileStream json = File.Create(GetCurrentLanguageFilename());
 
             var jso = new JsonSerializerOptions
             {
@@ -304,6 +323,14 @@ namespace PTGui_Language_Editor
                 DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull
             };
             JsonSerializer.Serialize(json, TransJsonRoot, jso);
+
+            isModified = false;
+            saveData.RaiseCanExecuteChanged();
+        }
+
+        private bool CanSaveData()
+        {
+            return isModified;
         }
 
         private void OnReturnSearch()
@@ -370,6 +397,8 @@ namespace PTGui_Language_Editor
 
         private void SetModified()
         {
+            isModified = true;
+            saveData.RaiseCanExecuteChanged();
         }
     }
 }
