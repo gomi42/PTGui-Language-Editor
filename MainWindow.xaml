@@ -15,7 +15,7 @@
                 Margin="0,0,0,0"
                 VerticalAlignment="Top"
                 Background="{StaticResource ContentBackgroundBrush}"
-                BorderBrush="{StaticResource CellBorderBrush}"
+                BorderBrush="{StaticResource DustyGrayBrush}"
                 BorderThickness="0,0,0,1">
             <DockPanel Margin="0,0,0,0">
                 <Button Width="70"
@@ -32,7 +32,9 @@
                         VerticalAlignment="Center"
                         Command="{Binding SaveData}"
                         Content="Save" />
-                <Rectangle Stroke="{StaticResource CellBorderBrush}" Width="1" Margin="15,7,0,7"/>
+                <Rectangle Width="1"
+                           Margin="15,7,0,7"
+                           Stroke="{StaticResource CellBorderBrush}" />
                 <TextBlock Margin="15,0,0,0"
                            HorizontalAlignment="Stretch"
                            VerticalAlignment="Center"
@@ -66,14 +68,12 @@
                             DataContext="{Binding GeneralViewModel}">
                     <Grid MinHeight="70"
                           Margin="10"
-                          VerticalAlignment="Top"
-                          Background="{StaticResource CellBackgroundBrush}">
+                          VerticalAlignment="Top">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="1*" />
                             <ColumnDefinition Width="1*" />
                         </Grid.ColumnDefinitions>
-                        <Border BorderBrush="{StaticResource CellBorderBrush}"
-                                BorderThickness="1">
+                        <Border Background="{StaticResource CellBackgroundBrush}">
                             <Grid>
                                 <TextBlock Margin="10,0,0,0"
                                            HorizontalAlignment="Left"
@@ -87,8 +87,8 @@
                             </Grid>
                         </Border>
                         <Border Grid.Column="1"
-                                BorderBrush="{StaticResource CellBorderBrush}"
-                                BorderThickness="0,1,1,1">
+                                Margin="1,0,0,0"
+                                Background="{StaticResource CellBackgroundBrush}">
                             <Grid>
                                 <TextBox Margin="10,25,10,20"
                                          AcceptsReturn="True"
@@ -100,14 +100,12 @@
                     </Grid>
                     <Grid Height="70"
                           Margin="10"
-                          VerticalAlignment="Top"
-                          Background="{StaticResource CellBackgroundBrush}">
+                          VerticalAlignment="Top">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="1*" />
                             <ColumnDefinition Width="1*" />
                         </Grid.ColumnDefinitions>
-                        <Border BorderBrush="{StaticResource CellBorderBrush}"
-                                BorderThickness="1">
+                        <Border Background="{StaticResource CellBackgroundBrush}">
                             <Grid>
                                 <TextBlock Margin="10,0,0,0"
                                            HorizontalAlignment="Left"
@@ -121,8 +119,8 @@
                             </Grid>
                         </Border>
                         <Border Grid.Column="1"
-                                BorderBrush="{StaticResource CellBorderBrush}"
-                                BorderThickness="0,1,1,1">
+                                Margin="1,0,0,0"
+                                Background="{StaticResource CellBackgroundBrush}">
                             <Grid>
                                 <TextBox Margin="10,25,10,0"
                                          VerticalAlignment="Top"
@@ -133,14 +131,12 @@
                     </Grid>
                     <Grid MinHeight="70"
                           Margin="10"
-                          VerticalAlignment="Top"
-                          Background="{StaticResource CellBackgroundBrush}">
+                          VerticalAlignment="Top">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="1*" />
                             <ColumnDefinition Width="1*" />
                         </Grid.ColumnDefinitions>
-                        <Border BorderBrush="{StaticResource CellBorderBrush}"
-                                BorderThickness="1">
+                        <Border Background="{StaticResource CellBackgroundBrush}">
                             <Grid>
                                 <TextBlock Margin="10,0,0,0"
                                            HorizontalAlignment="Left"
@@ -154,8 +150,8 @@
                             </Grid>
                         </Border>
                         <Border Grid.Column="1"
-                                BorderBrush="{StaticResource CellBorderBrush}"
-                                BorderThickness="0,1,1,1">
+                                Margin="1,0,0,0"
+                                Background="{StaticResource CellBackgroundBrush}">
                             <Grid>
                                 <TextBox Margin="10,25,10,0"
                                          VerticalAlignment="Top"
@@ -186,11 +182,8 @@
                                                            VerticalAlignment="Top"
                                                            Foreground="{StaticResource IdForegroundBrush}"
                                                            Text="{Binding Id}" />
-                                                <Border x:Name="Border1"
-                                                        Margin="0,19,0,0"
-                                                        Background="{StaticResource CellBackgroundBrush}"
-                                                        BorderBrush="{StaticResource CellBorderBrush}"
-                                                        BorderThickness="1,1,1,1">
+                                                <Border Margin="0,19,0,0"
+                                                        Background="{StaticResource CellBackgroundBrush}">
                                                     <Grid>
                                                         <FlowDocumentScrollViewer Margin="0,0,0,0"
                                                                                   Document="{Binding RefPreview}"
@@ -205,12 +198,9 @@
                                                         </FlowDocumentScrollViewer>
                                                     </Grid>
                                                 </Border>
-                                                <Border x:Name="Border2"
-                                                        Grid.Column="1"
-                                                        Margin="0,19,0,0"
-                                                        Background="{StaticResource CellBackgroundBrush}"
-                                                        BorderBrush="{StaticResource CellBorderBrush}"
-                                                        BorderThickness="0,1,1,1">
+                                                <Border Grid.Column="1"
+                                                        Margin="1,19,0,0"
+                                                        Background="{StaticResource CellBackgroundBrush}">
                                                     <FlowDocumentScrollViewer Margin="0,0,0,0"
                                                                               Document="{Binding TransPreview}"
                                                                               VerticalScrollBarVisibility="Hidden">
@@ -223,12 +213,9 @@
                                                         </FlowDocumentScrollViewer.Resources>
                                                     </FlowDocumentScrollViewer>
                                                 </Border>
-                                                <Border x:Name="Border3"
-                                                        Grid.Column="2"
-                                                        Margin="0,19,10,0"
-                                                        Background="{StaticResource CellBackgroundBrush}"
-                                                        BorderBrush="{StaticResource CellBorderBrush}"
-                                                        BorderThickness="0,1,1,1">
+                                                <Border Grid.Column="2"
+                                                        Margin="1,19,10,0"
+                                                        Background="{StaticResource CellBackgroundBrush}">
                                                     <Grid>
                                                         <TextBlock Height="24"
                                                                    Margin="18,0,0,0"
@@ -267,15 +254,18 @@
                                                    Foreground="{StaticResource IdForegroundBrush}"
                                                    Text="{Binding Id}" />
                                         <StackPanel Margin="0,19,0,0">
-                                            <Grid Background="{StaticResource CellBackgroundBrush}">
+                                            <Grid>
                                                 <Grid.ColumnDefinitions>
                                                     <ColumnDefinition Width="1*" />
                                                     <ColumnDefinition Width="1*" />
                                                     <ColumnDefinition Width="1*" />
                                                 </Grid.ColumnDefinitions>
-                                                <Border Margin="0,0,0,0"
-                                                        BorderBrush="{StaticResource CellBorderBrush}"
-                                                        BorderThickness="1,1,1,0">
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="Auto" />
+                                                    <RowDefinition Height="Auto" />
+                                                    <RowDefinition Height="Auto" />
+                                                </Grid.RowDefinitions>
+                                                <Border Background="{StaticResource CellBackgroundBrush}">
                                                     <Grid>
                                                         <TextBlock Height="24"
                                                                    Margin="18,0,0,0"
@@ -295,9 +285,8 @@
                                                     </Grid>
                                                 </Border>
                                                 <Border Grid.Column="1"
-                                                        Margin="0,0,0,0"
-                                                        BorderBrush="{StaticResource CellBorderBrush}"
-                                                        BorderThickness="0,1,1,0">
+                                                        Margin="1,0,0,0"
+                                                        Background="{StaticResource CellBackgroundBrush}">
                                                     <FlowDocumentScrollViewer Document="{Binding TransLabelPreview}"
                                                                               VerticalScrollBarVisibility="Disabled">
                                                         <FlowDocumentScrollViewer.Resources>
@@ -310,9 +299,8 @@
                                                     </FlowDocumentScrollViewer>
                                                 </Border>
                                                 <Border Grid.Column="2"
-                                                        Margin="0,0,0,0"
-                                                        BorderBrush="{StaticResource CellBorderBrush}"
-                                                        BorderThickness="0,1,1,0">
+                                                        Margin="1,0,0,0"
+                                                        Background="{StaticResource CellBackgroundBrush}">
                                                     <TextBox Margin="10,17,10,17"
                                                              AcceptsReturn="True"
                                                              BorderBrush="{x:Null}"
@@ -321,17 +309,10 @@
                                                                             UpdateSourceTrigger=PropertyChanged}"
                                                              TextWrapping="Wrap" />
                                                 </Border>
-                                            </Grid>
-                                            <Grid Margin="0,0,0,0"
-                                                  Background="{StaticResource CellBackgroundBrush}">
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="1*" />
-                                                    <ColumnDefinition Width="1*" />
-                                                    <ColumnDefinition Width="1*" />
-                                                </Grid.ColumnDefinitions>
-                                                <Border Margin="0,0,0,0"
-                                                        BorderBrush="{StaticResource CellBorderBrush}"
-                                                        BorderThickness="1,1,1,0">
+                                                <Border Grid.Row="1"
+                                                        Grid.Column="0"
+                                                        Margin="0,1,0,0"
+                                                        Background="{StaticResource CellBackgroundBrush}">
                                                     <Grid>
                                                         <TextBlock Height="24"
                                                                    Margin="18,0,0,0"
@@ -350,10 +331,10 @@
                                                         </FlowDocumentScrollViewer>
                                                     </Grid>
                                                 </Border>
-                                                <Border Grid.Column="1"
-                                                        Margin="0,0,0,0"
-                                                        BorderBrush="{StaticResource CellBorderBrush}"
-                                                        BorderThickness="0,1,1,0">
+                                                <Border Grid.Row="1"
+                                                        Grid.Column="1"
+                                                        Margin="1,1,0,0"
+                                                        Background="{StaticResource CellBackgroundBrush}">
                                                     <FlowDocumentScrollViewer Document="{Binding TransHelpTextPreview}"
                                                                               VerticalScrollBarVisibility="Disabled">
                                                         <FlowDocumentScrollViewer.Resources>
@@ -365,11 +346,11 @@
                                                         </FlowDocumentScrollViewer.Resources>
                                                     </FlowDocumentScrollViewer>
                                                 </Border>
-                                                <Border Grid.Column="2"
-                                                        Margin="0,0,0,0"
-                                                        BorderBrush="{StaticResource CellBorderBrush}"
-                                                        BorderThickness="0,1,1,0">
-                                                    <TextBox Margin="10,17,0,17"
+                                                <Border Grid.Row="1"
+                                                        Grid.Column="2"
+                                                        Margin="1,1,0,0"
+                                                        Background="{StaticResource CellBackgroundBrush}">
+                                                    <TextBox Margin="10,17,10,17"
                                                              AcceptsReturn="True"
                                                              BorderBrush="{x:Null}"
                                                              FontSize="14"
@@ -377,17 +358,10 @@
                                                                             UpdateSourceTrigger=PropertyChanged}"
                                                              TextWrapping="Wrap" />
                                                 </Border>
-                                            </Grid>
-                                            <Grid Margin="0,0,0,0"
-                                                  Background="{StaticResource CellBackgroundBrush}">
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="1*" />
-                                                    <ColumnDefinition Width="1*" />
-                                                    <ColumnDefinition Width="1*" />
-                                                </Grid.ColumnDefinitions>
-                                                <Border Margin="0,0,0,0"
-                                                        BorderBrush="{StaticResource CellBorderBrush}"
-                                                        BorderThickness="1">
+                                                <Border Grid.Row="2"
+                                                        Grid.Column="0"
+                                                        Margin="0,1,0,0"
+                                                        Background="{StaticResource CellBackgroundBrush}">
                                                     <Grid>
                                                         <TextBlock Height="24"
                                                                    Margin="18,0,0,0"
@@ -406,10 +380,10 @@
                                                         </FlowDocumentScrollViewer>
                                                     </Grid>
                                                 </Border>
-                                                <Border Grid.Column="1"
-                                                        Margin="0,0,0,0"
-                                                        BorderBrush="{StaticResource CellBorderBrush}"
-                                                        BorderThickness="0,1,1,1">
+                                                <Border Grid.Row="2"
+                                                        Grid.Column="1"
+                                                        Margin="1,1,0,0"
+                                                        Background="{StaticResource CellBackgroundBrush}">
                                                     <FlowDocumentScrollViewer Document="{Binding TransMoreHelpTextPreview}"
                                                                               VerticalScrollBarVisibility="Disabled">
                                                         <FlowDocumentScrollViewer.Resources>
@@ -421,11 +395,11 @@
                                                         </FlowDocumentScrollViewer.Resources>
                                                     </FlowDocumentScrollViewer>
                                                 </Border>
-                                                <Border Grid.Column="2"
-                                                        Margin="0,0,0,0"
-                                                        BorderBrush="{StaticResource CellBorderBrush}"
-                                                        BorderThickness="0,1,1,1">
-                                                    <TextBox Margin="10,17,0,17"
+                                                <Border Grid.Row="2"
+                                                        Grid.Column="2"
+                                                        Margin="1,1,0,0"
+                                                        Background="{StaticResource CellBackgroundBrush}">
+                                                    <TextBox Margin="10,17,10,17"
                                                              AcceptsReturn="True"
                                                              BorderBrush="{x:Null}"
                                                              FontSize="14"
