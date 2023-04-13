@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text.Encodings.Web;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Windows.Input;
 
@@ -20,6 +21,8 @@ namespace PTGui_Language_Editor
         bool isModified;
 
         private List<string> languageFiles = null!;
+        private string? previousLanguageFile;
+        private string? newSelectedLanguageFile;
         private string? selectedLanguageFile;
         private string searchText = string.Empty;
         private DelegateCommand returnSearch;
@@ -53,9 +56,19 @@ namespace PTGui_Language_Editor
             get => selectedLanguageFile;
             set
             {
+                if (isModified)
+                {
+                    previousLanguageFile = selectedLanguageFile;
+                    AskContinue();
+                }
+
                 selectedLanguageFile = value;
                 NotifyPropertyChanged();
-                EditLanguage();
+                
+                if (!isModified)
+                {
+                    EditLanguage();
+                }
             }
         }
 
@@ -147,13 +160,36 @@ namespace PTGui_Language_Editor
 
         }
 
-        private void EditLanguage()
+        private async Task<bool> AskContinue()
         {
-            if (!Directory.Exists(languageFilesRoot))
+            var dlg = new NotSavedDialogViewModel();
+            dlg.Title = "Language Modified";
+            dlg.ErrorMessage = "Your changes haven't been saved yet. Do you want to save them now?";
+
+            var ret = await dlg.ShowDialog();
+
+            switch (ret)
             {
-                return;
+                case DialogOkNoCancel.Yes:
+                    SaveModifiedData(previousLanguageFile);
+                    EditLanguage();
+                    return true;
+
+                case DialogOkNoCancel.No:
+                    EditLanguage();
+                    return true;
+
+                case DialogOkNoCancel.Cancel:
+                    selectedLanguageFile = previousLanguageFile;
+                    NotifyPropertyChanged(nameof(SelectedLanguageFile));
+                    return false;
             }
 
+            return false;
+        }
+
+        private void EditLanguage()
+        {
             LoadLanguageFiles();
             BuildEditorTransData();
             BuildEditorRefData();
@@ -168,21 +204,21 @@ namespace PTGui_Language_Editor
             saveData.RaiseCanExecuteChanged();
         }
 
-        private string GetCurrentLanguageFilename()
+        private string GetLanguageFilename(string filename)
         {
-            return Path.Combine(languageFilesRoot, SelectedLanguageFile + ".nhloc");
+            return Path.Combine(languageFilesRoot, filename + ".nhloc");
         }
 
         // https://code-maze.com/csharp-read-and-process-json-file/
 
         private void LoadLanguageFiles()
         {
-            using (FileStream json = File.OpenRead(Path.Combine(languageFilesRoot, "en_us.nhloc")))
+            using (FileStream json = File.OpenRead(GetLanguageFilename("en_us")))
             {
                 RefJsonRoot = JsonSerializer.Deserialize<JsonRoot>(json, JsonSerializerOptions.Default) ?? null!;
             }
 
-            using (FileStream json = File.OpenRead(GetCurrentLanguageFilename()))
+            using (FileStream json = File.OpenRead(GetLanguageFilename(SelectedLanguageFile)))
             {
                 TransJsonRoot = JsonSerializer.Deserialize<JsonRoot>(json, JsonSerializerOptions.Default) ?? null!;
             }
@@ -314,7 +350,12 @@ namespace PTGui_Language_Editor
 
         private void OnSaveData()
         {
-            using FileStream json = File.Create(GetCurrentLanguageFilename());
+            SaveModifiedData(SelectedLanguageFile);
+        }
+
+        private void SaveModifiedData(string filename)
+            {
+                using FileStream json = File.Create(GetLanguageFilename(filename));
 
             var jso = new JsonSerializerOptions
             {

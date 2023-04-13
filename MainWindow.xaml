@@ -479,5 +479,8 @@
                 </Grid>
             </TabItem>
         </TabControl>
+
+        <ContentControl x:Name="DialogLayer"
+                        Visibility="Collapsed" />
     </Grid>
 </Window>
