@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Documents;
 
 namespace PTGui_Language_Editor
@@ -81,7 +79,7 @@ namespace PTGui_Language_Editor
 
                 if (!string.IsNullOrEmpty(transHelpPageEdit))
                 {
-                    TransHelpPagePreview = PTGuiTextConverter.ConvertToFlowDocument(transHelpPageEdit, y => AllTransStrings.FirstOrDefault(x => x.Id == y)?.Txt);
+                    TransHelpPagePreview = PTGuiTextConverter.ConvertToFlowDocument(transHelpPageEdit, true, y => AllTransStrings.FirstOrDefault(x => x.Id == y)?.Txt);
                     var translateHelpPage = currentRefHelpPage?.EditorTranslate;
 
                     if (!string.IsNullOrEmpty(transHelpPageEdit))
@@ -116,7 +114,7 @@ namespace PTGui_Language_Editor
             {
                 currentRefHelpPage = allDisplayRefHelPages[currentPage];
 
-                RefHelpPagePreview = PTGuiTextConverter.ConvertToFlowDocument(currentRefHelpPage.Helptext, y => AllRefStrings.FirstOrDefault(x => x.Id == y)?.Txt);
+                RefHelpPagePreview = PTGuiTextConverter.ConvertToFlowDocument(currentRefHelpPage.Helptext, true, y => AllRefStrings.FirstOrDefault(x => x.Id == y)?.Txt);
                 var translateHelpPage = currentRefHelpPage.EditorTranslate;
                 TransHelpPageEdit = translateHelpPage?.Helptext?.Replace("<br>", "\n");
             }

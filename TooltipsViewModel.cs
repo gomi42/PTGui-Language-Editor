@@ -1,10 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Documents;
-using System.Windows.Input;
 
 namespace PTGui_Language_Editor
 {
@@ -111,13 +108,13 @@ namespace PTGui_Language_Editor
                 NotifyPropertyChanged(nameof(Id));
                 translateTooltip = currentRefTooltip.EditorTranslate!;
 
-                RefLabelPreview = PTGuiTextConverter.ConvertToFlowDocument(currentRefTooltip.Label, y => AllRefStrings.FirstOrDefault(x => x.Id == y)?.Txt);
+                RefLabelPreview = PTGuiTextConverter.ConvertToFlowDocument(currentRefTooltip.Label, true, y => AllRefStrings.FirstOrDefault(x => x.Id == y)?.Txt);
                 TransLabelEdit = translateTooltip?.Label?.Replace("<br>", "\n");
 
-                RefHelpTextPreview = PTGuiTextConverter.ConvertToFlowDocument(currentRefTooltip.Helptext, y => AllRefStrings.FirstOrDefault(x => x.Id == y)?.Txt);
+                RefHelpTextPreview = PTGuiTextConverter.ConvertToFlowDocument(currentRefTooltip.Helptext, true, y => AllRefStrings.FirstOrDefault(x => x.Id == y)?.Txt);
                 TransHelpTextEdit = translateTooltip?.Helptext?.Replace("<br>", "\n");
 
-                RefMoreHelpTextPreview = PTGuiTextConverter.ConvertToFlowDocument(currentRefTooltip.MoreHelptext, y => AllRefStrings.FirstOrDefault(x => x.Id == y)?.Txt);
+                RefMoreHelpTextPreview = PTGuiTextConverter.ConvertToFlowDocument(currentRefTooltip.MoreHelptext, true, y => AllRefStrings.FirstOrDefault(x => x.Id == y)?.Txt);
                 TransMoreHelpTextEdit = translateTooltip?.MoreHelptext?.Replace("<br>", "\n");
 
                 setFromCode = false;
@@ -152,13 +149,14 @@ namespace PTGui_Language_Editor
                 NotifyPropertyChanged();
             }
         }
+
         public string? TransLabelEdit
         {
             get => transLabelEdit;
             set
             {
                 transLabelEdit = value;
-                TransLabelPreview = PTGuiTextConverter.ConvertToFlowDocument(transLabelEdit, y => AllTransStrings.FirstOrDefault(x => x.Id == y)?.Txt);
+                TransLabelPreview = PTGuiTextConverter.ConvertToFlowDocument(transLabelEdit, true, y => AllTransStrings.FirstOrDefault(x => x.Id == y)?.Txt);
 
                 if (!string.IsNullOrEmpty(transLabelEdit))
                 {
@@ -207,13 +205,14 @@ namespace PTGui_Language_Editor
                 NotifyPropertyChanged();
             }
         }
+
         public string? TransHelpTextEdit
         {
             get => transHelpTextEdit;
             set
             {
                 transHelpTextEdit = value;
-                TransHelpTextPreview = PTGuiTextConverter.ConvertToFlowDocument(transHelpTextEdit, y => AllTransStrings.FirstOrDefault(x => x.Id == y)?.Txt);
+                TransHelpTextPreview = PTGuiTextConverter.ConvertToFlowDocument(transHelpTextEdit, true, y => AllTransStrings.FirstOrDefault(x => x.Id == y)?.Txt);
 
                 if (!string.IsNullOrEmpty(transHelpTextEdit))
                 {
@@ -258,13 +257,14 @@ namespace PTGui_Language_Editor
                 NotifyPropertyChanged();
             }
         }
+
         public string? TransMoreHelpTextEdit
         {
             get => transMoreHelpTextEdit;
             set
             {
                 transMoreHelpTextEdit = value;
-                TransMoreHelpTextPreview = PTGuiTextConverter.ConvertToFlowDocument(transMoreHelpTextEdit, y => AllTransStrings.FirstOrDefault(x => x.Id == y)?.Txt);
+                TransMoreHelpTextPreview = PTGuiTextConverter.ConvertToFlowDocument(transMoreHelpTextEdit, true, y => AllTransStrings.FirstOrDefault(x => x.Id == y)?.Txt);
 
                 if (!string.IsNullOrEmpty(transMoreHelpTextEdit))
                 {

@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Documents;
 using System.Windows.Media;
 
@@ -14,6 +11,7 @@ namespace PTGui_Language_Editor
         static Paragraph paragraph = null!;
         static StringBuilder sb = null!;
         static bool inCommand;
+        static bool inEscape;
         static bool isBold;
         static bool inReplacement;
         static bool isRed;
@@ -22,8 +20,9 @@ namespace PTGui_Language_Editor
         static bool isPro;
         static bool isError;
         static bool isHyperlink;
+        static bool isUnderlineNextChar;
 
-        public static FlowDocument ConvertToFlowDocument(string? text, Func<string, string?> replaceId)
+        public static FlowDocument ConvertToFlowDocument(string? text, bool isHtml, Func<string, string?> replaceId)
         {
             if (text == null)
             {
@@ -33,6 +32,7 @@ namespace PTGui_Language_Editor
             try
             {
                 inCommand = false;
+                inEscape = false;
                 isBold = false;
                 inReplacement = false;
                 isRed = false;
@@ -41,11 +41,12 @@ namespace PTGui_Language_Editor
                 isPro = false;
                 isError = false;
                 isHyperlink = false;
+                isUnderlineNextChar = false;
 
                 myFlowDoc = new FlowDocument();
                 myFlowDoc.TextAlignment = System.Windows.TextAlignment.Left;
                 paragraph = new Paragraph();
-                ConvertToFlowDocument2(text, replaceId);
+                ConvertToFlowDocument2(text, isHtml, replaceId);
                 myFlowDoc.Blocks.Add(paragraph);
             }
             catch
@@ -75,6 +76,11 @@ namespace PTGui_Language_Editor
             if (isBold)
             {
                 run = new Bold(run);
+            }
+
+            if (isUnderlineNextChar)
+            {
+                run = new Underline(run);
             }
 
             if (isHyperlink)
@@ -112,7 +118,7 @@ namespace PTGui_Language_Editor
             sb = new StringBuilder();
         }
 
-        static void ConvertToFlowDocument2(string text, Func<string, string?> replaceId)
+        static void ConvertToFlowDocument2(string text, bool isHtml, Func<string, string?> replaceId)
         {
             int index = 0;
             bool firstToUpper = false;
@@ -121,6 +127,55 @@ namespace PTGui_Language_Editor
 
             while (index < text.Length)
             {
+                if (!isHtml && text[index] == '&')
+                {
+                    AddText();
+                    isUnderlineNextChar = true;
+                    index++;
+                    command = new();
+                }
+                else if (isUnderlineNextChar)
+                {
+                    sb.Append(text[index]);
+                    AddText();
+                    isUnderlineNextChar = false;
+                    index++;
+                }
+                else if (isHtml && text[index] == '&')
+                {
+                    AddText();
+                    inEscape = true;
+                    index++;
+                    command = new();
+                }
+                else if (inEscape)
+                {
+                    if (text[index] == ';')
+                    {
+                        index++;
+                        inEscape = false;
+                        var cmd = command.ToString();
+
+                        if (cmd == "amp")
+                        {
+                            sb.Append('&');
+                            AddText();
+                        }
+                        else
+                        {
+                            sb.Append('&');
+                            sb.Append(cmd);
+                            sb.Append(';');
+                            AddText();
+                        }
+                    }
+                    else
+                    {
+                        command.Append(text[index]);
+                        index++;
+                    }
+                }
+                else
                 if (text[index] == '<')
                 {
                     AddText();
@@ -138,26 +193,34 @@ namespace PTGui_Language_Editor
 
                         var cmd = command.ToString();
 
-                        if (cmd == "br")
+                        if (isHtml && cmd == "br")
                         {
                             myFlowDoc.Blocks.Add(paragraph);
                             paragraph = new Paragraph();
                         }
-                        else if (cmd == "b")
+                        else if (isHtml && cmd == "b")
                         {
                             isBold = true;
                         }
-                        else if (cmd == "/b")
+                        else if (isHtml && cmd == "/b")
                         {
                             isBold = false;
                         }
-                        else if (cmd == "red")
+                        else if (isHtml && cmd == "red")
                         {
                             isRed = true;
                         }
-                        else if (cmd == "/red")
+                        else if (isHtml && cmd == "/red")
                         {
                             isRed = false;
+                        }
+                        else if (isHtml && cmd.StartsWith("a "))
+                        {
+                            isHyperlink = true;
+                        }
+                        else if (isHtml && cmd == "/a")
+                        {
+                            isHyperlink = false;
                         }
                         else if (cmd.StartsWith("optional "))
                         {
@@ -184,14 +247,6 @@ namespace PTGui_Language_Editor
                             isWindows = false;
                             isPro = false;
                             isError = false;
-                        }
-                        else if (cmd.StartsWith("a "))
-                        {
-                            isHyperlink = true;
-                        }
-                        else if (cmd == "/a")
-                        {
-                            isHyperlink = false;
                         }
                         else
                         {
@@ -241,7 +296,7 @@ namespace PTGui_Language_Editor
                                 ids = first + ids.Substring(1);
                             }
 
-                            ConvertToFlowDocument2(ids, replaceId);
+                            ConvertToFlowDocument2(ids, isHtml, replaceId);
                         }
                         else
                         {

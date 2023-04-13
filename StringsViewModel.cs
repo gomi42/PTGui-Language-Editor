@@ -1,10 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Policy;
 using System.Windows.Documents;
-using System.Windows.Input;
-using Microsoft.VisualBasic;
 
 namespace PTGui_Language_Editor
 {
@@ -105,12 +102,13 @@ namespace PTGui_Language_Editor
             set
             {
                 refString = value;
-                RefPreview = PTGuiTextConverter.ConvertToFlowDocument(refString.Txt, y => AllRefStrings.FirstOrDefault(x => x.Id == y)?.Txt);
+                bool isHtml = translateString?.Format == "html";
+                RefPreview = PTGuiTextConverter.ConvertToFlowDocument(refString.Txt, isHtml, y => AllRefStrings.FirstOrDefault(x => x.Id == y)?.Txt);
                 translateString = refString.EditorTranslate!;
 
                 setFromCode = true;
 
-                if (translateString?.Format == "html")
+                if (isHtml)
                 {
                     TransEdit = translateString?.Txt?.Replace("<br>", "\n");
                 }
@@ -142,9 +140,10 @@ namespace PTGui_Language_Editor
             set
             {
                 transEdit = value;
-                TransPreview = PTGuiTextConverter.ConvertToFlowDocument(transEdit, y => AllTransStrings.FirstOrDefault(x => x.Id == y)?.Txt);
+                bool isHtml = translateString?.Format == "html";
+                TransPreview = PTGuiTextConverter.ConvertToFlowDocument(transEdit, isHtml, y => AllTransStrings.FirstOrDefault(x => x.Id == y)?.Txt);
 
-                if (translateString?.Format == "html")
+                if (isHtml)
                 {
                     var str = transEdit.Replace("\n", "<br>");
                     translateString.Txt = str;
