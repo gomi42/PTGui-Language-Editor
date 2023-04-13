@@ -23,7 +23,10 @@
         <SolidColorBrush x:Key="CellBorderBrush" Color="{StaticResource CellBorderColor}" />
         <SolidColorBrush x:Key="CellBackgroundBrush" Color="{StaticResource CellBackgroundColor}" />
 
-
+        <Style TargetType="{x:Type Label}">
+            <Setter Property="Padding" Value="0"/>
+        </Style>
+        
         <Style x:Key="ButtonTabItemStyle"
                TargetType="{x:Type TabItem}">
             <Setter Property="FocusVisualStyle" Value="{x:Null}" />
@@ -109,6 +112,21 @@
                             </Border>
                         </Grid>
                     </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="DialogBorderErrorStyle"
+               TargetType="{x:Type Border}">
+            <Setter Property="Background" Value="White" />
+            <Setter Property="BorderBrush" Value="#FFC76B6B" />
+            <Setter Property="BorderThickness" Value="2" />
+            <Setter Property="Effect">
+                <Setter.Value>
+                    <DropShadowEffect BlurRadius="8"
+                                      Opacity="0.6"
+                                      ShadowDepth="0"
+                                      Color="#FFcccccc" />
                 </Setter.Value>
             </Setter>
         </Style>
