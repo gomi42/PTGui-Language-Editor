@@ -162,6 +162,18 @@ namespace PTGui_Language_Editor
                             AddText();
                         }
                         else
+                        if (cmd == "quot")
+                        {
+                            sb.Append('"');
+                            AddText();
+                        }
+                        else
+                        if (cmd == "apos")
+                        {
+                            sb.Append('\'');
+                            AddText();
+                        }
+                        else
                         {
                             sb.Append('&');
                             sb.Append(cmd);
