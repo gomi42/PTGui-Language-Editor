@@ -6,6 +6,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         Title="PTGui Language Editor"
         Width="800"
+        local:WindowClosingBehavior.Closing="{Binding CloseCommand}"
         Height="450"
         SnapsToDevicePixels="True"
         UseLayoutRounding="True"

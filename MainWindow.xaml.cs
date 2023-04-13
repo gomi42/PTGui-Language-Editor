@@ -1,4 +1,6 @@
-﻿using System.Windows;
+﻿using System.ComponentModel;
+using System.Windows;
+using System.Windows.Input;
 
 namespace PTGui_Language_Editor
 {
@@ -7,7 +9,6 @@ namespace PTGui_Language_Editor
     /// </summary>
     public partial class MainWindow : Window
     {
-
         public MainWindow()
         {
             DataContext = new MainWindowViewModel();

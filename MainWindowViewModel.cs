@@ -35,6 +35,7 @@ namespace PTGui_Language_Editor
 
         public MainWindowViewModel()
         {
+            CloseCommand = new DelegateCommand(OnClose);
             loadData = new DelegateCommand(OnLoadData);
             saveData = new DelegateCommand(OnSaveData, CanSaveData);
             returnSearch = new DelegateCommand(OnReturnSearch);
@@ -112,28 +113,10 @@ namespace PTGui_Language_Editor
             }
         }
 
+        public ICommand CloseCommand { get; init; }
         public ICommand LoadData => loadData;
         public ICommand SaveData => saveData;
         public ICommand ReturnSearch => returnSearch;
-
-        private void ScanLanugageFiles()
-        {
-            var files = Directory.GetFiles(languageFilesRoot, "*.nhloc");
-            var list = new List<string>();
-
-            foreach (var file in files)
-            {
-                var filename = Path.GetFileNameWithoutExtension(file);
-
-                if (filename != "en_us")
-                {
-                    list.Add(filename);
-                }
-            }
-
-            LanguageFiles = list;
-            SelectedLanguageFile = list.FirstOrDefault(x => x == "de_de");
-        }
 
         public string SearchText
         {
@@ -158,6 +141,25 @@ namespace PTGui_Language_Editor
                 }
             }
 
+        }
+
+        private void ScanLanugageFiles()
+        {
+            var files = Directory.GetFiles(languageFilesRoot, "*.nhloc");
+            var list = new List<string>();
+
+            foreach (var file in files)
+            {
+                var filename = Path.GetFileNameWithoutExtension(file);
+
+                if (filename != "en_us")
+                {
+                    list.Add(filename);
+                }
+            }
+
+            LanguageFiles = list;
+            SelectedLanguageFile = list.FirstOrDefault(x => x == "de_de");
         }
 
         private async Task<bool> AskContinue()
@@ -187,6 +189,37 @@ namespace PTGui_Language_Editor
 
             return false;
         }
+
+        private async void OnClose()
+        {
+            if (!isModified)
+            {
+                Environment.Exit(0);
+                return;
+            }
+
+            var dlg = new NotSavedDialogViewModel();
+            dlg.Title = "Language Modified";
+            dlg.ErrorMessage = "Your changes haven't been saved yet. Do you want to save them now?";
+
+            var ret = await dlg.ShowDialog();
+
+            switch (ret)
+            {
+                case DialogOkNoCancel.Yes:
+                    SaveModifiedData(selectedLanguageFile);
+                    Environment.Exit(0);
+                    break;
+
+                case DialogOkNoCancel.No:
+                    Environment.Exit(0);
+                    break;
+
+                case DialogOkNoCancel.Cancel:
+                    break;
+            }
+        }
+
 
         private void EditLanguage()
         {
