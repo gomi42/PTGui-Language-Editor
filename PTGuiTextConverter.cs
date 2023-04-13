@@ -32,6 +32,16 @@ namespace PTGui_Language_Editor
 
             try
             {
+                inCommand = false;
+                isBold = false;
+                inReplacement = false;
+                isRed = false;
+                isMac = false;
+                isWindows = false;
+                isPro = false;
+                isError = false;
+                isHyperlink = false;
+
                 myFlowDoc = new FlowDocument();
                 myFlowDoc.TextAlignment = System.Windows.TextAlignment.Left;
                 paragraph = new Paragraph();
@@ -60,17 +70,17 @@ namespace PTGui_Language_Editor
                 return;
             }
 
+            run = new Run(sb.ToString());
+
             if (isBold)
             {
-                run = new Bold(new Run(sb.ToString()));
+                run = new Bold(run);
             }
-            else if (isHyperlink)
+
+            if (isHyperlink)
             {
-                run = new Underline(new Run(sb.ToString()));
-            }
-            else
-            {
-                run = new Run(sb.ToString());
+                run = new Underline(run);
+                run.Foreground = new SolidColorBrush(Color.FromRgb(0, 0, 255));
             }
 
             if (isRed)
