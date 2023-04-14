@@ -119,17 +119,17 @@ namespace PTGui_Language_Editor
 
     public class EditorRefHelpPage : EditorTransHelpPage
     {
-        public EditorTransHelpPage? EditorTranslate { get; init; }
+        public EditorTransHelpPage EditorTranslate { get; init; } = null!;
     }
 
     public class EditorRefString : EditorTransString
     {
-        public EditorTransString? EditorTranslate { get; init; }
+        public EditorTransString EditorTranslate { get; init; } = null!;
     }
 
     public class EditorRefTooltip : EditorTransTooltip
     {
-        public EditorTransTooltip? EditorTranslate { get; init; }
+        public EditorTransTooltip EditorTranslate { get; init; } = null!;
     }
 }
 

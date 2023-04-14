@@ -6,67 +6,69 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         Title="PTGui Language Editor"
         Width="800"
-        local:WindowClosingBehavior.Closing="{Binding CloseCommand}"
         Height="450"
+        local:WindowClosingBehavior.Closing="{Binding CloseCommand}"
         SnapsToDevicePixels="True"
         UseLayoutRounding="True"
         mc:Ignorable="d">
     <Grid>
-        <Border Height="45"
+        <Border Height="85"
                 Margin="0,0,0,0"
                 VerticalAlignment="Top"
-                Background="{StaticResource ContentBackgroundBrush}"
-                BorderBrush="{StaticResource DustyGrayBrush}"
-                BorderThickness="0,0,0,1">
+                Background="{StaticResource ContentBackgroundBrush}">
             <Grid>
-                <TextBlock Text="(c) Michael Göricke" HorizontalAlignment="Right" VerticalAlignment="Top" Foreground="#ffaaaaaa" Margin="0,0,10,0" FontSize="8"/>
-                <DockPanel Margin="0,0,0,0">
-                <Button Width="70"
-                        Height="22"
-                        Margin="10,0,0,0"
-                        HorizontalAlignment="Left"
-                        VerticalAlignment="Center"
-                        Command="{Binding LoadData}"
-                        Content="Load" />
-                <Button Width="70"
-                        Height="22"
-                        Margin="9,0,0,0"
-                        HorizontalAlignment="Left"
-                        VerticalAlignment="Center"
-                        Command="{Binding SaveData}"
-                        Content="Save" />
-                <Rectangle Width="1"
-                           Margin="15,7,0,7"
-                           Stroke="{StaticResource CellBorderBrush}" />
-                <TextBlock Margin="15,0,0,0"
-                           HorizontalAlignment="Stretch"
-                           VerticalAlignment="Center"
-                           Text="Language:" />
-                <ComboBox Width="87"
-                          Margin="5,0,0,0"
-                          HorizontalAlignment="Left"
-                          VerticalAlignment="Center"
-                          ItemsSource="{Binding LanguageFiles}"
-                          SelectedItem="{Binding SelectedLanguageFile}" />
-                <TextBlock Margin="15,0,0,0"
-                           HorizontalAlignment="Stretch"
-                           VerticalAlignment="Center"
-                           Text="Filter:" />
-                <TextBox Height="22"
-                         Margin="5,0,10,0"
-                         VerticalAlignment="Center"
-                         Text="{Binding SearchText,
-                                        UpdateSourceTrigger=PropertyChanged}">
-                    <TextBox.InputBindings>
-                        <KeyBinding Key="Return"
-                                    Command="{Binding ReturnSearch}" />
-                    </TextBox.InputBindings>
-                </TextBox>
-            </DockPanel>
+                <TextBlock Margin="0,0,10,0" x:Name="Copyright"
+                           HorizontalAlignment="Right"
+                           VerticalAlignment="Top"
+                           FontSize="8"
+                           Foreground="#ffaaaaaa"/>
+                <DockPanel Margin="0,20,0,0"
+                           VerticalAlignment="Top">
+                    <Button Width="70"
+                            Height="22"
+                            Margin="10,0,0,0"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Center"
+                            Command="{Binding LoadData}"
+                            Content="Load" />
+                    <Button Width="70"
+                            Height="22"
+                            Margin="9,0,0,0"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Center"
+                            Command="{Binding SaveData}"
+                            Content="Save" />
+                    <TextBlock Margin="30,0,0,0"
+                               HorizontalAlignment="Stretch"
+                               VerticalAlignment="Center"
+                               Text="Language" />
+                    <ComboBox Width="87"
+                              Margin="5,0,0,0"
+                              HorizontalAlignment="Left"
+                              VerticalAlignment="Center"
+                              ItemsSource="{Binding LanguageFiles}"
+                              SelectedItem="{Binding SelectedLanguageFile}" />
+                    <TextBlock Margin="30,0,0,0"
+                               HorizontalAlignment="Stretch"
+                               VerticalAlignment="Center"
+                               Text="Filter" />
+                    <TextBox Width="200"
+                             Height="22"
+                             Margin="5,0,10,0"
+                             HorizontalAlignment="Left"
+                             VerticalAlignment="Center"
+                             Text="{Binding SearchText,
+                                            UpdateSourceTrigger=PropertyChanged}">
+                        <TextBox.InputBindings>
+                            <KeyBinding Key="Return"
+                                        Command="{Binding ReturnSearch}" />
+                        </TextBox.InputBindings>
+                    </TextBox>
+                </DockPanel>
             </Grid>
         </Border>
 
-        <TabControl Margin="-1,60,-1,-1">
+        <TabControl Margin="-1,70,-1,-1">
             <TabItem Header="General">
                 <StackPanel Margin="0,19,0,0"
                             DataContext="{Binding GeneralViewModel}">

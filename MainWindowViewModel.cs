@@ -19,15 +19,12 @@ namespace PTGui_Language_Editor
         EditorTrans EditorTrans = null!;
         EditorRef EditorRef = null!;
         bool isModified;
+        bool isAskSaveChangesDialogOpen;
 
         private List<string> languageFiles = null!;
         private string? previousLanguageFile;
-        private string? newSelectedLanguageFile;
         private string? selectedLanguageFile;
         private string searchText = string.Empty;
-        private DelegateCommand returnSearch;
-        private DelegateCommand loadData;
-        private DelegateCommand saveData;
         private GeneralViewModel generalViewModel;
         private StringsViewModel stringsViewModel;
         private TooltipsViewModel tooltipsViewModel;
@@ -36,10 +33,10 @@ namespace PTGui_Language_Editor
         public MainWindowViewModel()
         {
             CloseCommand = new DelegateCommand(OnClose);
-            loadData = new DelegateCommand(OnLoadData);
-            saveData = new DelegateCommand(OnSaveData, CanSaveData);
-            returnSearch = new DelegateCommand(OnReturnSearch);
-            ScanLanugageFiles();
+            LoadData = new DelegateCommand(OnLoadData);
+            SaveData = new DelegateCommand(OnSaveData, CanSaveData);
+            ReturnSearch = new DelegateCommand(OnReturnSearch);
+            ScanLanguageFiles();
         }
 
         public List<string> LanguageFiles
@@ -114,9 +111,9 @@ namespace PTGui_Language_Editor
         }
 
         public ICommand CloseCommand { get; init; }
-        public ICommand LoadData => loadData;
-        public ICommand SaveData => saveData;
-        public ICommand ReturnSearch => returnSearch;
+        public DelegateCommand LoadData { get; init; }
+        public DelegateCommand SaveData { get; init; }
+        public DelegateCommand ReturnSearch { get; init; }
 
         public string SearchText
         {
@@ -137,14 +134,20 @@ namespace PTGui_Language_Editor
                 if (result == DialogResult.OK)
                 {
                     languageFilesRoot = dialog.SelectedPath;
+                    ScanLanguageFiles();
                     LoadLanguageFiles();
                 }
             }
 
         }
 
-        private void ScanLanugageFiles()
+        private void ScanLanguageFiles()
         {
+            if (!Directory.Exists(languageFilesRoot))
+            {
+                return;
+            }
+
             var files = Directory.GetFiles(languageFilesRoot, "*.nhloc");
             var list = new List<string>();
 
@@ -162,52 +165,65 @@ namespace PTGui_Language_Editor
             SelectedLanguageFile = list.FirstOrDefault(x => x == "de_de");
         }
 
-        private async Task<bool> AskContinue()
+        private async Task<DialogOkNoCancel> ShowAskSaveChangesDialog()
         {
+            isAskSaveChangesDialogOpen = true;
+
             var dlg = new NotSavedDialogViewModel();
             dlg.Title = "Language Modified";
             dlg.ErrorMessage = "Your changes haven't been saved yet. Do you want to save them now?";
 
             var ret = await dlg.ShowDialog();
 
+            isAskSaveChangesDialogOpen = false;
+
+            return ret;
+        }
+
+        private async void AskContinue()
+        {
+            var ret = await ShowAskSaveChangesDialog();
+
             switch (ret)
             {
                 case DialogOkNoCancel.Yes:
-                    SaveModifiedData(previousLanguageFile);
+                    SaveModifiedData(previousLanguageFile!);
                     EditLanguage();
-                    return true;
+                    break;
 
                 case DialogOkNoCancel.No:
                     EditLanguage();
-                    return true;
+                    break;
 
                 case DialogOkNoCancel.Cancel:
+                    //sorry for this trick that's resets the language
+                    //without using the setting which in turn restarts
+                    //the change check
                     selectedLanguageFile = previousLanguageFile;
                     NotifyPropertyChanged(nameof(SelectedLanguageFile));
-                    return false;
+                    break;
             }
-
-            return false;
         }
 
         private async void OnClose()
         {
+            if (isAskSaveChangesDialogOpen)
+            {
+                return;
+            }
+
             if (!isModified)
             {
                 Environment.Exit(0);
                 return;
             }
 
-            var dlg = new NotSavedDialogViewModel();
-            dlg.Title = "Language Modified";
-            dlg.ErrorMessage = "Your changes haven't been saved yet. Do you want to save them now?";
-
-            var ret = await dlg.ShowDialog();
+            var ret = await ShowAskSaveChangesDialog();
 
             switch (ret)
             {
                 case DialogOkNoCancel.Yes:
-                    SaveModifiedData(selectedLanguageFile);
+                    SaveModifiedData(selectedLanguageFile!);
                     Environment.Exit(0);
                     break;
 
@@ -234,7 +250,7 @@ namespace PTGui_Language_Editor
 
             SearchText = string.Empty;
             isModified = false;
-            saveData.RaiseCanExecuteChanged();
+            SaveData.RaiseCanExecuteChanged();
         }
 
         private string GetLanguageFilename(string filename)
@@ -268,9 +284,6 @@ namespace PTGui_Language_Editor
                 var str = new EditorTransString
                 {
                     Json = item,
-                    Txt = item.txt,
-                    Format = item.format,
-                    TxtFortranslate = item.txtfortranslate
                 };
                 EditorTrans.Strings.Add(str);
             }
@@ -282,7 +295,6 @@ namespace PTGui_Language_Editor
                 var str = new EditorTransHelpPage
                 {
                     Json = item,
-                    Helptext = item.helptext
                 };
                 EditorTrans.HelpPages.Add(str);
             }
@@ -294,7 +306,6 @@ namespace PTGui_Language_Editor
                 var str = new EditorTransTooltip
                 {
                     Json = item,
-                    Helptext = item.helptext
                 };
                 EditorTrans.Tooltips.Add(str);
             }
@@ -308,10 +319,19 @@ namespace PTGui_Language_Editor
 
             foreach (var item in RefJsonRoot.strings!)
             {
+                var translate = EditorTrans.Strings.FirstOrDefault(x => x.Id == item.id);
+
+                if (translate == null)
+                {
+                    var js = new JsonString { id = item.id, format = item.format };
+                    TransJsonRoot.strings!.Add(js);
+                    translate = new EditorTransString { Json = js };
+                }
+
                 var str = new EditorRefString
                 {
                     Json = item,
-                    EditorTranslate = EditorTrans.Strings.FirstOrDefault(x => x.Id == item.id)
+                    EditorTranslate = translate
                 };
                 EditorRef.Strings.Add(str);
             }
@@ -320,10 +340,19 @@ namespace PTGui_Language_Editor
 
             foreach (var item in RefJsonRoot.helppages!)
             {
+                var translate = EditorTrans.HelpPages.FirstOrDefault(x => x.Id == item.id);
+                
+                if (translate == null)
+                {
+                    var js = new JsonHelpPage { id = item.id };
+                    TransJsonRoot.helppages!.Add(js);
+                    translate = new EditorTransHelpPage { Json = js };
+                }
+
                 var str = new EditorRefHelpPage
                 {
                     Json = item,
-                    EditorTranslate = EditorTrans.HelpPages.FirstOrDefault(x => x.Id == item.id)
+                    EditorTranslate = translate
                 };
                 EditorRef.HelpPages.Add(str);
             }
@@ -332,10 +361,19 @@ namespace PTGui_Language_Editor
 
             foreach (var item in RefJsonRoot.tooltips!)
             {
+                var translate = EditorTrans.Tooltips.FirstOrDefault(x => x.Id == item.id);
+                
+                if (translate == null)
+                {
+                    var js = new JsonTooltip{ id = item.id };
+                    TransJsonRoot.tooltips!.Add(js);
+                    translate = new EditorTransTooltip { Json = js };
+                }
+
                 var str = new EditorRefTooltip
                 {
                     Json = item,
-                    EditorTranslate = EditorTrans.Tooltips.FirstOrDefault(x => x.Id == item.id)
+                    EditorTranslate = translate
                 };
                 EditorRef.Tooltips.Add(str);
             }
@@ -399,7 +437,7 @@ namespace PTGui_Language_Editor
             JsonSerializer.Serialize(json, TransJsonRoot, jso);
 
             isModified = false;
-            saveData.RaiseCanExecuteChanged();
+            SaveData.RaiseCanExecuteChanged();
         }
 
         private bool CanSaveData()
@@ -472,7 +510,7 @@ namespace PTGui_Language_Editor
         private void SetModified()
         {
             isModified = true;
-            saveData.RaiseCanExecuteChanged();
+            SaveData.RaiseCanExecuteChanged();
         }
     }
 }
