@@ -11,11 +11,11 @@
 
         //////////////////////////////////////////////
 
-        private readonly Func<bool> canExecute;
+        private readonly Func<bool>? canExecute;
 
         //////////////////////////////////////////////
 
-        public event EventHandler CanExecuteChanged;
+        public event EventHandler? CanExecuteChanged;
 
         //////////////////////////////////////////////
 
@@ -26,7 +26,7 @@
 
         //////////////////////////////////////////////
 
-        public DelegateCommand (Action execute, Func<bool> canExecute)
+        public DelegateCommand (Action execute, Func<bool>? canExecute)
         {
             if (execute == null)
             {
@@ -43,20 +43,20 @@
         {
             if (CanExecuteChanged != null)
             {
-                CanExecuteChanged (this, null);
+                CanExecuteChanged (this, new EventArgs());
             }
         }
 
         //////////////////////////////////////////////
 
-        public bool CanExecute (object parameter)
+        public bool CanExecute (object? parameter)
         {
             return canExecute == null ? true : canExecute ();
         }
 
         //////////////////////////////////////////////
 
-        public void Execute (object parameter)
+        public void Execute (object? parameter)
         {
             execute ();
         }

@@ -15,9 +15,9 @@ namespace PTGui_Language_Editor
 
     class Dialog
     {
-        private TaskCompletionSource<DialogOkNoCancel> taskCompletionSource;
+        private TaskCompletionSource<DialogOkNoCancel>? taskCompletionSource;
         private FrameworkElement dialogBox;
-        private static DialogLayer dialogLayer;
+        private static DialogLayer? dialogLayer;
 
         //////////////////////////////////////////////
 
@@ -27,7 +27,7 @@ namespace PTGui_Language_Editor
 
         public static Dialog Create<T>(object viewModel)
         {
-            var view = (FrameworkElement)Activator.CreateInstance(typeof(T));
+            var view = (FrameworkElement)Activator.CreateInstance(typeof(T))!;
             view.DataContext = viewModel;
 
             return new Dialog(view);
@@ -83,7 +83,7 @@ namespace PTGui_Language_Editor
 
         private void CloseFrame()
         {
-            dialogLayer.CloseDialog(dialogBox);
+            dialogLayer?.CloseDialog(dialogBox);
         }
     }
 }
