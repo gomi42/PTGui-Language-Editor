@@ -25,10 +25,10 @@ namespace PTGui_Language_Editor
         private string? previousLanguageFile;
         private string? selectedLanguageFile;
         private string searchText = string.Empty;
-        private GeneralViewModel generalViewModel;
-        private StringsViewModel stringsViewModel;
-        private TooltipsViewModel tooltipsViewModel;
-        private HelpPagesViewModel helpViewModel;
+        private GeneralViewModel generalViewModel = null!;
+        private StringsViewModel stringsViewModel = null!;
+        private TooltipsViewModel tooltipsViewModel = null!;
+        private HelpPagesViewModel helpViewModel = null!;
 
         public MainWindowViewModel()
         {
@@ -243,10 +243,10 @@ namespace PTGui_Language_Editor
             BuildEditorTransData();
             BuildEditorRefData();
 
-            ShowGeneral();
-            ShowString();
-            ShowTooltip();
-            ShowHelp();
+            PrepareGeneral();
+            PrepareString();
+            PrepareTooltip();
+            PrepareHelp();
 
             SearchText = string.Empty;
             isModified = false;
@@ -267,7 +267,7 @@ namespace PTGui_Language_Editor
                 RefJsonRoot = JsonSerializer.Deserialize<JsonRoot>(json, JsonSerializerOptions.Default) ?? null!;
             }
 
-            using (FileStream json = File.OpenRead(GetLanguageFilename(SelectedLanguageFile)))
+            using (FileStream json = File.OpenRead(GetLanguageFilename(SelectedLanguageFile!)))
             {
                 TransJsonRoot = JsonSerializer.Deserialize<JsonRoot>(json, JsonSerializerOptions.Default) ?? null!;
             }
@@ -381,7 +381,7 @@ namespace PTGui_Language_Editor
 
         ////////////////////////////////////////////////////////////////////////////////////////////
 
-        private void ShowGeneral()
+        private void PrepareGeneral()
         {
             var vm = new GeneralViewModel(SetModified);
             vm.EditorRef = EditorRef;
@@ -389,9 +389,7 @@ namespace PTGui_Language_Editor
             GeneralViewModel = vm;
         }
 
-        ////////////////////////////////////////////////////////////////////////////////////////////
-
-        private void ShowHelp()
+        private void PrepareHelp()
         {
             var vm = new HelpPagesViewModel(SetModified);
             vm.AllRefStrings = EditorRef.Strings;
@@ -400,7 +398,7 @@ namespace PTGui_Language_Editor
             HelpViewModel = vm;
         }
 
-        private void ShowTooltip()
+        private void PrepareTooltip()
         {
             var vm = new TooltipsViewModel(SetModified);
             vm.AllRefStrings = EditorRef.Strings;
@@ -408,9 +406,8 @@ namespace PTGui_Language_Editor
             vm.AllDisplayRefTooltips = EditorRef.Tooltips;
             TooltipsViewModel = vm;
         }
-        ////////////////////////////////////////////////////////////////////////////////////////////
 
-        private void ShowString()
+        private void PrepareString()
         {
             var vm = new StringsViewModel(SetModified);
             vm.AllRefStrings = EditorRef.Strings;
@@ -419,9 +416,11 @@ namespace PTGui_Language_Editor
             StringsViewModel = vm;
         }
 
+        ////////////////////////////////////////////////////////////////////////////////////////////
+
         private void OnSaveData()
         {
-            SaveModifiedData(SelectedLanguageFile);
+            SaveModifiedData(SelectedLanguageFile!);
         }
 
         private void SaveModifiedData(string filename)
@@ -497,8 +496,8 @@ namespace PTGui_Language_Editor
             foreach (var str in EditorRef.HelpPages)
             {
                 if (str.Id.Contains(search, StringComparison.InvariantCultureIgnoreCase)
-                    || str.Helptext.Contains(search, StringComparison.InvariantCultureIgnoreCase)
-                    || str.EditorTranslate.Helptext.Contains(search, StringComparison.InvariantCultureIgnoreCase))
+                    || str.Helptext != null && str.Helptext.Contains(search, StringComparison.InvariantCultureIgnoreCase)
+                    || str.EditorTranslate.Helptext != null && str.EditorTranslate.Helptext.Contains(search, StringComparison.InvariantCultureIgnoreCase))
                 {
                     helppages.Add(str);
                 }
