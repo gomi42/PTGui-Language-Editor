@@ -17,11 +17,12 @@
                 VerticalAlignment="Top"
                 Background="{StaticResource ContentBackgroundBrush}">
             <Grid>
-                <TextBlock Margin="0,0,10,0" x:Name="Copyright"
+                <TextBlock x:Name="Copyright"
+                           Margin="0,0,10,0"
                            HorizontalAlignment="Right"
                            VerticalAlignment="Top"
                            FontSize="8"
-                           Foreground="#ffaaaaaa"/>
+                           Foreground="#ffaaaaaa" />
                 <DockPanel Margin="0,20,0,0"
                            VerticalAlignment="Top">
                     <Button Width="70"
@@ -57,6 +58,7 @@
                              Margin="5,0,10,0"
                              HorizontalAlignment="Left"
                              VerticalAlignment="Center"
+                             VerticalContentAlignment="Center"
                              Text="{Binding SearchText,
                                             UpdateSourceTrigger=PropertyChanged}">
                         <TextBox.InputBindings>
@@ -98,7 +100,7 @@
                             <Grid>
                                 <TextBox Margin="10,25,10,20"
                                          AcceptsReturn="True"
-                                         BorderBrush="{x:Null}"
+                                         Style="{StaticResource EditTextBoxStyle}"
                                          Text="{Binding TransContributors,
                                                         UpdateSourceTrigger=PropertyChanged}" />
                             </Grid>
@@ -130,7 +132,7 @@
                             <Grid>
                                 <TextBox Margin="10,25,10,0"
                                          VerticalAlignment="Top"
-                                         BorderBrush="{x:Null}"
+                                         Style="{StaticResource EditTextBoxStyle}"
                                          Text="{Binding TransLanguageMameLocalized}" />
                             </Grid>
                         </Border>
@@ -161,7 +163,7 @@
                             <Grid>
                                 <TextBox Margin="10,25,10,0"
                                          VerticalAlignment="Top"
-                                         BorderBrush="{x:Null}"
+                                         Style="{StaticResource EditTextBoxStyle}"
                                          Text="{Binding TransStartupMessage}" />
                             </Grid>
                         </Border>
@@ -230,8 +232,8 @@
                                                                    Text="{Binding Format}" />
                                                         <TextBox Margin="15,17,10,17"
                                                                  AcceptsReturn="True"
-                                                                 BorderBrush="{x:Null}"
                                                                  FontSize="14"
+                                                                 Style="{StaticResource EditTextBoxStyle}"
                                                                  Text="{Binding TransEdit,
                                                                                 UpdateSourceTrigger=PropertyChanged}"
                                                                  TextWrapping="Wrap" />
@@ -309,8 +311,8 @@
                                                         Background="{StaticResource CellBackgroundBrush}">
                                                     <TextBox Margin="10,17,10,17"
                                                              AcceptsReturn="True"
-                                                             BorderBrush="{x:Null}"
                                                              FontSize="14"
+                                                             Style="{StaticResource EditTextBoxStyle}"
                                                              Text="{Binding TransLabelEdit,
                                                                             UpdateSourceTrigger=PropertyChanged}"
                                                              TextWrapping="Wrap" />
@@ -358,8 +360,8 @@
                                                         Background="{StaticResource CellBackgroundBrush}">
                                                     <TextBox Margin="10,17,10,17"
                                                              AcceptsReturn="True"
-                                                             BorderBrush="{x:Null}"
                                                              FontSize="14"
+                                                             Style="{StaticResource EditTextBoxStyle}"
                                                              Text="{Binding TransHelpTextEdit,
                                                                             UpdateSourceTrigger=PropertyChanged}"
                                                              TextWrapping="Wrap" />
@@ -407,8 +409,8 @@
                                                         Background="{StaticResource CellBackgroundBrush}">
                                                     <TextBox Margin="10,17,10,17"
                                                              AcceptsReturn="True"
-                                                             BorderBrush="{x:Null}"
                                                              FontSize="14"
+                                                             Style="{StaticResource EditTextBoxStyle}"
                                                              Text="{Binding TransMoreHelpTextEdit,
                                                                             UpdateSourceTrigger=PropertyChanged}"
                                                              TextWrapping="Wrap" />
@@ -472,8 +474,8 @@
                             <ScrollViewer VerticalScrollBarVisibility="Auto">
                                 <TextBox Margin="10,17,10,17"
                                          AcceptsReturn="True"
-                                         BorderBrush="{x:Null}"
                                          FontSize="14"
+                                         Style="{StaticResource EditTextBoxStyle}"
                                          Text="{Binding TransHelpPageEdit,
                                                         UpdateSourceTrigger=PropertyChanged}"
                                          TextWrapping="Wrap" />

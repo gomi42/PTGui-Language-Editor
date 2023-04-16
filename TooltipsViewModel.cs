@@ -7,7 +7,6 @@ namespace PTGui_Language_Editor
 {
     public class TooltipsViewModel : ViewModelBaseNavi
     {
-        const int NumItemsPerPage = 10;
         private Action setModified;
         private List<EditorRefTooltip> allDisplayrefTooltips = null!;
         private List<OneTooltip> displayPage = null!;
@@ -31,15 +30,7 @@ namespace PTGui_Language_Editor
             {
                 allDisplayrefTooltips = value;
 
-                CurrentPage = 0;
-                MaxPages = allDisplayrefTooltips.Count / NumItemsPerPage;
-
-                if (allDisplayrefTooltips.Count % NumItemsPerPage > 0)
-                {
-                    MaxPages++;
-                }
-
-                ShowPage(CurrentPage);
+                NumberItems = allDisplayrefTooltips.Count;
             }
         }
 
@@ -57,12 +48,12 @@ namespace PTGui_Language_Editor
             }
         }
 
-        protected override void ShowPage(int currentPage)
+        protected override void ShowPage(int showIndex)
         {
             var list = new List<OneTooltip>();
-            int showIndex = currentPage * NumItemsPerPage;
+            int numItemsPerPage = SelectedItemsPerPage;
 
-            for (int i = showIndex; i < showIndex + NumItemsPerPage && i < AllDisplayRefTooltips.Count(); i++)
+            for (int i = showIndex; i < showIndex + numItemsPerPage && i < AllDisplayRefTooltips.Count(); i++)
             {
                 var one = new OneTooltip(setModified);
                 one.AllRefStrings = AllRefStrings;

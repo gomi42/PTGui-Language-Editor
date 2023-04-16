@@ -1,34 +1,63 @@
-﻿using System.Windows.Input;
+﻿using System.Collections.Generic;
+using System.Windows.Input;
 
 namespace PTGui_Language_Editor
 {
     public abstract class ViewModelBaseNavi : ViewModelBase
     {
-        private DelegateCommand firstPage;
-        private DelegateCommand prevPage;
-        private DelegateCommand nextPage;
-        private DelegateCommand lastPage;
-        private DelegateCommand returnPressed;
         private int maxPages;
         private int currentPage;
         private int currentPageDisplay;
+        private int numberItems;
+        private int selectedItemsPerPage;
+        private bool isPageSelectionVisible;
 
         public ViewModelBaseNavi()
         {
-            firstPage = new DelegateCommand(OnFirstPage);
-            lastPage = new DelegateCommand(OnLastPage);
-            nextPage = new DelegateCommand(OnNextPage);
-            prevPage = new DelegateCommand(OnPrevPage);
-            returnPressed = new DelegateCommand(OnReturnPressed);
+            FirstPage = new DelegateCommand(OnFirstPage);
+            LastPage = new DelegateCommand(OnLastPage);
+            NextPage = new DelegateCommand(OnNextPage);
+            PrevPage = new DelegateCommand(OnPrevPage);
+            ReturnPressed = new DelegateCommand(OnReturnPressed);
+
+            ItemsPerPageSelection = new List<int> { 1, 2, 5, 10, 20 };
+            selectedItemsPerPage = 10;
+            isPageSelectionVisible = true;
         }
+
+        public List<int> ItemsPerPageSelection { get; set; }
+
+        public int SelectedItemsPerPage
+        {
+            get => selectedItemsPerPage;
+            set
+            {
+                var currentFirstItemOfPage = CurrentFirstItemOfPage;
+
+                selectedItemsPerPage = value;
+                NotifyPropertyChanged();
+
+                CalcPages();
+                ShowNewPage(currentFirstItemOfPage / selectedItemsPerPage);
+            }
+        }
+
+        public int NumberItems
+        {
+            get => numberItems;
+            set
+            {
+                numberItems = value;
+                CalcPages();
+                ShowNewPage(0);
+            }
+        }
+
+        public int CurrentFirstItemOfPage => currentPage * selectedItemsPerPage;
 
         public int MaxPages
         {
-            get
-            {
-                return maxPages;
-            }
-
+            get => maxPages;
             set
             {
                 maxPages = value;
@@ -38,11 +67,7 @@ namespace PTGui_Language_Editor
 
         public int CurrentPageDisplay
         {
-            get
-            {
-                return currentPageDisplay;
-            }
-
+            get => currentPageDisplay;
             set
             {
                 currentPageDisplay = value;
@@ -50,28 +75,40 @@ namespace PTGui_Language_Editor
             }
         }
 
-        public int CurrentPage
-        {
-            get
-            {
-                return currentPage;
-            }
+        public ICommand FirstPage { get; init; }
+        public ICommand LastPage { get; init; }
+        public ICommand PrevPage { get; init; }
+        public ICommand NextPage { get; init; }
+        public ICommand ReturnPressed { get; init; }
 
+        public bool IsPageSelectionVisible
+        {
+            get => isPageSelectionVisible;
             set
             {
-                currentPage = value;
-                CurrentPageDisplay = value + 1;
+                isPageSelectionVisible = value;
                 NotifyPropertyChanged();
             }
         }
 
-        public ICommand FirstPage => firstPage;
-        public ICommand LastPage => lastPage;
-        public ICommand PrevPage => prevPage;
-        public ICommand NextPage => nextPage;
-        public ICommand ReturnPressed => returnPressed;
+        protected abstract void ShowPage(int itemIndex);
 
-        protected abstract void ShowPage(int pageIndex);
+        private void CalcPages()
+        {
+            MaxPages = numberItems / selectedItemsPerPage;
+
+            if (numberItems % selectedItemsPerPage > 0)
+            {
+                MaxPages++;
+            }
+        }
+
+        private void ShowNewPage(int page)
+        {
+            currentPage = page;
+            CurrentPageDisplay = page + 1;
+            ShowPage(page * selectedItemsPerPage);
+        }
 
         private void OnReturnPressed()
         {
@@ -87,44 +124,41 @@ namespace PTGui_Language_Editor
                 page = MaxPages - 1;
             }
 
-            CurrentPage = page;
-            ShowPage(page);
+            ShowNewPage(page);
         }
-        
+
         private void OnFirstPage()
         {
-            CurrentPage = 0;
-            ShowPage(CurrentPage);
+            ShowNewPage(0);
         }
 
         private void OnLastPage()
         {
-            CurrentPage = MaxPages - 1;
-            ShowPage(CurrentPage);
+            ShowNewPage(MaxPages - 1);
         }
 
         private void OnPrevPage()
         {
-            CurrentPage--;
+            var page = currentPage - 1;
 
-            if (CurrentPage < 0)
+            if (page < 0)
             {
-                CurrentPage = 0;
+                page = 0;
             }
 
-            ShowPage(CurrentPage);
+            ShowNewPage(page);
         }
 
         private void OnNextPage()
         {
-            CurrentPage++;
+            var page = currentPage + 1;
 
-            if (CurrentPage >= MaxPages)
+            if (page >= MaxPages)
             {
-                CurrentPage--;
+                page = MaxPages - 1;
             }
 
-            ShowPage(CurrentPage);
+            ShowNewPage(page);
         }
     }
 }

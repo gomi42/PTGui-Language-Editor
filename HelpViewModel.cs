@@ -15,6 +15,7 @@ namespace PTGui_Language_Editor
         public HelpPagesViewModel(Action setModifiedAction)
         {
             setModified = setModifiedAction;
+            IsPageSelectionVisible = false;
         }
 
         public List<EditorRefString> AllRefStrings { get; set; } = null!;
@@ -31,10 +32,8 @@ namespace PTGui_Language_Editor
             {
                 allDisplayRefHelPages = value;
 
-                CurrentPage = 0;
-                MaxPages = allDisplayRefHelPages.Count;
-
-                ShowPage(CurrentPage);
+                NumberItems = allDisplayRefHelPages.Count;
+                SelectedItemsPerPage = 1;
             }
         }
 
@@ -106,13 +105,13 @@ namespace PTGui_Language_Editor
             }
         }
 
-        protected override void ShowPage(int currentPage)
+        protected override void ShowPage(int currentIndex)
         {
             setFromCode = true;
 
             if (allDisplayRefHelPages.Count != 0)
             {
-                currentRefHelpPage = allDisplayRefHelPages[currentPage];
+                currentRefHelpPage = allDisplayRefHelPages[currentIndex];
 
                 RefHelpPagePreview = PTGuiTextConverter.ConvertToFlowDocument(currentRefHelpPage.Helptext, true, y => AllRefStrings.FirstOrDefault(x => x.Id == y)?.Txt);
                 var translateHelpPage = currentRefHelpPage.EditorTranslate;

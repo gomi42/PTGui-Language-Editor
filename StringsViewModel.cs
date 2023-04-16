@@ -7,8 +7,6 @@ namespace PTGui_Language_Editor
 {
     public class StringsViewModel : ViewModelBaseNavi
     {
-        const int NumStringsPerPage = 10;
-        
         private Action setModified;
         private List<EditorRefString> allDisplayRefStrings = new List<EditorRefString>();
         private List<OneString> displayPage;
@@ -31,15 +29,7 @@ namespace PTGui_Language_Editor
             set
             {
                 allDisplayRefStrings = value;
-                CurrentPage = 0;
-                MaxPages = allDisplayRefStrings.Count / NumStringsPerPage;
-                
-                if (allDisplayRefStrings.Count % NumStringsPerPage > 0)
-                {
-                    MaxPages++;
-                }
-
-                ShowPage(CurrentPage);
+                NumberItems = allDisplayRefStrings.Count;
             }
         }
 
@@ -57,12 +47,12 @@ namespace PTGui_Language_Editor
             }
         }
 
-        protected override void ShowPage(int currentPage)
+        protected override void ShowPage(int showIndex)
         {
             var list = new List<OneString>();
-            int showIndex = currentPage * NumStringsPerPage;
+            int numStringsPerPage = SelectedItemsPerPage;
 
-            for (int i = showIndex; i < showIndex + NumStringsPerPage && i < AllDisplayRefStrings.Count(); i++)
+            for (int i = showIndex; i < showIndex + numStringsPerPage && i < AllDisplayRefStrings.Count(); i++)
             {
                 var one = new OneString(setModified);
                 one.AllRefStrings = AllRefStrings;
