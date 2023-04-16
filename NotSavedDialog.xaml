@@ -16,8 +16,9 @@
         <Grid>
             <Label Margin="10,6,10,0"
                    VerticalAlignment="Top"
+                   d:Content="Title of the Dialog"
                    Content="{Binding Title}" />
-            <Grid Margin="6,41,10,0"
+            <Grid Margin="6,50,10,0"
                   VerticalAlignment="Top">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto" />
@@ -33,6 +34,7 @@
                            Margin="20,0,0,0"
                            HorizontalAlignment="Left"
                            VerticalAlignment="Center"
+                           d:Text="This is an error message that can be a bit longer."
                            Text="{Binding ErrorMessage}"
                            TextTrimming="CharacterEllipsis"
                            TextWrapping="Wrap" />
@@ -41,19 +43,22 @@
                         HorizontalAlignment="Center"
                         VerticalAlignment="Bottom"
                         Orientation="Horizontal">
-                <Button Width="75"
+                <Button Width="80"
+                        Height="22"
                         Margin="0,0,30,0"
                         HorizontalAlignment="Center"
                         VerticalAlignment="Bottom"
                         Command="{Binding OkCommand}"
                         Content="Save" />
-                <Button Width="75"
+                <Button Width="80"
+                        Height="22"
                         Margin="0,0,30,0"
                         HorizontalAlignment="Center"
                         VerticalAlignment="Bottom"
                         Command="{Binding NoCommand}"
                         Content="Do not save" />
-                <Button Width="75"
+                <Button Width="80"
+                        Height="22"
                         Margin="0,0,0,0"
                         HorizontalAlignment="Center"
                         VerticalAlignment="Bottom"

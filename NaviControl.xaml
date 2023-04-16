@@ -49,6 +49,7 @@
                      MinWidth="30"
                      VerticalAlignment="Center"
                      VerticalContentAlignment="Center"
+                     d:Text="42"
                      Text="{Binding CurrentPageDisplay,
                                     UpdateSourceTrigger=PropertyChanged}">
                 <TextBox.InputBindings>
@@ -60,6 +61,7 @@
                        Text=" / " />
             <TextBlock MinWidth="30"
                        VerticalAlignment="Center"
+                       d:Text="2442"
                        Text="{Binding MaxPages}" />
             <Button Width="40"
                     Height="22"
