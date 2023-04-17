@@ -6,7 +6,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         Title="PTGui Language Editor"
         Width="800"
-        Height="650"
+        Height="550"
         local:WindowClosingBehavior.Closing="{Binding CloseCommand}"
         SnapsToDevicePixels="True"
         UseLayoutRounding="True"
@@ -39,12 +39,8 @@
                             VerticalAlignment="Center"
                             Command="{Binding SaveData}"
                             Content="Save" />
-                    <TextBlock Margin="30,0,0,0"
-                               HorizontalAlignment="Stretch"
-                               VerticalAlignment="Center"
-                               Text="Language" />
-                    <ComboBox Width="87"
-                              Margin="5,0,0,0"
+                    <local:LabelComboBox Width="Auto" Label="Language:"
+                              Margin="30,0,0,0"
                               HorizontalAlignment="Left"
                               VerticalAlignment="Center"
                               ItemsSource="{Binding LanguageFiles}"
@@ -52,7 +48,7 @@
                     <TextBlock Margin="30,0,0,0"
                                HorizontalAlignment="Stretch"
                                VerticalAlignment="Center"
-                               Text="Filter" />
+                               Text="Filter:" />
                     <TextBox Width="200"
                              Height="22"
                              Margin="5,0,10,0"

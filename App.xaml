@@ -4,158 +4,358 @@
              xmlns:local="clr-namespace:PTGui_Language_Editor"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
+        <ResourceDictionary>
+            <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+            <local:DivedByTwoConverter x:Key="DivedByTwoConverter" />
 
-        <!--  colors  -->
-        <Color x:Key="NaviButtonBorderColor">#FFb0b0b0</Color>
-        <Color x:Key="NaviButtonSelectedBackgroundColor">#FF909090</Color>
-        <Color x:Key="NaviButtonBackgroundColor">#FFDDDDDD</Color>
+            <!--  colors  -->
+            <Color x:Key="MouseOverTextColor">#FF646464</Color>
 
-        <Color x:Key="ContentBackgroundColor">#FFf2f2f2</Color>
-        <Color x:Key="IdForegroundColor">#ff999999</Color>
-        <Color x:Key="CellBorderColor">#FFeaeaea</Color>
-        <Color x:Key="CellBackgroundColor">#FFFFFFFF</Color>
+            <Color x:Key="NaviButtonBorderColor">#FFb0b0b0</Color>
+            <Color x:Key="NaviButtonSelectedBackgroundColor">#FFa0a0a0</Color>
+            <Color x:Key="NaviButtonBackgroundColor">#FFDDDDDD</Color>
 
-        <!--  brushes  -->
-        <SolidColorBrush x:Key="NaviButtonBorderBrush" Color="{StaticResource NaviButtonBorderColor}" />
-        <SolidColorBrush x:Key="SelectionBackgroundBrush" Color="{StaticResource NaviButtonSelectedBackgroundColor}" />
-        <SolidColorBrush x:Key="NaviButtonBackgroundBrush" Color="{StaticResource NaviButtonBackgroundColor}" />
+            <Color x:Key="ContentBackgroundColor">#FFf2f2f2</Color>
+            <Color x:Key="IdForegroundColor">#ff999999</Color>
+            <Color x:Key="CellBorderColor">#FFeaeaea</Color>
+            <Color x:Key="CellBackgroundColor">#FFFFFFFF</Color>
 
-        <SolidColorBrush x:Key="ContentBackgroundBrush" Color="{StaticResource ContentBackgroundColor}" />
-        <SolidColorBrush x:Key="IdForegroundBrush" Color="{StaticResource IdForegroundColor}" />
-        <SolidColorBrush x:Key="CellBorderBrush" Color="{StaticResource CellBorderColor}" />
-        <SolidColorBrush x:Key="CellBackgroundBrush" Color="{StaticResource CellBackgroundColor}" />
-        <SolidColorBrush x:Key="CellBackgroundBrushPreview" Color="#FFfcfcFc" />
+            <!--  brushes  -->
+            <SolidColorBrush x:Key="MouseOverTextBrush" Color="{StaticResource MouseOverTextColor}" />
 
-        <!--  icons  -->
-        <Geometry x:Key="WarningIcon">F1M55.37731,33.278 L53.77159,51.68605 C53.59659,53.87661 53.22339,55.55711 52.65126,56.72681 C52.07838,57.89725 51.1323,58.4821 49.81377,58.4821 C48.46907,58.4821 47.53571,57.91595 47.01294,56.7829 C46.49016,55.6506 46.11697,53.92672 45.8926,51.61126 L44.698,33.72606 C44.47401,30.24121 44.36198,27.73953 44.36198,26.22079 C44.36198,24.1549 44.90315,22.54291 45.98609,21.3854 C47.06903,20.2279 48.49375,19.64911 50.26176,19.64911 C52.40221,19.64911 53.83292,20.39011 54.55538,21.87085 C55.27709,23.35219 55.63832,25.48689 55.63832,28.27449 C55.63832,29.91745 55.55082,31.58539 55.37731,33.278 z M53.95782,74.68732 C52.83823,75.68201 51.53092,76.18085 50.03739,76.18085 C48.51918,76.18085 47.19318,75.68874 46.06088,74.70602 C44.92783,73.72255 44.36198,72.34718 44.36198,70.57992 C44.36198,69.03629 44.90315,67.723 45.98609,66.6408 C47.06903,65.55786 48.39428,65.01639 49.9626,65.01639 C51.53092,65.01639 52.86889,65.55786 53.97651,66.6408 C55.08413,67.723 55.63832,69.03629 55.63832,70.57992 C55.63832,72.3225 55.07815,73.69188 53.95782,74.68732 z M99.52658,78.56661 L52.5817,1.43596 C51.80615,0.18654 50.63121,0.00001 50,0.00001 C49.36878,0.00001 48.1946,0.18654 47.41904,1.43596 L0.47401,78.56661 C0.15526,79.07966 0.00022,79.5957 0,80.14391 C-0.00037,80.92769 0.32234,81.71522 0.88527,82.30455 C1.45681,82.90286 2.1869,83.2065 3.05542,83.2065 L96.94488,83.2065 C97.81317,83.2065 98.54386,82.90286 99.11525,82.30455 C99.67766,81.71522 100.00074,80.92769 100,80.14391 C100,79.5957 99.84518,79.07966 99.52658,78.56661 z</Geometry>
+            <SolidColorBrush x:Key="NaviButtonBorderBrush" Color="{StaticResource NaviButtonBorderColor}" />
+            <SolidColorBrush x:Key="SelectionBackgroundBrush" Color="{StaticResource NaviButtonSelectedBackgroundColor}" />
+            <SolidColorBrush x:Key="NaviButtonBackgroundBrush" Color="{StaticResource NaviButtonBackgroundColor}" />
 
-        <!--  styles  -->
-        <Style TargetType="{x:Type Label}">
-            <Setter Property="Padding" Value="0" />
-        </Style>
+            <SolidColorBrush x:Key="ContentBackgroundBrush" Color="{StaticResource ContentBackgroundColor}" />
+            <SolidColorBrush x:Key="IdForegroundBrush" Color="{StaticResource IdForegroundColor}" />
+            <SolidColorBrush x:Key="CellBorderBrush" Color="{StaticResource CellBorderColor}" />
+            <SolidColorBrush x:Key="CellBackgroundBrush" Color="{StaticResource CellBackgroundColor}" />
+            <SolidColorBrush x:Key="CellBackgroundBrushPreview" Color="#FFfcfcFc" />
 
-        <Style x:Key="EditTextBoxStyle"
-               TargetType="{x:Type TextBox}">
-            <Setter Property="BorderBrush" Value="#FFffffFF" />
-            <Setter Property="Background" Value="#FFFFFF" />
-        </Style>
+            <!--  icons  -->
+            <Geometry x:Key="WarningIcon">F1M55.37731,33.278 L53.77159,51.68605 C53.59659,53.87661 53.22339,55.55711 52.65126,56.72681 C52.07838,57.89725 51.1323,58.4821 49.81377,58.4821 C48.46907,58.4821 47.53571,57.91595 47.01294,56.7829 C46.49016,55.6506 46.11697,53.92672 45.8926,51.61126 L44.698,33.72606 C44.47401,30.24121 44.36198,27.73953 44.36198,26.22079 C44.36198,24.1549 44.90315,22.54291 45.98609,21.3854 C47.06903,20.2279 48.49375,19.64911 50.26176,19.64911 C52.40221,19.64911 53.83292,20.39011 54.55538,21.87085 C55.27709,23.35219 55.63832,25.48689 55.63832,28.27449 C55.63832,29.91745 55.55082,31.58539 55.37731,33.278 z M53.95782,74.68732 C52.83823,75.68201 51.53092,76.18085 50.03739,76.18085 C48.51918,76.18085 47.19318,75.68874 46.06088,74.70602 C44.92783,73.72255 44.36198,72.34718 44.36198,70.57992 C44.36198,69.03629 44.90315,67.723 45.98609,66.6408 C47.06903,65.55786 48.39428,65.01639 49.9626,65.01639 C51.53092,65.01639 52.86889,65.55786 53.97651,66.6408 C55.08413,67.723 55.63832,69.03629 55.63832,70.57992 C55.63832,72.3225 55.07815,73.69188 53.95782,74.68732 z M99.52658,78.56661 L52.5817,1.43596 C51.80615,0.18654 50.63121,0.00001 50,0.00001 C49.36878,0.00001 48.1946,0.18654 47.41904,1.43596 L0.47401,78.56661 C0.15526,79.07966 0.00022,79.5957 0,80.14391 C-0.00037,80.92769 0.32234,81.71522 0.88527,82.30455 C1.45681,82.90286 2.1869,83.2065 3.05542,83.2065 L96.94488,83.2065 C97.81317,83.2065 98.54386,82.90286 99.11525,82.30455 C99.67766,81.71522 100.00074,80.92769 100,80.14391 C100,79.5957 99.84518,79.07966 99.52658,78.56661 z</Geometry>
 
-        <Style x:Key="ButtonTabItemStyle"
-               TargetType="{x:Type TabItem}">
-            <Setter Property="FocusVisualStyle" Value="{x:Null}" />
-            <Setter Property="Height" Value="25" />
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="{x:Type TabItem}">
-                        <Grid x:Name="Root">
-                            <Border x:Name="Border"
-                                    Margin="-1,0,0,0"
-                                    Background="{StaticResource NaviButtonBackgroundBrush}"
-                                    BorderBrush="{StaticResource NaviButtonBorderBrush}"
-                                    BorderThickness="1">
-                                <ContentPresenter x:Name="ContentSite"
-                                                  HorizontalAlignment="Center"
-                                                  VerticalAlignment="Center"
-                                                  ContentSource="Header"
-                                                  RecognizesAccessKey="True"
-                                                  TextElement.FontSize="14" />
-                            </Border>
-                            <VisualStateManager.VisualStateGroups>
-                                <VisualStateGroup x:Name="SelectionStates">
-                                    <VisualState x:Name="Unselected" />
-                                    <VisualState x:Name="Selected">
-                                        <Storyboard>
-                                            <ColorAnimation Storyboard.TargetName="Border"
-                                                            Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)"
-                                                            To="{StaticResource NaviButtonSelectedBackgroundColor}"
-                                                            Duration="0" />
-                                            <ColorAnimation Storyboard.TargetName="Border"
-                                                            Storyboard.TargetProperty="(Border.BorderBrush).(SolidColorBrush.Color)"
-                                                            To="{StaticResource NaviButtonSelectedBackgroundColor}"
-                                                            Duration="0" />
-                                            <ThicknessAnimation Storyboard.TargetName="Border"
-                                                                Storyboard.TargetProperty="BorderThickness"
-                                                                To="1,1,1,0"
+            <!--  styles  -->
+            <Style TargetType="{x:Type Label}">
+                <Setter Property="Padding" Value="0" />
+            </Style>
+
+            <Style x:Key="EditTextBoxStyle"
+                   TargetType="{x:Type TextBox}">
+                <Setter Property="BorderBrush" Value="#FFffffFF" />
+                <Setter Property="Background" Value="#FFFFFF" />
+            </Style>
+
+            <Style x:Key="ButtonTabItemStyle"
+                   TargetType="{x:Type TabItem}">
+                <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+                <Setter Property="Height" Value="25" />
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type TabItem}">
+                            <Grid x:Name="Root">
+                                <Border x:Name="Border"
+                                        Margin="-1,0,0,0"
+                                        Background="{StaticResource NaviButtonBackgroundBrush}"
+                                        BorderBrush="{StaticResource NaviButtonBorderBrush}"
+                                        BorderThickness="1">
+                                    <ContentPresenter x:Name="ContentSite"
+                                                      HorizontalAlignment="Center"
+                                                      VerticalAlignment="Center"
+                                                      ContentSource="Header"
+                                                      RecognizesAccessKey="True"
+                                                      TextElement.FontSize="14" />
+                                </Border>
+                                <VisualStateManager.VisualStateGroups>
+                                    <VisualStateGroup x:Name="SelectionStates">
+                                        <VisualState x:Name="Unselected" />
+                                        <VisualState x:Name="Selected">
+                                            <Storyboard>
+                                                <ColorAnimation Storyboard.TargetName="Border"
+                                                                Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)"
+                                                                To="{StaticResource ContentBackgroundColor}"
                                                                 Duration="0" />
-                                            <ThicknessAnimation Storyboard.TargetName="Border"
-                                                                Storyboard.TargetProperty="Margin"
-                                                                To="-1,-4,0,0"
+                                                <ColorAnimation Storyboard.TargetName="Border"
+                                                                Storyboard.TargetProperty="(Border.BorderBrush).(SolidColorBrush.Color)"
+                                                                To="{StaticResource NaviButtonSelectedBackgroundColor}"
                                                                 Duration="0" />
-                                            <ColorAnimation Storyboard.TargetName="ContentSite"
-                                                            Storyboard.TargetProperty="(TextElement.Foreground).(SolidColorBrush.Color)"
-                                                            To="White"
-                                                            Duration="0" />
-                                        </Storyboard>
-                                    </VisualState>
-                                </VisualStateGroup>
-                                <VisualStateGroup x:Name="CommonStates">
-                                    <VisualState x:Name="Normal" />
-                                    <VisualState x:Name="MouseOver" />
-                                    <VisualState x:Name="Disabled" />
-                                </VisualStateGroup>
-                            </VisualStateManager.VisualStateGroups>
-                        </Grid>
-                        <ControlTemplate.Triggers>
-                            <Trigger Property="IsSelected" Value="True">
-                                <Setter Property="Panel.ZIndex" Value="100" />
-                            </Trigger>
-                        </ControlTemplate.Triggers>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
+                                                <ThicknessAnimation Storyboard.TargetName="Border"
+                                                                    Storyboard.TargetProperty="BorderThickness"
+                                                                    To="1,1,1,0"
+                                                                    Duration="0" />
+                                                <ThicknessAnimation Storyboard.TargetName="Border"
+                                                                    Storyboard.TargetProperty="Margin"
+                                                                    To="-1,-4,0,0"
+                                                                    Duration="0" />
+                                                <ColorAnimation Storyboard.TargetName="ContentSite"
+                                                                Storyboard.TargetProperty="(TextElement.Foreground).(SolidColorBrush.Color)"
+                                                                To="Black"
+                                                                Duration="0" />
+                                                <ObjectAnimationUsingKeyFrames Storyboard.TargetName="Border"
+                                                                               Storyboard.TargetProperty="(Border.CornerRadius)">
+                                                    <DiscreteObjectKeyFrame KeyTime="0">
+                                                        <DiscreteObjectKeyFrame.Value>
+                                                            <CornerRadius BottomLeft="0"
+                                                                          BottomRight="0"
+                                                                          TopLeft="3"
+                                                                          TopRight="3" />
+                                                        </DiscreteObjectKeyFrame.Value>
+                                                    </DiscreteObjectKeyFrame>
+                                                </ObjectAnimationUsingKeyFrames>
+                                            </Storyboard>
+                                        </VisualState>
+                                    </VisualStateGroup>
+                                    <VisualStateGroup x:Name="CommonStates">
+                                        <VisualState x:Name="Normal" />
+                                        <VisualState x:Name="MouseOver" />
+                                        <VisualState x:Name="Disabled" />
+                                    </VisualStateGroup>
+                                </VisualStateManager.VisualStateGroups>
+                            </Grid>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsSelected" Value="True">
+                                    <Setter Property="Panel.ZIndex" Value="100" />
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
 
-        <Style TargetType="{x:Type TabControl}">
-            <Setter Property="ItemContainerStyle" Value="{StaticResource ButtonTabItemStyle}" />
-            <Setter Property="Padding" Value="10" />
-            <Setter Property="HorizontalContentAlignment" Value="Center" />
-            <Setter Property="VerticalContentAlignment" Value="Center" />
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="{x:Type TabControl}">
-                        <Grid KeyboardNavigation.TabNavigation="Local">
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="*" />
-                            </Grid.RowDefinitions>
-                            <local:UniformTabPanel x:Name="HeaderPanel"
-                                                   Grid.Row="0"
-                                                   Margin="1,0,0,0"
-                                                   VerticalAlignment="Top"
-                                                   Panel.ZIndex="1"
-                                                   IsItemsHost="True"
-                                                   KeyboardNavigation.TabIndex="1" />
-                            <Border x:Name="Border"
-                                    Grid.Row="1"
-                                    Background="{StaticResource ContentBackgroundBrush}"
-                                    BorderBrush="#FFABABB3"
-                                    BorderThickness="0,0,0,0"
-                                    KeyboardNavigation.DirectionalNavigation="Contained"
-                                    KeyboardNavigation.TabIndex="2"
-                                    KeyboardNavigation.TabNavigation="Local">
-                                <ContentControl x:Name="PART_SelectedContentHost"
-                                                Content="{TemplateBinding SelectedContent}" />
+            <Style TargetType="{x:Type TabControl}">
+                <Setter Property="ItemContainerStyle" Value="{StaticResource ButtonTabItemStyle}" />
+                <Setter Property="Padding" Value="10" />
+                <Setter Property="HorizontalContentAlignment" Value="Center" />
+                <Setter Property="VerticalContentAlignment" Value="Center" />
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type TabControl}">
+                            <Grid KeyboardNavigation.TabNavigation="Local">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="*" />
+                                </Grid.RowDefinitions>
+                                <local:UniformTabPanel x:Name="HeaderPanel"
+                                                       Grid.Row="0"
+                                                       Margin="1,0,0,0"
+                                                       VerticalAlignment="Top"
+                                                       Panel.ZIndex="1"
+                                                       IsItemsHost="True"
+                                                       KeyboardNavigation.TabIndex="1" />
+                                <Border x:Name="Border"
+                                        Grid.Row="1"
+                                        Background="{StaticResource ContentBackgroundBrush}"
+                                        BorderBrush="#FFABABB3"
+                                        BorderThickness="0,0,0,0"
+                                        KeyboardNavigation.DirectionalNavigation="Contained"
+                                        KeyboardNavigation.TabIndex="2"
+                                        KeyboardNavigation.TabNavigation="Local">
+                                    <ContentControl x:Name="PART_SelectedContentHost"
+                                                    Content="{TemplateBinding SelectedContent}" />
+                                </Border>
+                            </Grid>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+
+            <Style x:Key="DialogBorderErrorStyle"
+                   TargetType="{x:Type Border}">
+                <Setter Property="Background" Value="White" />
+                <Setter Property="BorderBrush" Value="#FFC76B6B" />
+                <Setter Property="BorderThickness" Value="2" />
+                <Setter Property="Effect">
+                    <Setter.Value>
+                        <DropShadowEffect BlurRadius="8"
+                                          Opacity="0.6"
+                                          ShadowDepth="0"
+                                          Color="#FFcccccc" />
+                    </Setter.Value>
+                </Setter>
+            </Style>
+
+            <Style x:Key="{x:Type Button}"
+                   TargetType="{x:Type Button}">
+                <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type Button}">
+                            <Grid>
+                                <Border x:Name="Border"
+                                        Background="#ffffffff"
+                                        BorderBrush="#ffc0c0c0"
+                                        BorderThickness="1"
+                                        CornerRadius="{TemplateBinding Height,
+                                                                       Converter={StaticResource DivedByTwoConverter}}">
+                                    <ContentPresenter x:Name="Content"
+                                                      Margin="0,0,0,1"
+                                                      HorizontalAlignment="Center"
+                                                      VerticalAlignment="Center"
+                                                      RecognizesAccessKey="True" />
+                                </Border>
+                                <VisualStateManager.VisualStateGroups>
+                                    <VisualStateGroup x:Name="CommonStates">
+                                        <VisualState x:Name="Normal" />
+                                        <VisualState x:Name="MouseOver">
+                                            <Storyboard>
+                                                <ColorAnimation Storyboard.TargetName="Border"
+                                                                Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)"
+                                                                To="#ffd0d0d0"
+                                                                Duration="0" />
+                                            </Storyboard>
+                                        </VisualState>
+                                        <VisualState x:Name="Pressed">
+                                            <Storyboard>
+                                                <ColorAnimation Storyboard.TargetName="Border"
+                                                                Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)"
+                                                                To="#ffc0c0c0"
+                                                                Duration="0" />
+                                            </Storyboard>
+                                        </VisualState>
+                                        <VisualState x:Name="Disabled">
+                                            <Storyboard>
+                                                <ColorAnimation Storyboard.TargetName="Border"
+                                                                Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)"
+                                                                To="#ffe0e0e0"
+                                                                Duration="0" />
+                                                <ColorAnimation Storyboard.TargetName="Content"
+                                                                Storyboard.TargetProperty="(TextElement.Foreground).(SolidColorBrush.Color)"
+                                                                To="#ffc0c0c0"
+                                                                Duration="0" />
+                                            </Storyboard>
+                                        </VisualState>
+                                    </VisualStateGroup>
+                                    <VisualStateGroup x:Name="FocusStates" />
+                                    <VisualStateGroup x:Name="ValidationStates" />
+                                </VisualStateManager.VisualStateGroups>
+                            </Grid>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+
+            <Geometry x:Key="DownArrowGeometry">M 0 0 L 3.5 4 L 7 0</Geometry>
+
+            <Style x:Key="ComboBoxReadonlyToggleButton"
+                   TargetType="{x:Type ToggleButton}">
+                <Setter Property="OverridesDefaultStyle" Value="true" />
+                <Setter Property="IsTabStop" Value="false" />
+                <Setter Property="Focusable" Value="false" />
+                <Setter Property="ClickMode" Value="Press" />
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type ToggleButton}">
+                            <Border Background="Transparent">
+                                <Grid Width="{DynamicResource {x:Static SystemParameters.VerticalScrollBarWidthKey}}"
+                                      HorizontalAlignment="Right">
+                                    <Path Name="Arrow"
+                                          Margin="0,4,0,0"
+                                          HorizontalAlignment="Center"
+                                          VerticalAlignment="Center"
+                                          Data="{StaticResource DownArrowGeometry}"
+                                          Stroke="{TemplateBinding Foreground}" />
+                                </Grid>
                             </Border>
-                        </Grid>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsEnabled" Value="False">
+                                    <Setter TargetName="Arrow" Property="Stroke" Value="#FFCDCDCD" />
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
 
-        <Style x:Key="DialogBorderErrorStyle"
-               TargetType="{x:Type Border}">
-            <Setter Property="Background" Value="White" />
-            <Setter Property="BorderBrush" Value="#FFC76B6B" />
-            <Setter Property="BorderThickness" Value="2" />
-            <Setter Property="Effect">
-                <Setter.Value>
-                    <DropShadowEffect BlurRadius="8"
-                                      Opacity="0.6"
-                                      ShadowDepth="0"
-                                      Color="#FFcccccc" />
-                </Setter.Value>
-            </Setter>
-        </Style>
-
+            <Style TargetType="{x:Type local:LabelComboBox}">
+                <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+                <Setter Property="VerticalAlignment" Value="Center" />
+                <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.WindowTextBrushKey}}" />
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type local:LabelComboBox}">
+                            <Grid Name="MainGrid"
+                                  SnapsToDevicePixels="true">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="10" />
+                                </Grid.ColumnDefinitions>
+                                <Popup Name="PART_Popup"
+                                       Grid.ColumnSpan="2"
+                                       Margin="1"
+                                       AllowsTransparency="true"
+                                       IsOpen="{Binding Path=IsDropDownOpen,
+                                                        RelativeSource={RelativeSource TemplatedParent}}"
+                                       Placement="Bottom"
+                                       PopupAnimation="{DynamicResource {x:Static SystemParameters.ComboBoxPopupAnimationKey}}"
+                                       VerticalOffset="-9">
+                                    <Border Padding="9">
+                                        <Border.Effect>
+                                            <DropShadowEffect BlurRadius="9"
+                                                              ShadowDepth="3"
+                                                              Color="#FFDEDEDE" />
+                                        </Border.Effect>
+                                        <Border x:Name="DropDownBorder"
+                                                Background="{DynamicResource {x:Static SystemColors.WindowBrushKey}}"
+                                                BorderBrush="{DynamicResource {x:Static SystemColors.ActiveBorderBrushKey}}"
+                                                BorderThickness="1">
+                                            <ScrollViewer Name="DropDownScrollViewer">
+                                                <Grid RenderOptions.ClearTypeHint="Enabled">
+                                                    <Canvas Width="0"
+                                                            Height="0"
+                                                            HorizontalAlignment="Left"
+                                                            VerticalAlignment="Top">
+                                                        <Rectangle Name="OpaqueRect"
+                                                                   Width="{Binding ElementName=DropDownBorder,
+                                                                                   Path=ActualWidth}"
+                                                                   Height="{Binding ElementName=DropDownBorder,
+                                                                                    Path=ActualHeight}"
+                                                                   Fill="{Binding ElementName=DropDownBorder,
+                                                                                  Path=Background}" />
+                                                    </Canvas>
+                                                    <ItemsPresenter Name="ItemsPresenter"
+                                                                    KeyboardNavigation.DirectionalNavigation="Contained"
+                                                                    SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                                                </Grid>
+                                            </ScrollViewer>
+                                        </Border>
+                                    </Border>
+                                </Popup>
+                                <TextBlock Margin="0,0,0,0"
+                                           VerticalAlignment="Center"
+                                           Text="{TemplateBinding Label}" />
+                                <ToggleButton x:Name="ToggleButton"
+                                              Grid.Column="1"
+                                              Grid.ColumnSpan="2"
+                                              Background="{TemplateBinding Background}"
+                                              BorderBrush="{TemplateBinding BorderBrush}"
+                                              IsChecked="{Binding Path=IsDropDownOpen,
+                                                                  Mode=TwoWay,
+                                                                  RelativeSource={RelativeSource TemplatedParent}}"
+                                              Style="{StaticResource ComboBoxReadonlyToggleButton}" />
+                                <ContentPresenter x:Name="ContentPresenter"
+                                                  Grid.Column="1"
+                                                  Margin="{TemplateBinding Padding}"
+                                                  HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                                  VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                                  Content="{TemplateBinding SelectionBoxItem}"
+                                                  ContentStringFormat="{TemplateBinding SelectionBoxItemStringFormat}"
+                                                  ContentTemplate="{TemplateBinding SelectionBoxItemTemplate}"
+                                                  ContentTemplateSelector="{TemplateBinding ItemTemplateSelector}"
+                                                  IsHitTestVisible="false"
+                                                  SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                            </Grid>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter TargetName="ContentPresenter" Property="TextElement.Foreground" Value="{StaticResource MouseOverTextBrush}" />
+                                    <Setter TargetName="ToggleButton" Property="Foreground" Value="{StaticResource MouseOverTextBrush}" />
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+        </ResourceDictionary>
     </Application.Resources>
 </Application>

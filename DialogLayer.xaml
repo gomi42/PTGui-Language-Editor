@@ -8,7 +8,7 @@
              mc:Ignorable="d">
     <Grid>
         <Border x:Name="BackgroundLayer"
-                Background="#D0E6E6E6" />
+                Background="#C0D6D6D6" />
         <Grid x:Name="DialogBoxLayer" />
     </Grid>
 </UserControl>
