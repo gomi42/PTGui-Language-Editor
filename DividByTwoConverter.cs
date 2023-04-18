@@ -25,7 +25,7 @@ using System.Windows.Data;
 
 namespace PTGui_Language_Editor
 {
-    public class DivedByTwoConverter : IValueConverter
+    public class DividByTwoConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {

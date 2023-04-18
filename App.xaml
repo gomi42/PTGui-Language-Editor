@@ -28,7 +28,7 @@
     <Application.Resources>
         <ResourceDictionary>
             <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
-            <local:DivedByTwoConverter x:Key="DivedByTwoConverter" />
+            <local:DividByTwoConverter x:Key="DividByTwoConverter" />
 
             <!--  colors  -->
             <Color x:Key="MouseOverTextColor">#FF646464</Color>
@@ -209,7 +209,7 @@
                                         BorderBrush="#ffc0c0c0"
                                         BorderThickness="1"
                                         CornerRadius="{TemplateBinding Height,
-                                                                       Converter={StaticResource DivedByTwoConverter}}">
+                                                                       Converter={StaticResource DividByTwoConverter}}">
                                     <ContentPresenter x:Name="Content"
                                                       Margin="0,0,0,1"
                                                       HorizontalAlignment="Center"
