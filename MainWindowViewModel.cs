@@ -156,7 +156,6 @@ namespace PTGui_Language_Editor
                 {
                     languageFilesRoot = dialog.SelectedPath;
                     ScanLanguageFiles();
-                    LoadLanguageFiles();
                 }
             }
 
@@ -442,8 +441,8 @@ namespace PTGui_Language_Editor
         }
 
         private void SaveModifiedData(string filename)
-            {
-                using FileStream json = File.Create(GetLanguageFilename(filename));
+        {
+            using FileStream json = File.Create(GetLanguageFilename(filename));
 
             var jso = new JsonSerializerOptions
             {

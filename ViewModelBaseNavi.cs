@@ -71,6 +71,7 @@ namespace PTGui_Language_Editor
                 numberItems = value;
                 CalcPages();
                 ShowNewPage(0);
+                NotifyPropertyChanged();
             }
         }
 

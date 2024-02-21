@@ -24,21 +24,21 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             Width="400"
-             Height="167"
+             Width="500"
+             Height="220"
              MinHeight="167"
              MaxHeight="300"
              SnapsToDevicePixels="True"
              UseLayoutRounding="True"
              mc:Ignorable="d">
-    <Border CornerRadius="7"
+    <Border CornerRadius="7" TextElement.FontSize="{StaticResource ControlFontSize}"
             Style="{StaticResource DialogBorderErrorStyle}">
         <Grid>
             <Label Margin="10,6,10,0"
                    VerticalAlignment="Top"
                    d:Content="Title of the Dialog"
                    Content="{Binding Title}" />
-            <Grid Margin="6,50,10,0"
+            <Grid Margin="10,60,10,0"
                   VerticalAlignment="Top">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto" />
@@ -59,27 +59,29 @@
                            TextTrimming="CharacterEllipsis"
                            TextWrapping="Wrap" />
             </Grid>
-            <Border Margin="0,119,0,0">
-                <StackPanel Margin="0,0,0,10"
+            <Border Height="70" VerticalAlignment="Bottom"
+                    Background="{StaticResource ContentBackgroundBrush}"
+                    CornerRadius="0,0,6,6">
+                <StackPanel
                             HorizontalAlignment="Center"
-                            VerticalAlignment="Bottom"
+                            VerticalAlignment="Center"
                             Orientation="Horizontal">
                     <Button Width="80"
-                            Height="22"
+                            Height="32"
                             Margin="0,0,30,0"
                             HorizontalAlignment="Center"
                             VerticalAlignment="Bottom"
                             Command="{Binding OkCommand}"
                             Content="Save" />
-                    <Button Width="80"
-                            Height="22"
+                    <Button Width="110"
+                            Height="32"
                             Margin="0,0,30,0"
                             HorizontalAlignment="Center"
                             VerticalAlignment="Bottom"
                             Command="{Binding NoCommand}"
                             Content="Do not save" />
                     <Button Width="80"
-                            Height="22"
+                            Height="32"
                             Margin="0,0,0,0"
                             HorizontalAlignment="Center"
                             VerticalAlignment="Bottom"
