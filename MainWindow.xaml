@@ -89,12 +89,14 @@
         </Border>
 
         <TabControl Margin="-1,80,-1,-1">
-            <TabItem Header="General"  TextElement.FontSize="{StaticResource TabFontSize}">
+            <TabItem Header="General"
+                     TextElement.FontSize="{StaticResource TabFontSize}">
                 <StackPanel Margin="0,19,0,0"
                             DataContext="{Binding GeneralViewModel}">
                     <Grid MinHeight="70"
                           Margin="10"
-                          VerticalAlignment="Top" TextElement.FontSize="{StaticResource StandardFontSize}">
+                          VerticalAlignment="Top"
+                          TextElement.FontSize="{StaticResource StandardFontSize}">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="1*" />
                             <ColumnDefinition Width="1*" />
@@ -103,7 +105,8 @@
                             <Grid>
                                 <TextBlock Margin="10,0,0,0"
                                            HorizontalAlignment="Left"
-                                           VerticalAlignment="Top" FontSize="{StaticResource IdFontSize}"
+                                           VerticalAlignment="Top"
+                                           FontSize="{StaticResource IdFontSize}"
                                            Foreground="{StaticResource IdForegroundBrush}"
                                            Text="Contributers" />
                                 <TextBlock Margin="10,25,10,0"
@@ -128,7 +131,8 @@
                     </Grid>
                     <Grid Height="70"
                           Margin="10"
-                          VerticalAlignment="Top" TextElement.FontSize="{StaticResource StandardFontSize}">
+                          VerticalAlignment="Top"
+                          TextElement.FontSize="{StaticResource StandardFontSize}">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="1*" />
                             <ColumnDefinition Width="1*" />
@@ -137,7 +141,8 @@
                             <Grid>
                                 <TextBlock Margin="10,0,0,0"
                                            HorizontalAlignment="Left"
-                                           VerticalAlignment="Top" FontSize="{StaticResource IdFontSize}"
+                                           VerticalAlignment="Top"
+                                           FontSize="{StaticResource IdFontSize}"
                                            Foreground="{StaticResource IdForegroundBrush}"
                                            Text="Localized Language Name" />
                                 <TextBlock Margin="10,25,10,0"
@@ -161,7 +166,8 @@
                     </Grid>
                     <Grid MinHeight="70"
                           Margin="10"
-                          VerticalAlignment="Top" TextElement.FontSize="{StaticResource StandardFontSize}">
+                          VerticalAlignment="Top"
+                          TextElement.FontSize="{StaticResource StandardFontSize}">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="1*" />
                             <ColumnDefinition Width="1*" />
@@ -170,7 +176,8 @@
                             <Grid>
                                 <TextBlock Margin="10,0,0,0"
                                            HorizontalAlignment="Left"
-                                           VerticalAlignment="Top" FontSize="{StaticResource IdFontSize}"
+                                           VerticalAlignment="Top"
+                                           FontSize="{StaticResource IdFontSize}"
                                            Foreground="{StaticResource IdForegroundBrush}"
                                            Text="Startup Message" />
                                 <TextBlock Margin="10,25,10,0"
@@ -198,8 +205,9 @@
             <TabItem>
                 <TabItem.Header>
                     <StackPanel DataContext="{Binding StringsViewModel}"
-                                Orientation="Horizontal" TextElement.FontSize="{StaticResource TabFontSize}">
-                        <TextBlock Text="General" />
+                                Orientation="Horizontal"
+                                TextElement.FontSize="{StaticResource TabFontSize}">
+                        <TextBlock Text="Strings" />
                         <TextBlock VerticalAlignment="Center"
                                    FontSize="9"
                                    Text=" (" />
@@ -227,8 +235,9 @@
                                             <ColumnDefinition Width="1*" />
                                         </Grid.ColumnDefinitions>
                                         <TextBlock Height="24"
-                                                   Margin="3,0,0,0" FontSize="{StaticResource IdFontSize}"
+                                                   Margin="3,0,0,0"
                                                    VerticalAlignment="Top"
+                                                   FontSize="{StaticResource IdFontSize}"
                                                    Foreground="{StaticResource IdForegroundBrush}"
                                                    Text="{Binding Id}" />
                                         <Border Margin="0,19,0,0"
@@ -267,12 +276,14 @@
                                                 Background="{StaticResource CellBackgroundBrush}">
                                             <Grid>
                                                 <TextBlock Height="24"
-                                                           Margin="18,0,0,0" FontSize="{StaticResource IdFontSize}"
+                                                           Margin="18,0,0,0"
                                                            VerticalAlignment="Top"
+                                                           FontSize="{StaticResource IdFontSize}"
                                                            Foreground="#ff999999"
                                                            Text="{Binding Format}" />
-                                                <TextBox Margin="15,17,10,17" FontSize="{StaticResource StandardFontSize}"
+                                                <TextBox Margin="15,17,10,17"
                                                          AcceptsReturn="True"
+                                                         FontSize="{StaticResource StandardFontSize}"
                                                          Style="{StaticResource EditTextBoxStyle}"
                                                          Text="{Binding TransEdit,
                                                                         UpdateSourceTrigger=PropertyChanged}"
@@ -290,7 +301,8 @@
             <TabItem>
                 <TabItem.Header>
                     <StackPanel DataContext="{Binding TooltipsViewModel}"
-                                Orientation="Horizontal" TextElement.FontSize="{StaticResource TabFontSize}">
+                                Orientation="Horizontal"
+                                TextElement.FontSize="{StaticResource TabFontSize}">
                         <TextBlock Text="Tooltips" />
                         <TextBlock VerticalAlignment="Center"
                                    FontSize="9"
@@ -313,7 +325,8 @@
                                 <DataTemplate>
                                     <Grid Margin="0,0,10,15">
                                         <TextBlock Margin="3,0,10,0"
-                                                   VerticalAlignment="Top" FontSize="{StaticResource IdFontSize}"
+                                                   VerticalAlignment="Top"
+                                                   FontSize="{StaticResource IdFontSize}"
                                                    Foreground="{StaticResource IdForegroundBrush}"
                                                    Text="{Binding Id}" />
                                         <Grid Margin="0,19,0,0">
@@ -330,8 +343,9 @@
                                             <Border Background="{StaticResource CellBackgroundBrushPreview}">
                                                 <Grid>
                                                     <TextBlock Height="24"
-                                                               Margin="18,0,0,0" FontSize="{StaticResource IdFontSize}"
+                                                               Margin="18,0,0,0"
                                                                VerticalAlignment="Top"
+                                                               FontSize="{StaticResource IdFontSize}"
                                                                Foreground="{StaticResource IdForegroundBrush}"
                                                                Text="Label" />
                                                     <FlowDocumentScrollViewer Document="{Binding RefLabelPreview}"
@@ -364,7 +378,8 @@
                                                     Margin="2,0,0,0"
                                                     Background="{StaticResource CellBackgroundBrush}">
                                                 <TextBox Margin="10,17,10,17"
-                                                         AcceptsReturn="True" FontSize="{StaticResource StandardFontSize}"
+                                                         AcceptsReturn="True"
+                                                         FontSize="{StaticResource StandardFontSize}"
                                                          Style="{StaticResource EditTextBoxStyle}"
                                                          Text="{Binding TransLabelEdit,
                                                                         UpdateSourceTrigger=PropertyChanged}"
@@ -377,7 +392,8 @@
                                                 <Grid>
                                                     <TextBlock Height="24"
                                                                Margin="18,0,0,0"
-                                                               VerticalAlignment="Top" FontSize="{StaticResource IdFontSize}"
+                                                               VerticalAlignment="Top"
+                                                               FontSize="{StaticResource IdFontSize}"
                                                                Foreground="{StaticResource IdForegroundBrush}"
                                                                Text="Help Text" />
                                                     <FlowDocumentScrollViewer Document="{Binding RefHelpTextPreview}"
@@ -413,7 +429,8 @@
                                                     Background="{StaticResource CellBackgroundBrush}">
                                                 <TextBox Margin="10,17,10,17"
                                                          AcceptsReturn="True"
-                                                         Style="{StaticResource EditTextBoxStyle}" FontSize="{StaticResource StandardFontSize}"
+                                                         FontSize="{StaticResource StandardFontSize}"
+                                                         Style="{StaticResource EditTextBoxStyle}"
                                                          Text="{Binding TransHelpTextEdit,
                                                                         UpdateSourceTrigger=PropertyChanged}"
                                                          TextWrapping="Wrap" />
@@ -425,7 +442,8 @@
                                                 <Grid>
                                                     <TextBlock Height="24"
                                                                Margin="18,0,0,0"
-                                                               VerticalAlignment="Top" FontSize="{StaticResource IdFontSize}"
+                                                               VerticalAlignment="Top"
+                                                               FontSize="{StaticResource IdFontSize}"
                                                                Foreground="{StaticResource IdForegroundBrush}"
                                                                Text="More Help Text" />
                                                     <FlowDocumentScrollViewer Document="{Binding RefMoreHelpTextPreview}"
@@ -460,7 +478,8 @@
                                                     Margin="2,2,0,0"
                                                     Background="{StaticResource CellBackgroundBrush}">
                                                 <TextBox Margin="10,17,10,17"
-                                                         AcceptsReturn="True" FontSize="{StaticResource StandardFontSize}"
+                                                         AcceptsReturn="True"
+                                                         FontSize="{StaticResource StandardFontSize}"
                                                          Style="{StaticResource EditTextBoxStyle}"
                                                          Text="{Binding TransMoreHelpTextEdit,
                                                                         UpdateSourceTrigger=PropertyChanged}"
@@ -478,7 +497,8 @@
             <TabItem>
                 <TabItem.Header>
                     <StackPanel DataContext="{Binding HelpViewModel}"
-                                Orientation="Horizontal" TextElement.FontSize="{StaticResource TabFontSize}">
+                                Orientation="Horizontal"
+                                TextElement.FontSize="{StaticResource TabFontSize}">
                         <TextBlock Text="Help" />
                         <TextBlock VerticalAlignment="Center"
                                    FontSize="9"
@@ -493,8 +513,9 @@
                     </StackPanel>
                 </TabItem.Header>
                 <Grid DataContext="{Binding HelpViewModel}">
-                    <TextBlock Margin="13,10,0,0" FontSize="{StaticResource IdFontSize}"
+                    <TextBlock Margin="13,10,0,0"
                                VerticalAlignment="Top"
+                               FontSize="{StaticResource IdFontSize}"
                                Foreground="{StaticResource IdForegroundBrush}"
                                Text="{Binding Id}" />
                     <Grid Margin="10,29,10,50"
@@ -535,8 +556,9 @@
                                 Margin="2,0,0,0"
                                 Background="{StaticResource CellBackgroundBrush}">
                             <ScrollViewer VerticalScrollBarVisibility="Auto">
-                                <TextBox Margin="10,17,10,17" FontSize="{StaticResource StandardFontSize}"
+                                <TextBox Margin="10,17,10,17"
                                          AcceptsReturn="True"
+                                         FontSize="{StaticResource StandardFontSize}"
                                          Style="{StaticResource EditTextBoxStyle}"
                                          Text="{Binding TransHelpPageEdit,
                                                         UpdateSourceTrigger=PropertyChanged}"
