@@ -60,6 +60,7 @@
             <sys:Double x:Key="ControlFontSize">15</sys:Double>
             <sys:Double x:Key="TabFontSize">17</sys:Double>
             <sys:Double x:Key="IdFontSize">14</sys:Double>
+            <sys:Double x:Key="HintFontSize">10</sys:Double>
             <sys:Double x:Key="StandardFontSize">20</sys:Double>
 
             <!--  icons  -->

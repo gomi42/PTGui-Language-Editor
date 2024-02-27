@@ -36,8 +36,8 @@ namespace PTGui_Language_Editor
             setModified = setModifiedAction;
         }
 
-        public EditorRef EditorRef { get; set; }
-        public EditorTrans EditorTrans { get; set; }
+        public EditorRef EditorRef { get; set; } = null!;
+        public EditorTrans EditorTrans { get; set; } = null!;
 
         public string RefContributors
         {
