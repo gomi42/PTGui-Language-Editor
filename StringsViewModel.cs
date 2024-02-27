@@ -134,16 +134,7 @@ namespace PTGui_Language_Editor
 
                 if (!setFromCode)
                 {
-                    if (isHtml)
-                    {
-                        var str = translationEdit!.Replace("\n", "<br>");
-                        editString.Translation.Txt = str;
-                    }
-                    else
-                    {
-                        editString.Translation.Txt = translationEdit;
-                    }
-
+                    editString.Translation.Txt = PTGuiTextConverter.ConvertToHtml(translationEdit, isHtml);
                     editString.Translation.Machinetranslated = null;
                     setModified();
                 }
@@ -152,19 +143,12 @@ namespace PTGui_Language_Editor
 
         void Init()
         {
-            bool isHtml = editString!.Reference.Format == "html";
-            ReferenceView = PTGuiTextConverter.ConvertToFlowDocument(editString!.Reference.Txt, isHtml, y => referenceStrings.FirstOrDefault(x => x.Id == y)?.Txt);
+            bool isHtml = editString.Reference.Format == "html";
+            ReferenceView = PTGuiTextConverter.ConvertToFlowDocument(editString.Reference.Txt, isHtml, y => referenceStrings.FirstOrDefault(x => x.Id == y)?.Txt);
 
             setFromCode = true;
-
-            if (isHtml)
-            {
-                TranslationEdit = editString.Translation.Txt?.Replace("<br>", "\n");
-            }
-            else
-            {
-                TranslationEdit = editString.Translation.Txt;
-            }
+            isHtml = editString.Translation.Format == "html";
+            TranslationEdit = PTGuiTextConverter.ConvertFromHtml(editString.Translation.Txt, isHtml);
 
             setFromCode = false;
         }

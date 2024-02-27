@@ -188,15 +188,7 @@ namespace PTGui_Language_Editor
 
                 if (!setFromCode)
                 {
-                    if (!string.IsNullOrEmpty(translationMoreHelpTextEdit))
-                    {
-                        editorTooltip.Translation.MoreHelptext = translationMoreHelpTextEdit.Replace("\n", "<br>");
-                    }
-                    else
-                    {
-                        editorTooltip.Translation.MoreHelptext = null;
-                    }
-
+                    editorTooltip.Translation.MoreHelptext = PTGuiTextConverter.ConvertToHtml(translationMoreHelpTextEdit, true);
                     editorTooltip.Translation.Machinetranslated = null;
                     setModified();
                 }
@@ -217,15 +209,7 @@ namespace PTGui_Language_Editor
 
                 if (!setFromCode)
                 {
-                    if (!string.IsNullOrEmpty(translationLabelEdit))
-                    {
-                        editorTooltip.Translation.Label = translationLabelEdit.Replace("\n", "<br>");
-                    }
-                    else
-                    {
-                        editorTooltip.Translation.Label = null;
-                    }
-
+                    editorTooltip.Translation.Label = PTGuiTextConverter.ConvertToHtml(translationLabelEdit, true);
                     editorTooltip.Translation.Machinetranslated = null;
                     setModified();
                 }
@@ -254,15 +238,7 @@ namespace PTGui_Language_Editor
 
                 if (!setFromCode)
                 {
-                    if (!string.IsNullOrEmpty(translationHelpTextEdit))
-                    {
-                        editorTooltip.Translation.Helptext = translationHelpTextEdit.Replace("\n", "<br>");
-                    }
-                    else
-                    {
-                        editorTooltip.Translation.Helptext = null;
-                    }
-
+                    editorTooltip.Translation.Helptext = PTGuiTextConverter.ConvertToHtml(translationHelpTextEdit, true);
                     editorTooltip.Translation.Machinetranslated = null;
                     setModified();
                 }
@@ -278,13 +254,12 @@ namespace PTGui_Language_Editor
             NotifyPropertyChanged(nameof(Id));
 
             ReferenceLabelView = PTGuiTextConverter.ConvertToFlowDocument(editorTooltip.Reference.Label, true, y => referenceStrings.FirstOrDefault(x => x.Id == y)?.Txt);
-            TranslationLabelEdit = editorTooltip.Translation.Label?.Replace("<br>", "\n");
-
             ReferenceHelpTextView = PTGuiTextConverter.ConvertToFlowDocument(editorTooltip.Reference.Helptext, true, y => referenceStrings.FirstOrDefault(x => x.Id == y)?.Txt);
-            TransHelpTextEdit = editorTooltip.Translation.Helptext?.Replace("<br>", "\n");
-
             ReferenceMoreHelpTextView = PTGuiTextConverter.ConvertToFlowDocument(editorTooltip.Reference.MoreHelptext, true, y => referenceStrings.FirstOrDefault(x => x.Id == y)?.Txt);
-            TranslationMoreHelpTextEdit = editorTooltip.Translation.MoreHelptext?.Replace("<br>", "\n");
+
+            TranslationLabelEdit = PTGuiTextConverter.ConvertFromHtml(editorTooltip.Translation.Label, true);
+            TransHelpTextEdit = PTGuiTextConverter.ConvertFromHtml(editorTooltip.Translation.Helptext, true);
+            TranslationMoreHelpTextEdit = PTGuiTextConverter.ConvertFromHtml(editorTooltip.Translation.MoreHelptext, true);
 
             setFromCode = false;
         }
