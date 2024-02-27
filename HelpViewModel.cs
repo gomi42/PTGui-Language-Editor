@@ -2,7 +2,7 @@
 // Author:
 //   Michael Göricke
 //
-// Copyright (c) 2023
+// Copyright (c) 2024
 //
 // This file is part of PTGui Language Editor.
 //
@@ -28,45 +28,46 @@ namespace PTGui_Language_Editor
 {
     public class HelpPagesViewModel : ViewModelBaseNavi
     {
+        private List<LanguageString> referenceStrings;
+        private List<LanguageString> translationStrings;
         private Action setModified;
-        private List<EditorRefHelpPage> allDisplayRefHelPages = null!;
-        private EditorRefHelpPage? currentRefHelpPage;
-        private bool setFromCode;
 
-        public HelpPagesViewModel(Action setModifiedAction)
+        private bool setFromCode;
+        private List<EditorHelpPage> editHelpPages = null!;
+        private EditorHelpPage? currentHelpPage;
+        
+        private FlowDocument refHelpPagePreview = null!;
+        private FlowDocument transHelpPagePreview = null!;
+        private string? transHelpPageEdit;
+
+        public HelpPagesViewModel(List<LanguageString> referenceStrings, List<LanguageString> translationStrings, Action setModifiedAction)
         {
+            this.referenceStrings = referenceStrings;
+            this.translationStrings = translationStrings;
             setModified = setModifiedAction;
             IsPageSelectionVisible = false;
         }
 
-        public List<EditorRefString> AllRefStrings { get; set; } = null!;
-        public List<EditorTransString> AllTransStrings { get; set; } = null!;
-
-        public List<EditorRefHelpPage> AllDisplayRefHelpPages
+        public List<EditorHelpPage> EditHelpPages
         {
             get
             {
-                return allDisplayRefHelPages;
+                return editHelpPages;
             }
 
             set
             {
-                allDisplayRefHelPages = value;
+                editHelpPages = value;
 
-                NumberItems = allDisplayRefHelPages.Count;
+                NumberItems = editHelpPages.Count;
                 SelectedItemsPerPage = 1;
             }
         }
 
         // Binding properties
-        public string Id => currentRefHelpPage != null ? "#" + currentRefHelpPage.Id : string.Empty;
+        public string Id => currentHelpPage != null ? "#" + currentHelpPage.Reference.Id : string.Empty;
 
-        //////////////////////////////////////
-        private FlowDocument refHelpPagePreview = null!;
-        private FlowDocument transHelpPagePreview = null!;
-        private string? transHelpPageEdit;
-
-        public FlowDocument RefHelpPagePreview
+        public FlowDocument ReferenceHelpPagePreview
         {
             get
             {
@@ -80,7 +81,7 @@ namespace PTGui_Language_Editor
             }
         }
 
-        public FlowDocument TransHelpPagePreview
+        public FlowDocument TranslationHelpPagePreview
         {
             get => transHelpPagePreview;
             set
@@ -90,7 +91,7 @@ namespace PTGui_Language_Editor
             }
         }
 
-        public string? TransHelpPageEdit
+        public string? TranslationHelpPageEdit
         {
             get => transHelpPageEdit;
             set
@@ -99,8 +100,8 @@ namespace PTGui_Language_Editor
 
                 if (!string.IsNullOrEmpty(transHelpPageEdit))
                 {
-                    TransHelpPagePreview = PTGuiTextConverter.ConvertToFlowDocument(transHelpPageEdit, true, y => AllTransStrings.FirstOrDefault(x => x.Id == y)?.Txt);
-                    var translateHelpPage = currentRefHelpPage?.EditorTranslate;
+                    TranslationHelpPagePreview = PTGuiTextConverter.ConvertToFlowDocument(transHelpPageEdit, true, y => translationStrings.FirstOrDefault(x => x.Id == y)?.Txt);
+                    var translateHelpPage = currentHelpPage!.Translation;
 
                     if (!string.IsNullOrEmpty(transHelpPageEdit))
                     {
@@ -117,10 +118,10 @@ namespace PTGui_Language_Editor
                         setModified();
                     }
                 }
-                    else
-                    {
-                        TransHelpPagePreview = new FlowDocument();
-                    }
+                else
+                {
+                    TranslationHelpPagePreview = new FlowDocument();
+                }
 
                 NotifyPropertyChanged();
             }
@@ -130,19 +131,19 @@ namespace PTGui_Language_Editor
         {
             setFromCode = true;
 
-            if (allDisplayRefHelPages.Count != 0)
+            if (editHelpPages.Count != 0)
             {
-                currentRefHelpPage = allDisplayRefHelPages[currentIndex];
+                currentHelpPage = editHelpPages[currentIndex];
 
-                RefHelpPagePreview = PTGuiTextConverter.ConvertToFlowDocument(currentRefHelpPage.Helptext, true, y => AllRefStrings.FirstOrDefault(x => x.Id == y)?.Txt);
-                var translateHelpPage = currentRefHelpPage.EditorTranslate;
-                TransHelpPageEdit = translateHelpPage?.Helptext?.Replace("<br>", "\n");
+                ReferenceHelpPagePreview = PTGuiTextConverter.ConvertToFlowDocument(currentHelpPage.Reference.Helptext, true, y => referenceStrings.FirstOrDefault(x => x.Id == y)?.Txt);
+                var translateHelpPage = currentHelpPage.Translation;
+                TranslationHelpPageEdit = translateHelpPage?.Helptext?.Replace("<br>", "\n");
             }
             else
             {
-                currentRefHelpPage = null;
-                RefHelpPagePreview = new FlowDocument();
-                TransHelpPageEdit = string.Empty;
+                currentHelpPage = null;
+                ReferenceHelpPagePreview = new FlowDocument();
+                TranslationHelpPageEdit = string.Empty;
             }
 
             NotifyPropertyChanged(nameof(Id));
