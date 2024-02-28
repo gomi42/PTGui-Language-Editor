@@ -106,10 +106,11 @@ namespace PTGui_Language_Editor
             Init();
         }
 
-        // Binding properties
-        public FlowDocument ReferenceView { get; set; } = null!;
+        public int Number => editString.Number;
 
-        public string Id => "#" + editString.Reference.Id;
+        public string Id => editString.Reference.Id;
+
+        public FlowDocument ReferenceView { get; set; } = null!;
 
         public string? Format => editString.Translation.Format;
 

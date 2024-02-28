@@ -114,7 +114,9 @@ namespace PTGui_Language_Editor
             Init();
         }
 
-        public string Id => "#" + editorTooltip.Reference.Id;
+        public int Number => editorTooltip.Number;
+
+        public string Id => editorTooltip.Reference.Id;
 
         //////////////////////////////////////
 

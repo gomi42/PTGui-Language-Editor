@@ -166,10 +166,10 @@ namespace PTGui_Language_Editor
 
     public record EditorGeneral(LanguageGeneral Reference, LanguageGeneral Translation);
 
-    public record EditorString(LanguageString Reference, LanguageString Translation);
+    public record EditorString(int Number, LanguageString Reference, LanguageString Translation);
 
-    public record EditorTooltip(LanguageTooltip Reference, LanguageTooltip Translation);
+    public record EditorTooltip(int Number, LanguageTooltip Reference, LanguageTooltip Translation);
 
-    public record EditorHelpPage(LanguageHelpPage Reference, LanguageHelpPage Translation);
+    public record EditorHelpPage(int Number, LanguageHelpPage Reference, LanguageHelpPage Translation);
 }
 

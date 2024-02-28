@@ -77,6 +77,13 @@
                 <Setter Property="Background" Value="#FFFFFF" />
             </Style>
 
+            <Style x:Key="ReadOnlyTextBoxStyle"
+                   TargetType="{x:Type TextBox}">
+                <Setter Property="IsReadOnly" Value="True" />
+                <Setter Property="BorderThickness" Value="0" />
+                <Setter Property="Background" Value="{x:Null}" />
+            </Style>
+
             <Style x:Key="ButtonTabItemStyle"
                    TargetType="{x:Type TabItem}">
                 <Setter Property="FocusVisualStyle" Value="{x:Null}" />

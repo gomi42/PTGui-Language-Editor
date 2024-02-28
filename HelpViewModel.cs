@@ -65,7 +65,9 @@ namespace PTGui_Language_Editor
         }
 
         // Binding properties
-        public string Id => currentHelpPage != null ? "#" + currentHelpPage.Reference.Id : string.Empty;
+        public string? Number => currentHelpPage?.Number.ToString();
+
+        public string Id => currentHelpPage != null ? currentHelpPage.Reference.Id : string.Empty;
 
         public FlowDocument ReferenceHelpPagePreview
         {
@@ -139,6 +141,7 @@ namespace PTGui_Language_Editor
                 TranslationHelpPageEdit = string.Empty;
             }
 
+            NotifyPropertyChanged(nameof(Number));
             NotifyPropertyChanged(nameof(Id));
             setFromCode = false;
         }

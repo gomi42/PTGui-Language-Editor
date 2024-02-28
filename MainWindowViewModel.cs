@@ -332,6 +332,7 @@ namespace PTGui_Language_Editor
             ///
 
             var editorStrings = new List<EditorString>();
+            int number = 1;
 
             foreach (var item in referenceLanguage.Strings)
             {
@@ -350,13 +351,15 @@ namespace PTGui_Language_Editor
                     translationLanguage.Strings.Add(translate);
                 }
 
-                var str = new EditorString(item, translate);
+                var str = new EditorString(number, item, translate);
                 editorStrings.Add(str);
+                number++;
             }
 
             ///
 
             var editorTooltips = new List<EditorTooltip>();
+            number = 1;
 
             foreach (var item in referenceLanguage.Tooltips)
             {
@@ -376,13 +379,15 @@ namespace PTGui_Language_Editor
                     translationLanguage.Tooltips.Add(translate);
                 }
 
-                var str = new EditorTooltip(item, translate);
+                var str = new EditorTooltip(number, item, translate);
                 editorTooltips.Add(str);
+                number++;
             }
 
             ///
 
             var editorHelpPages = new List<EditorHelpPage>();
+            number = 1;
 
             foreach (var item in referenceLanguage.HelpPages)
             {
@@ -400,8 +405,9 @@ namespace PTGui_Language_Editor
                     translationLanguage.HelpPages.Add(translate);
                 }
 
-                var str = new EditorHelpPage(item, translate);
+                var str = new EditorHelpPage(number, item, translate);
                 editorHelpPages.Add(str);
+                number++;
             }
 
             ///
