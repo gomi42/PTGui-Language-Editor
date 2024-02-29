@@ -2,7 +2,7 @@
 // Author:
 //   Michael Göricke
 //
-// Copyright (c) 2023
+// Copyright (c) 2024
 //
 // This file is part of PTGui Language Editor.
 //
@@ -28,29 +28,30 @@ namespace PTGui_Language_Editor
 {
     public class StringsViewModel : ViewModelBaseNavi
     {
+        private List<LanguageString> referenceStrings;
+        private List<LanguageString> translationStrings;
         private Action setModified;
-        private List<EditorRefString> allDisplayRefStrings = new List<EditorRefString>();
+        private List<EditorString> editStrings = null!;
         private List<OneString> displayPage;
 
-        public StringsViewModel(Action setModifiedAction)
+        public StringsViewModel(List<LanguageString> referenceStrings, List<LanguageString> translationStrings, Action setModifiedAction)
         {
+            this.referenceStrings = referenceStrings;
+            this.translationStrings = translationStrings;
             setModified = setModifiedAction;
             displayPage = new List<OneString>();
         }
 
-        public List<EditorRefString> AllRefStrings { get; set; } = null!;
-        public List<EditorTransString> AllTransStrings { get; set; } = null!;
-
-        public List<EditorRefString> AllDisplayRefStrings
+        public List<EditorString> EditStrings
         {
             get
             {
-                return allDisplayRefStrings;
+                return editStrings;
             }
             set
             {
-                allDisplayRefStrings = value;
-                NumberItems = allDisplayRefStrings.Count;
+                editStrings = value;
+                NumberItems = editStrings.Count;
             }
         }
 
@@ -73,13 +74,9 @@ namespace PTGui_Language_Editor
             var list = new List<OneString>();
             int numStringsPerPage = SelectedItemsPerPage;
 
-            for (int i = showIndex; i < showIndex + numStringsPerPage && i < AllDisplayRefStrings.Count(); i++)
+            for (int i = showIndex; i < showIndex + numStringsPerPage && i < EditStrings.Count(); i++)
             {
-                var one = new OneString(setModified);
-                one.AllRefStrings = AllRefStrings;
-                one.AllTransStrings = AllTransStrings;
-                one.RefString = AllDisplayRefStrings[i];
-
+                var one = new OneString(EditStrings[i], referenceStrings, translationStrings, setModified);
                 list.Add(one);
             }
 
@@ -87,89 +84,74 @@ namespace PTGui_Language_Editor
         }
     }
 
+    /////////////////////////////////////////////////////////////////////////////////////////////
+
     public class OneString : ViewModelBase
     {
+        private EditorString editString;
+        private List<LanguageString> referenceStrings;
+        private List<LanguageString> translationStrings;
         private Action setModified;
-        private FlowDocument transPreview = null!;
-        private string? transEdit;
-        private EditorRefString refString = null!;
-        private EditorTransString translateString = null!;
+        private FlowDocument translationPreview = null!;
+        private string? translationEdit;
         private bool setFromCode;
 
-        public OneString(Action setModifiedAction)
+        public OneString(EditorString editString, List<LanguageString> referenceStrings, List<LanguageString> translationStrings, Action setModifiedAction)
         {
+            this.editString = editString;
+            this.referenceStrings = referenceStrings;
+            this.translationStrings = translationStrings;
             setModified = setModifiedAction;
+
+            Init();
         }
 
-        public List<EditorRefString> AllRefStrings { get; set; } = null!;
-        public List<EditorTransString> AllTransStrings { get; set; } = null!;
-        public EditorRefString RefString
-        {
-            get
-            {
-                return refString;
-            }
+        public int Number => editString.Number;
 
+        public string Id => editString.Reference.Id;
+
+        public FlowDocument ReferenceView { get; set; } = null!;
+
+        public string? Format => editString.Translation.Format;
+
+        public FlowDocument TranslationPreview
+        {
+            get => translationPreview;
             set
             {
-                refString = value;
-                bool isHtml = translateString?.Format == "html";
-                RefPreview = PTGuiTextConverter.ConvertToFlowDocument(refString.Txt, isHtml, y => AllRefStrings.FirstOrDefault(x => x.Id == y)?.Txt);
-                translateString = refString.EditorTranslate!;
-
-                setFromCode = true;
-
-                if (isHtml)
-                {
-                    TransEdit = translateString?.Txt?.Replace("<br>", "\n");
-                }
-                else
-                {
-                    TransEdit = translateString?.Txt;
-                }
-
-                setFromCode = false;
-            }
-        }
-
-        // Binding properties
-        public FlowDocument RefPreview { get; set; } = null!;
-        public string Id => "#" + RefString.Id;
-        public string? Format => translateString.Format;
-        public FlowDocument TransPreview
-        {
-            get => transPreview;
-            set
-            {
-                transPreview = value;
+                translationPreview = value;
                 NotifyPropertyChanged();
             }
         }
-        public string? TransEdit
+
+        public string? TranslationEdit
         {
-            get => transEdit;
+            get => translationEdit;
             set
             {
-                transEdit = value;
-                bool isHtml = translateString?.Format == "html";
-                TransPreview = PTGuiTextConverter.ConvertToFlowDocument(transEdit, isHtml, y => AllTransStrings.FirstOrDefault(x => x.Id == y)?.Txt);
-
-                if (isHtml)
-                {
-                    var str = transEdit.Replace("\n", "<br>");
-                    translateString.Txt = str;
-                }
-                else
-                {
-                    translateString.Txt = transEdit;
-                }
+                translationEdit = value;
+                bool isHtml = editString.Translation.Format == "html";
+                TranslationPreview = PTGuiTextConverter.ConvertToFlowDocument(translationEdit, isHtml, y => translationStrings.FirstOrDefault(x => x.Id == y)?.Txt);
 
                 if (!setFromCode)
                 {
-                    translateString.Machinetranslated = null;
+                    editString.Translation.Txt = PTGuiTextConverter.ConvertToHtml(translationEdit, isHtml);
+                    editString.Translation.Machinetranslated = null;
                     setModified();
                 }
             }
+        }
+
+        void Init()
+        {
+            bool isHtml = editString.Reference.Format == "html";
+            ReferenceView = PTGuiTextConverter.ConvertToFlowDocument(editString.Reference.Txt, isHtml, y => referenceStrings.FirstOrDefault(x => x.Id == y)?.Txt);
+
+            setFromCode = true;
+            isHtml = editString.Translation.Format == "html";
+            TranslationEdit = PTGuiTextConverter.ConvertFromHtml(editString.Translation.Txt, isHtml);
+
+            setFromCode = false;
         }
     }
 }

@@ -3,7 +3,7 @@
 // Author:
 //   Michael Göricke
 //
-// Copyright (c) 2023
+// Copyright (c) 2024
 //
 // This file is part of PTGui Language Editor.
 //
@@ -113,7 +113,7 @@
                                            HorizontalAlignment="Left"
                                            VerticalAlignment="Top"
                                            d:Text="English Contributors"
-                                           Text="{Binding RefContributors}" />
+                                           Text="{Binding ReferenceContributors}" />
                             </Grid>
                         </Border>
                         <Border Grid.Column="1"
@@ -124,7 +124,7 @@
                                          d:Text="Contributor1&#xa;Contributor2&#xa;Contributor3"
                                          AcceptsReturn="True"
                                          Style="{StaticResource EditTextBoxStyle}"
-                                         Text="{Binding TransContributors,
+                                         Text="{Binding TranslationContributors,
                                                         UpdateSourceTrigger=PropertyChanged}" />
                             </Grid>
                         </Border>
@@ -149,7 +149,7 @@
                                            HorizontalAlignment="Left"
                                            VerticalAlignment="Top"
                                            d:Text="English"
-                                           Text="{Binding RefLanguageMameLocalized}" />
+                                           Text="{Binding ReferenceLanguageMameLocalized}" />
                             </Grid>
                         </Border>
                         <Border Grid.Column="1"
@@ -160,7 +160,7 @@
                                          VerticalAlignment="Top"
                                          d:Text="German"
                                          Style="{StaticResource EditTextBoxStyle}"
-                                         Text="{Binding TransLanguageMameLocalized}" />
+                                         Text="{Binding TranslationLanguageMameLocalized}" />
                             </Grid>
                         </Border>
                     </Grid>
@@ -184,7 +184,7 @@
                                            HorizontalAlignment="Left"
                                            VerticalAlignment="Top"
                                            d:Text="No English startup message needed."
-                                           Text="{Binding RefStartupMessage}" />
+                                           Text="{Binding ReferenceStartupMessage}" />
                             </Grid>
                         </Border>
                         <Border Grid.Column="1"
@@ -195,7 +195,7 @@
                                          VerticalAlignment="Top"
                                          d:Text="Is there a language specific startup message needed?"
                                          Style="{StaticResource EditTextBoxStyle}"
-                                         Text="{Binding TransStartupMessage,
+                                         Text="{Binding TranslationStartupMessage,
                                                         UpdateSourceTrigger=PropertyChanged}" />
                             </Grid>
                         </Border>
@@ -229,17 +229,28 @@
                                             <ColumnDefinition Width="1*" />
                                             <ColumnDefinition Width="1*" />
                                         </Grid.ColumnDefinitions>
-                                        <TextBlock Height="24"
-                                                   Margin="3,0,0,0"
-                                                   VerticalAlignment="Top"
-                                                   FontSize="{StaticResource IdFontSize}"
-                                                   Foreground="{StaticResource IdForegroundBrush}"
-                                                   Text="{Binding Id}" />
+                                        <StackPanel Margin="3,0,0,0"
+                                                    Orientation="Horizontal">
+                                            <TextBlock Height="24"
+                                                       Margin="3,0,0,0"
+                                                       VerticalAlignment="Top"
+                                                       FontSize="{StaticResource IdFontSize}"
+                                                       Foreground="{StaticResource IdForegroundBrush}"
+                                                       Text="{Binding Number}" />
+                                            <TextBox Height="24"
+                                                     Margin="7,0,0,0"
+                                                     VerticalAlignment="Top"
+                                                     FontSize="{StaticResource IdFontSize}"
+                                                     Foreground="{StaticResource IdForegroundBrush}"
+                                                     Style="{StaticResource ReadOnlyTextBoxStyle}"
+                                                     Text="{Binding Id,
+                                                                    Mode=OneWay}" />
+                                        </StackPanel>
                                         <Border Margin="0,19,0,0"
                                                 Background="{StaticResource CellBackgroundBrushPreview}">
                                             <Grid>
                                                 <FlowDocumentScrollViewer Margin="0,0,0,0"
-                                                                          Document="{Binding RefPreview}"
+                                                                          Document="{Binding ReferenceView}"
                                                                           VerticalScrollBarVisibility="Hidden">
                                                     <FlowDocumentScrollViewer.Resources>
                                                         <Style TargetType="{x:Type Paragraph}">
@@ -255,7 +266,7 @@
                                                 Margin="2,19,0,0"
                                                 Background="{StaticResource CellBackgroundBrushPreview}">
                                             <FlowDocumentScrollViewer Margin="0,0,0,0"
-                                                                      Document="{Binding TransPreview}"
+                                                                      Document="{Binding TranslationPreview}"
                                                                       VerticalScrollBarVisibility="Hidden">
                                                 <FlowDocumentScrollViewer.Resources>
                                                     <Style TargetType="{x:Type Paragraph}">
@@ -280,7 +291,7 @@
                                                          AcceptsReturn="True"
                                                          FontSize="{StaticResource StandardFontSize}"
                                                          Style="{StaticResource EditTextBoxStyle}"
-                                                         Text="{Binding TransEdit,
+                                                         Text="{Binding TranslationEdit,
                                                                         UpdateSourceTrigger=PropertyChanged}"
                                                          TextWrapping="Wrap" />
                                             </Grid>
@@ -319,11 +330,22 @@
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate>
                                     <Grid Margin="0,0,10,15">
-                                        <TextBlock Margin="3,0,10,0"
-                                                   VerticalAlignment="Top"
-                                                   FontSize="{StaticResource IdFontSize}"
-                                                   Foreground="{StaticResource IdForegroundBrush}"
-                                                   Text="{Binding Id}" />
+                                        <StackPanel Margin="3,0,10,0"
+                                                    Orientation="Horizontal">
+                                            <TextBlock Height="24"
+                                                       Margin="3,0,0,0"
+                                                       VerticalAlignment="Top"
+                                                       FontSize="{StaticResource IdFontSize}"
+                                                       Foreground="{StaticResource IdForegroundBrush}"
+                                                       Text="{Binding Number}" />
+                                            <TextBox Margin="7,0,0,0"
+                                                     VerticalAlignment="Top"
+                                                     FontSize="{StaticResource IdFontSize}"
+                                                     Foreground="{StaticResource IdForegroundBrush}"
+                                                     Style="{StaticResource ReadOnlyTextBoxStyle}"
+                                                     Text="{Binding Id,
+                                                                    Mode=OneWay}" />
+                                        </StackPanel>
                                         <Grid Margin="0,19,0,0">
                                             <Grid.ColumnDefinitions>
                                                 <ColumnDefinition Width="1*" />
@@ -343,7 +365,7 @@
                                                                FontSize="{StaticResource IdFontSize}"
                                                                Foreground="{StaticResource IdForegroundBrush}"
                                                                Text="Label" />
-                                                    <FlowDocumentScrollViewer Document="{Binding RefLabelPreview}"
+                                                    <FlowDocumentScrollViewer Document="{Binding ReferenceLabelView}"
                                                                               VerticalScrollBarVisibility="Disabled">
                                                         <FlowDocumentScrollViewer.Resources>
                                                             <Style TargetType="{x:Type Paragraph}">
@@ -358,7 +380,7 @@
                                             <Border Grid.Column="1"
                                                     Margin="2,0,0,0"
                                                     Background="{StaticResource CellBackgroundBrushPreview}">
-                                                <FlowDocumentScrollViewer Document="{Binding TransLabelPreview}"
+                                                <FlowDocumentScrollViewer Document="{Binding TranslationLabelPreview}"
                                                                           VerticalScrollBarVisibility="Disabled">
                                                     <FlowDocumentScrollViewer.Resources>
                                                         <Style TargetType="{x:Type Paragraph}">
@@ -376,7 +398,7 @@
                                                          AcceptsReturn="True"
                                                          FontSize="{StaticResource StandardFontSize}"
                                                          Style="{StaticResource EditTextBoxStyle}"
-                                                         Text="{Binding TransLabelEdit,
+                                                         Text="{Binding TranslationLabelEdit,
                                                                         UpdateSourceTrigger=PropertyChanged}"
                                                          TextWrapping="Wrap" />
                                             </Border>
@@ -391,7 +413,7 @@
                                                                FontSize="{StaticResource IdFontSize}"
                                                                Foreground="{StaticResource IdForegroundBrush}"
                                                                Text="Help Text" />
-                                                    <FlowDocumentScrollViewer Document="{Binding RefHelpTextPreview}"
+                                                    <FlowDocumentScrollViewer Document="{Binding ReferenceHelpTextView}"
                                                                               VerticalScrollBarVisibility="Disabled">
                                                         <FlowDocumentScrollViewer.Resources>
                                                             <Style TargetType="{x:Type Paragraph}">
@@ -407,7 +429,7 @@
                                                     Grid.Column="1"
                                                     Margin="2,2,0,0"
                                                     Background="{StaticResource CellBackgroundBrushPreview}">
-                                                <FlowDocumentScrollViewer Document="{Binding TransHelpTextPreview}"
+                                                <FlowDocumentScrollViewer Document="{Binding TranslationHelpTextPreview}"
                                                                           VerticalScrollBarVisibility="Disabled">
                                                     <FlowDocumentScrollViewer.Resources>
                                                         <Style TargetType="{x:Type Paragraph}">
@@ -441,7 +463,7 @@
                                                                FontSize="{StaticResource IdFontSize}"
                                                                Foreground="{StaticResource IdForegroundBrush}"
                                                                Text="More Help Text" />
-                                                    <FlowDocumentScrollViewer Document="{Binding RefMoreHelpTextPreview}"
+                                                    <FlowDocumentScrollViewer Document="{Binding ReferenceMoreHelpTextView}"
                                                                               VerticalScrollBarVisibility="Disabled">
                                                         <FlowDocumentScrollViewer.Resources>
                                                             <Style TargetType="{x:Type Paragraph}">
@@ -457,7 +479,7 @@
                                                     Grid.Column="1"
                                                     Margin="2,2,0,0"
                                                     Background="{StaticResource CellBackgroundBrushPreview}">
-                                                <FlowDocumentScrollViewer Document="{Binding TransMoreHelpTextPreview}"
+                                                <FlowDocumentScrollViewer Document="{Binding TranslationMoreHelpTextPreview}"
                                                                           VerticalScrollBarVisibility="Disabled">
                                                     <FlowDocumentScrollViewer.Resources>
                                                         <Style TargetType="{x:Type Paragraph}">
@@ -476,7 +498,7 @@
                                                          AcceptsReturn="True"
                                                          FontSize="{StaticResource StandardFontSize}"
                                                          Style="{StaticResource EditTextBoxStyle}"
-                                                         Text="{Binding TransMoreHelpTextEdit,
+                                                         Text="{Binding TranslationMoreHelpTextEdit,
                                                                         UpdateSourceTrigger=PropertyChanged}"
                                                          TextWrapping="Wrap" />
                                             </Border>
@@ -508,11 +530,21 @@
                     </StackPanel>
                 </TabItem.Header>
                 <Grid DataContext="{Binding HelpViewModel}">
-                    <TextBlock Margin="13,10,0,0"
-                               VerticalAlignment="Top"
-                               FontSize="{StaticResource IdFontSize}"
-                               Foreground="{StaticResource IdForegroundBrush}"
-                               Text="{Binding Id}" />
+                    <StackPanel Margin="13,10,0,0"
+                                Orientation="Horizontal">
+                        <TextBlock Width="32"
+                                   VerticalAlignment="Top"
+                                   FontSize="{StaticResource IdFontSize}"
+                                   Foreground="{StaticResource IdForegroundBrush}"
+                                   Text="{Binding Number}" />
+                        <TextBox Margin="7,0,0,0"
+                                 VerticalAlignment="Top"
+                                 FontSize="{StaticResource IdFontSize}"
+                                 Foreground="{StaticResource IdForegroundBrush}"
+                                 Style="{StaticResource ReadOnlyTextBoxStyle}"
+                                 Text="{Binding Id,
+                                                Mode=OneWay}" />
+                    </StackPanel>
                     <Grid Margin="10,29,10,50"
                           Background="{StaticResource ContentBackgroundBrush}">
                         <Grid.ColumnDefinitions>
@@ -522,7 +554,7 @@
                         </Grid.ColumnDefinitions>
                         <Border Margin="0,0,0,0"
                                 Background="{StaticResource CellBackgroundBrushPreview}">
-                            <FlowDocumentScrollViewer Document="{Binding RefHelpPagePreview}"
+                            <FlowDocumentScrollViewer Document="{Binding ReferenceHelpPagePreview}"
                                                       VerticalScrollBarVisibility="Auto">
                                 <FlowDocumentScrollViewer.Resources>
                                     <Style TargetType="{x:Type Paragraph}">
@@ -536,7 +568,7 @@
                         <Border Grid.Column="1"
                                 Margin="2,0,0,0"
                                 Background="{StaticResource CellBackgroundBrushPreview}">
-                            <FlowDocumentScrollViewer Document="{Binding TransHelpPagePreview}"
+                            <FlowDocumentScrollViewer Document="{Binding TranslationHelpPagePreview}"
                                                       VerticalScrollBarVisibility="Auto">
                                 <FlowDocumentScrollViewer.Resources>
                                     <Style TargetType="{x:Type Paragraph}">
@@ -555,7 +587,7 @@
                                          AcceptsReturn="True"
                                          FontSize="{StaticResource StandardFontSize}"
                                          Style="{StaticResource EditTextBoxStyle}"
-                                         Text="{Binding TransHelpPageEdit,
+                                         Text="{Binding TranslationHelpPageEdit,
                                                         UpdateSourceTrigger=PropertyChanged}"
                                          TextWrapping="Wrap" />
                             </ScrollViewer>

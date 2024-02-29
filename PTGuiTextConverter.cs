@@ -2,7 +2,7 @@
 // Author:
 //   Michael Göricke
 //
-// Copyright (c) 2023
+// Copyright (c) 2024
 //
 // This file is part of PTGui Language Editor.
 //
@@ -355,6 +355,26 @@ namespace PTGui_Language_Editor
             }
 
             AddText();
+        }
+
+        public static string? ConvertToHtml(string? str, bool isHtml)
+        {
+            if (!string.IsNullOrEmpty(str) && isHtml)
+            {
+                return str?.Replace("\n", "<br>");
+            }
+
+            return str;
+        }
+
+        public static string? ConvertFromHtml(string? str, bool isHtml)
+        {
+            if (!string.IsNullOrEmpty(str) && isHtml)
+            {
+                return str?.Replace("<br>", "\n");
+            }
+
+            return str;
         }
     }
 }

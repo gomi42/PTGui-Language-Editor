@@ -29,7 +29,7 @@
     <Application.Resources>
         <ResourceDictionary>
             <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
-            <local:DividByTwoConverter x:Key="DividByTwoConverter" />
+            <local:DevideByTwoConverter x:Key="DevideByTwoConverter" />
 
             <!--  colors  -->
             <Color x:Key="MouseOverTextColor">#FF646464</Color>
@@ -75,6 +75,13 @@
                    TargetType="{x:Type TextBox}">
                 <Setter Property="BorderBrush" Value="#FFffffFF" />
                 <Setter Property="Background" Value="#FFFFFF" />
+            </Style>
+
+            <Style x:Key="ReadOnlyTextBoxStyle"
+                   TargetType="{x:Type TextBox}">
+                <Setter Property="IsReadOnly" Value="True" />
+                <Setter Property="BorderThickness" Value="0" />
+                <Setter Property="Background" Value="{x:Null}" />
             </Style>
 
             <Style x:Key="ButtonTabItemStyle"
@@ -217,7 +224,7 @@
                                         BorderBrush="#ffc0c0c0"
                                         BorderThickness="1"
                                         CornerRadius="{TemplateBinding Height,
-                                                                       Converter={StaticResource DividByTwoConverter}}">
+                                                                       Converter={StaticResource DevideByTwoConverter}}">
                                     <ContentPresenter x:Name="Content"
                                                       Margin="0,0,0,1"
                                                       HorizontalAlignment="Center"

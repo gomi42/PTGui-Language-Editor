@@ -2,7 +2,7 @@
 // Author:
 //   Michael Göricke
 //
-// Copyright (c) 2023
+// Copyright (c) 2024
 //
 // This file is part of PTGui Language Editor.
 //
@@ -28,30 +28,30 @@ namespace PTGui_Language_Editor
 {
     public class TooltipsViewModel : ViewModelBaseNavi
     {
+        private List<LanguageString> referenceStrings;
+        private List<LanguageString> translationStrings;
         private Action setModified;
-        private List<EditorRefTooltip> allDisplayrefTooltips = null!;
+        private List<EditorTooltip> editTooltips = null!;
         private List<OneTooltip> displayPage = null!;
 
-        public TooltipsViewModel(Action setModifiedAction)
+        public TooltipsViewModel(List<LanguageString> referenceStrings, List<LanguageString> translationStrings, Action setModifiedAction)
         {
+            this.referenceStrings = referenceStrings;
+            this.translationStrings = translationStrings;
             setModified = setModifiedAction;
         }
 
-        public List<EditorRefString> AllRefStrings { get; set; } = null!;
-        public List<EditorTransString> AllTransStrings { get; set; } = null!;
-
-        public List<EditorRefTooltip> AllDisplayRefTooltips
+        public List<EditorTooltip> EditTooltips
         {
             get
             {
-                return allDisplayrefTooltips;
+                return editTooltips;
             }
 
             set
             {
-                allDisplayrefTooltips = value;
-
-                NumberItems = allDisplayrefTooltips.Count;
+                editTooltips = value;
+                NumberItems = editTooltips.Count;
             }
         }
 
@@ -74,13 +74,9 @@ namespace PTGui_Language_Editor
             var list = new List<OneTooltip>();
             int numItemsPerPage = SelectedItemsPerPage;
 
-            for (int i = showIndex; i < showIndex + numItemsPerPage && i < AllDisplayRefTooltips.Count(); i++)
+            for (int i = showIndex; i < showIndex + numItemsPerPage && i < EditTooltips.Count(); i++)
             {
-                var one = new OneTooltip(setModified);
-                one.AllRefStrings = AllRefStrings;
-                one.AllTransStrings = AllTransStrings;
-                one.RefTooltip = AllDisplayRefTooltips[i];
-
+                var one = new OneTooltip(EditTooltips[i], referenceStrings, translationStrings, setModified);
                 list.Add(one);
             }
 
@@ -88,100 +84,114 @@ namespace PTGui_Language_Editor
         }
     }
 
+    /////////////////////////////////////////////////////////////////////////////////////////////
+
     public class OneTooltip : ViewModelBase
     {
+        EditorTooltip editorTooltip;
+        private List<LanguageString> referenceStrings = null!;
+        private List<LanguageString> translationStrings = null!;
         private Action setModified;
-        private EditorTransTooltip translateTooltip = null!;
-        private EditorRefTooltip currentRefTooltip = null!;
         private bool setFromCode;
 
-        public OneTooltip(Action setModifiedAction)
+        private FlowDocument referenceLabelPreview = null!;
+        private FlowDocument referenceHelpTextView = null!;
+        private FlowDocument referenceMoreHelpTextView = null!;
+        private FlowDocument translationLabelPreview = null!;
+        private FlowDocument translationHelpTextPreview = null!;
+        private FlowDocument translationMoreHelpTextPreview = null!;
+        private string? translationLabelEdit;
+        private string? translationHelpTextEdit;
+        private string? translationMoreHelpTextEdit;
+
+        public OneTooltip(EditorTooltip editorTooltip, List<LanguageString> referenceStrings, List<LanguageString> translationStrings, Action setModifiedAction)
         {
+            this.editorTooltip = editorTooltip;
+            this.referenceStrings = referenceStrings;
+            this.translationStrings = translationStrings;
             setModified = setModifiedAction;
+
+            Init();
         }
 
-        public List<EditorRefString> AllRefStrings { get; set; } = null!;
-        public List<EditorTransString> AllTransStrings { get; set; } = null!;
-        public string Id => "#" + currentRefTooltip.Id;
+        public int Number => editorTooltip.Number;
 
+        public string Id => editorTooltip.Reference.Id;
 
-        public EditorRefTooltip RefTooltip
+        //////////////////////////////////////
+
+        public FlowDocument ReferenceLabelView
         {
             get
             {
-                return currentRefTooltip;
+                return referenceLabelPreview;
             }
 
             set
             {
-                setFromCode = true;
+                referenceLabelPreview = value;
+                NotifyPropertyChanged();
+            }
+        }
 
-                currentRefTooltip = value;
-                NotifyPropertyChanged(nameof(Id));
-                translateTooltip = currentRefTooltip.EditorTranslate!;
+        public FlowDocument ReferenceHelpTextView
+        {
+            get
+            {
+                return referenceHelpTextView;
+            }
 
-                RefLabelPreview = PTGuiTextConverter.ConvertToFlowDocument(currentRefTooltip.Label, true, y => AllRefStrings.FirstOrDefault(x => x.Id == y)?.Txt);
-                TransLabelEdit = translateTooltip?.Label?.Replace("<br>", "\n");
+            set
+            {
+                referenceHelpTextView = value;
+                NotifyPropertyChanged();
+            }
+        }
 
-                RefHelpTextPreview = PTGuiTextConverter.ConvertToFlowDocument(currentRefTooltip.Helptext, true, y => AllRefStrings.FirstOrDefault(x => x.Id == y)?.Txt);
-                TransHelpTextEdit = translateTooltip?.Helptext?.Replace("<br>", "\n");
-
-                RefMoreHelpTextPreview = PTGuiTextConverter.ConvertToFlowDocument(currentRefTooltip.MoreHelptext, true, y => AllRefStrings.FirstOrDefault(x => x.Id == y)?.Txt);
-                TransMoreHelpTextEdit = translateTooltip?.MoreHelptext?.Replace("<br>", "\n");
-
-                setFromCode = false;
+        public FlowDocument ReferenceMoreHelpTextView
+        {
+            get => referenceMoreHelpTextView;
+            set
+            {
+                referenceMoreHelpTextView = value;
+                NotifyPropertyChanged();
             }
         }
 
         //////////////////////////////////////
-        private FlowDocument refLabelPreview = null!;
-        private FlowDocument transLabelPreview = null!;
-        private string? transLabelEdit;
 
-        public FlowDocument RefLabelPreview
+        public FlowDocument TranslationLabelPreview
         {
-            get
-            {
-                return refLabelPreview;
-            }
-
+            get => translationLabelPreview;
             set
             {
-                refLabelPreview = value;
+                translationLabelPreview = value;
                 NotifyPropertyChanged();
             }
         }
 
-        public FlowDocument TransLabelPreview
+        public FlowDocument TranslationMoreHelpTextPreview
         {
-            get => transLabelPreview;
+            get => translationMoreHelpTextPreview;
             set
             {
-                transLabelPreview = value;
+                translationMoreHelpTextPreview = value;
                 NotifyPropertyChanged();
             }
         }
 
-        public string? TransLabelEdit
+        public string? TranslationMoreHelpTextEdit
         {
-            get => transLabelEdit;
+            get => translationMoreHelpTextEdit;
             set
             {
-                transLabelEdit = value;
-                TransLabelPreview = PTGuiTextConverter.ConvertToFlowDocument(transLabelEdit, true, y => AllTransStrings.FirstOrDefault(x => x.Id == y)?.Txt);
-
-                if (!string.IsNullOrEmpty(transLabelEdit))
-                {
-                    translateTooltip.Label = transLabelEdit.Replace("\n", "<br>");
-                }
-                else
-                {
-                    translateTooltip.Label = null;
-                }
+                translationMoreHelpTextEdit = value;
+                TranslationMoreHelpTextPreview = PTGuiTextConverter.ConvertToFlowDocument(translationMoreHelpTextEdit, true, y => translationStrings.FirstOrDefault(x => x.Id == y)?.Txt);
 
                 if (!setFromCode)
                 {
-                    translateTooltip.Machinetranslated = null;
+                    editorTooltip.Translation.MoreHelptext = PTGuiTextConverter.ConvertToHtml(translationMoreHelpTextEdit, true);
+                    editorTooltip.Translation.Machinetranslated = null;
                     setModified();
                 }
 
@@ -190,54 +200,48 @@ namespace PTGui_Language_Editor
         }
 
         //////////////////////////////////////
-        private FlowDocument refHelpTextPreview = null!;
-        private FlowDocument transHelpTextPreview = null!;
-        private string? transHelpTextEdit;
 
-        public FlowDocument RefHelpTextPreview
+        public string? TranslationLabelEdit
         {
-            get
-            {
-                return refHelpTextPreview;
-            }
-
+            get => translationLabelEdit;
             set
             {
-                refHelpTextPreview = value;
+                translationLabelEdit = value;
+                TranslationLabelPreview = PTGuiTextConverter.ConvertToFlowDocument(translationLabelEdit, true, y => translationStrings.FirstOrDefault(x => x.Id == y)?.Txt);
+
+                if (!setFromCode)
+                {
+                    editorTooltip.Translation.Label = PTGuiTextConverter.ConvertToHtml(translationLabelEdit, true);
+                    editorTooltip.Translation.Machinetranslated = null;
+                    setModified();
+                }
+
                 NotifyPropertyChanged();
             }
         }
 
-        public FlowDocument TransHelpTextPreview
+        public FlowDocument TranslationHelpTextPreview
         {
-            get => transHelpTextPreview;
+            get => translationHelpTextPreview;
             set
             {
-                transHelpTextPreview = value;
+                translationHelpTextPreview = value;
                 NotifyPropertyChanged();
             }
         }
 
         public string? TransHelpTextEdit
         {
-            get => transHelpTextEdit;
+            get => translationHelpTextEdit;
             set
             {
-                transHelpTextEdit = value;
-                TransHelpTextPreview = PTGuiTextConverter.ConvertToFlowDocument(transHelpTextEdit, true, y => AllTransStrings.FirstOrDefault(x => x.Id == y)?.Txt);
-
-                if (!string.IsNullOrEmpty(transHelpTextEdit))
-                {
-                    translateTooltip.Helptext = transHelpTextEdit.Replace("\n", "<br>");
-                }
-                else
-                {
-                    translateTooltip.Helptext = null;
-                }
+                translationHelpTextEdit = value;
+                TranslationHelpTextPreview = PTGuiTextConverter.ConvertToFlowDocument(translationHelpTextEdit, true, y => translationStrings.FirstOrDefault(x => x.Id == y)?.Txt);
 
                 if (!setFromCode)
                 {
-                    translateTooltip.Machinetranslated = null;
+                    editorTooltip.Translation.Helptext = PTGuiTextConverter.ConvertToHtml(translationHelpTextEdit, true);
+                    editorTooltip.Translation.Machinetranslated = null;
                     setModified();
                 }
 
@@ -245,57 +249,21 @@ namespace PTGui_Language_Editor
             }
         }
 
-        //////////////////////////////////////
-        private FlowDocument refMoreHelpTextPreview = null!;
-        private FlowDocument transMoreHelpTextPreview = null!;
-        private string? transMoreHelpTextEdit;
-
-        public FlowDocument RefMoreHelpTextPreview
+        void Init()
         {
-            get => refMoreHelpTextPreview;
-            set
-            {
-                refMoreHelpTextPreview = value;
-                NotifyPropertyChanged();
-            }
+            setFromCode = true;
+
+            NotifyPropertyChanged(nameof(Id));
+
+            ReferenceLabelView = PTGuiTextConverter.ConvertToFlowDocument(editorTooltip.Reference.Label, true, y => referenceStrings.FirstOrDefault(x => x.Id == y)?.Txt);
+            ReferenceHelpTextView = PTGuiTextConverter.ConvertToFlowDocument(editorTooltip.Reference.Helptext, true, y => referenceStrings.FirstOrDefault(x => x.Id == y)?.Txt);
+            ReferenceMoreHelpTextView = PTGuiTextConverter.ConvertToFlowDocument(editorTooltip.Reference.MoreHelptext, true, y => referenceStrings.FirstOrDefault(x => x.Id == y)?.Txt);
+
+            TranslationLabelEdit = PTGuiTextConverter.ConvertFromHtml(editorTooltip.Translation.Label, true);
+            TransHelpTextEdit = PTGuiTextConverter.ConvertFromHtml(editorTooltip.Translation.Helptext, true);
+            TranslationMoreHelpTextEdit = PTGuiTextConverter.ConvertFromHtml(editorTooltip.Translation.MoreHelptext, true);
+
+            setFromCode = false;
         }
-
-        public FlowDocument TransMoreHelpTextPreview
-        {
-            get => transMoreHelpTextPreview;
-            set
-            {
-                transMoreHelpTextPreview = value;
-                NotifyPropertyChanged();
-            }
-        }
-
-        public string? TransMoreHelpTextEdit
-        {
-            get => transMoreHelpTextEdit;
-            set
-            {
-                transMoreHelpTextEdit = value;
-                TransMoreHelpTextPreview = PTGuiTextConverter.ConvertToFlowDocument(transMoreHelpTextEdit, true, y => AllTransStrings.FirstOrDefault(x => x.Id == y)?.Txt);
-
-                if (!string.IsNullOrEmpty(transMoreHelpTextEdit))
-                {
-                    translateTooltip.MoreHelptext = transMoreHelpTextEdit.Replace("\n", "<br>");
-                }
-                else
-                {
-                    translateTooltip.MoreHelptext = null;
-                }
-
-                if (!setFromCode)
-                {
-                    translateTooltip.Machinetranslated = null;
-                    setModified();
-                }
-
-                NotifyPropertyChanged();
-            }
-        }
-
     }
 }

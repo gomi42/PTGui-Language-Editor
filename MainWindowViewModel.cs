@@ -2,7 +2,7 @@
 // Author:
 //   Michael Göricke
 //
-// Copyright (c) 2023
+// Copyright (c) 2024
 //
 // This file is part of PTGui Language Editor.
 //
@@ -35,10 +35,11 @@ namespace PTGui_Language_Editor
     public class MainWindowViewModel : ViewModelBase
     {
         string languageFilesRoot = @"D:\Programme\Pano, Web\PtGui Localization";
-        JsonRoot RefJsonRoot = null!;
-        JsonRoot TransJsonRoot = null!;
-        EditorTrans EditorTrans = null!;
-        EditorRef EditorRef = null!;
+        JsonRoot referenceJsonRoot = null!;
+        JsonRoot translationJsonRoot = null!;
+        Language translationLanguage = null!;
+        Language referenceLanguage = null!;
+        Editor editor = null!;
         bool isModified;
         bool isAskSaveChangesDialogOpen;
 
@@ -259,8 +260,9 @@ namespace PTGui_Language_Editor
         private void EditLanguage()
         {
             LoadLanguageFiles();
-            BuildEditorTransData();
-            BuildEditorRefData();
+            referenceLanguage = CreateLanguage(referenceJsonRoot);
+            translationLanguage = CreateLanguage(translationJsonRoot);
+            CreateEditorData();
 
             PrepareGeneral();
             PrepareString();
@@ -281,119 +283,136 @@ namespace PTGui_Language_Editor
         {
             using (FileStream json = File.OpenRead(GetLanguageFilename("en_us")))
             {
-                RefJsonRoot = JsonSerializer.Deserialize<JsonRoot>(json, JsonSerializerOptions.Default) ?? null!;
+                referenceJsonRoot = JsonSerializer.Deserialize<JsonRoot>(json, JsonSerializerOptions.Default) ?? null!;
             }
 
             using (FileStream json = File.OpenRead(GetLanguageFilename(SelectedLanguageFile!)))
             {
-                TransJsonRoot = JsonSerializer.Deserialize<JsonRoot>(json, JsonSerializerOptions.Default) ?? null!;
+                translationJsonRoot = JsonSerializer.Deserialize<JsonRoot>(json, JsonSerializerOptions.Default) ?? null!;
             }
         }
 
-        private void BuildEditorTransData()
+        private Language CreateLanguage(JsonRoot languageJsonRoot)
         {
-            EditorTrans = new EditorTrans();
-            EditorTrans.Json = TransJsonRoot;
-            EditorTrans.Strings = new List<EditorTransString>();
+            var language = new Language();
 
-            foreach (var item in TransJsonRoot.strings!)
+            language.General = new LanguageGeneral(languageJsonRoot);
+
+            language.Strings = new List<LanguageString>();
+
+            foreach (var jsonItem in languageJsonRoot.strings!)
             {
-                var str = new EditorTransString
-                {
-                    Json = item,
-                };
-                EditorTrans.Strings.Add(str);
+                var str = new LanguageString(jsonItem);
+                language.Strings.Add(str);
             }
 
-            EditorTrans.HelpPages = new List<EditorTransHelpPage>();
+            language.HelpPages = new List<LanguageHelpPage>();
 
-            foreach (var item in TransJsonRoot.helppages!)
+            foreach (var jsonItem in languageJsonRoot.helppages!)
             {
-                var str = new EditorTransHelpPage
-                {
-                    Json = item,
-                };
-                EditorTrans.HelpPages.Add(str);
+                var str = new LanguageHelpPage(jsonItem);
+                language.HelpPages.Add(str);
             }
 
-            EditorTrans.Tooltips = new List<EditorTransTooltip>();
+            language.Tooltips = new List<LanguageTooltip>();
 
-            foreach (var item in TransJsonRoot.tooltips!)
+            foreach (var jsonItem in languageJsonRoot.tooltips!)
             {
-                var str = new EditorTransTooltip
-                {
-                    Json = item,
-                };
-                EditorTrans.Tooltips.Add(str);
+                var str = new LanguageTooltip(jsonItem);
+                language.Tooltips.Add(str);
             }
+
+            return language;
         }
 
-        private void BuildEditorRefData()
+        private void CreateEditorData()
         {
-            EditorRef = new EditorRef();
-            EditorRef.Json = RefJsonRoot;
-            EditorRef.Strings = new List<EditorRefString>();
+            var editorGeneral = new EditorGeneral(referenceLanguage.General, translationLanguage.General);
 
-            foreach (var item in RefJsonRoot.strings!)
+            ///
+
+            var editorStrings = new List<EditorString>();
+            int number = 1;
+
+            foreach (var item in referenceLanguage.Strings)
             {
-                var translate = EditorTrans.Strings.FirstOrDefault(x => x.Id == item.id);
+                var translate = translationLanguage.Strings.FirstOrDefault(x => x.Id == item.Id);
 
                 if (translate == null)
                 {
-                    var js = new JsonString { id = item.id, format = item.format };
-                    TransJsonRoot.strings!.Add(js);
-                    translate = new EditorTransString { Json = js };
+                    var jsonItem = new JsonString 
+                    {
+                        id = item.Id,
+                        format = item.Format,
+                        txt = item.Txt
+                    };
+                    translationJsonRoot.strings!.Add(jsonItem);
+                    translate = new LanguageString(jsonItem);
+                    translationLanguage.Strings.Add(translate);
                 }
 
-                var str = new EditorRefString
-                {
-                    Json = item,
-                    EditorTranslate = translate
-                };
-                EditorRef.Strings.Add(str);
+                var str = new EditorString(number, item, translate);
+                editorStrings.Add(str);
+                number++;
             }
 
-            EditorRef.HelpPages = new List<EditorRefHelpPage>();
+            ///
 
-            foreach (var item in RefJsonRoot.helppages!)
+            var editorTooltips = new List<EditorTooltip>();
+            number = 1;
+
+            foreach (var item in referenceLanguage.Tooltips)
             {
-                var translate = EditorTrans.HelpPages.FirstOrDefault(x => x.Id == item.id);
+                var translate = translationLanguage.Tooltips.FirstOrDefault(x => x.Id == item.Id);
                 
                 if (translate == null)
                 {
-                    var js = new JsonHelpPage { id = item.id };
-                    TransJsonRoot.helppages!.Add(js);
-                    translate = new EditorTransHelpPage { Json = js };
+                    var jsonItem = new JsonTooltip
+                    {
+                        id = item.Id,
+                        label = item.Label,
+                        helptext = item.Helptext,
+                        morehelptext = item.MoreHelptext
+                    };
+                    translationJsonRoot.tooltips!.Add(jsonItem);
+                    translate = new LanguageTooltip(jsonItem);
+                    translationLanguage.Tooltips.Add(translate);
                 }
 
-                var str = new EditorRefHelpPage
-                {
-                    Json = item,
-                    EditorTranslate = translate
-                };
-                EditorRef.HelpPages.Add(str);
+                var str = new EditorTooltip(number, item, translate);
+                editorTooltips.Add(str);
+                number++;
             }
 
-            EditorRef.Tooltips = new List<EditorRefTooltip>();
+            ///
 
-            foreach (var item in RefJsonRoot.tooltips!)
+            var editorHelpPages = new List<EditorHelpPage>();
+            number = 1;
+
+            foreach (var item in referenceLanguage.HelpPages)
             {
-                var translate = EditorTrans.Tooltips.FirstOrDefault(x => x.Id == item.id);
+                var translate = translationLanguage.HelpPages.FirstOrDefault(x => x.Id == item.Id);
                 
                 if (translate == null)
                 {
-                    var js = new JsonTooltip{ id = item.id };
-                    TransJsonRoot.tooltips!.Add(js);
-                    translate = new EditorTransTooltip { Json = js };
+                    var jsonItem = new JsonHelpPage
+                    {
+                        id = item.Id,
+                        helptext = item.Helptext
+                    };
+                    translationJsonRoot.helppages!.Add(jsonItem);
+                    translate = new LanguageHelpPage(jsonItem);
+                    translationLanguage.HelpPages.Add(translate);
                 }
 
-                var str = new EditorRefTooltip
-                {
-                    Json = item,
-                    EditorTranslate = translate
-                };
-                EditorRef.Tooltips.Add(str);
+                var str = new EditorHelpPage(number, item, translate);
+                editorHelpPages.Add(str);
+                number++;
             }
+
+            ///
+
+            editor = new Editor(editorGeneral, editorStrings, editorTooltips, editorHelpPages);
         }
 
         ////////////////////////////////////////////////////////////////////////////////////////////
@@ -401,36 +420,29 @@ namespace PTGui_Language_Editor
         private void PrepareGeneral()
         {
             var vm = new GeneralViewModel(SetModified);
-            vm.EditorRef = EditorRef;
-            vm.EditorTrans = EditorTrans;
+            vm.EditGeneral = editor.General;
             GeneralViewModel = vm;
-        }
-
-        private void PrepareHelp()
-        {
-            var vm = new HelpPagesViewModel(SetModified);
-            vm.AllRefStrings = EditorRef.Strings;
-            vm.AllTransStrings = EditorTrans.Strings;
-            vm.AllDisplayRefHelpPages = EditorRef.HelpPages;
-            HelpViewModel = vm;
-        }
-
-        private void PrepareTooltip()
-        {
-            var vm = new TooltipsViewModel(SetModified);
-            vm.AllRefStrings = EditorRef.Strings;
-            vm.AllTransStrings = EditorTrans.Strings;
-            vm.AllDisplayRefTooltips = EditorRef.Tooltips;
-            TooltipsViewModel = vm;
         }
 
         private void PrepareString()
         {
-            var vm = new StringsViewModel(SetModified);
-            vm.AllRefStrings = EditorRef.Strings;
-            vm.AllTransStrings = EditorTrans.Strings;
-            vm.AllDisplayRefStrings = EditorRef.Strings;
+            var vm = new StringsViewModel(referenceLanguage.Strings, translationLanguage.Strings, SetModified);
+            vm.EditStrings = editor.Strings;
             StringsViewModel = vm;
+        }
+
+        private void PrepareTooltip()
+        {
+            var vm = new TooltipsViewModel(referenceLanguage.Strings, translationLanguage.Strings, SetModified);
+            vm.EditTooltips = editor.Tooltips;
+            TooltipsViewModel = vm;
+        }
+
+        private void PrepareHelp()
+        {
+            var vm = new HelpPagesViewModel(referenceLanguage.Strings, translationLanguage.Strings, SetModified);
+            vm.EditHelpPages = editor.HelpPages;
+            HelpViewModel = vm;
         }
 
         ////////////////////////////////////////////////////////////////////////////////////////////
@@ -450,7 +462,7 @@ namespace PTGui_Language_Editor
                 Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping,
                 DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull
             };
-            JsonSerializer.Serialize(json, TransJsonRoot, jso);
+            JsonSerializer.Serialize(json, translationJsonRoot, jso);
 
             isModified = false;
             SaveData.RaiseCanExecuteChanged();
@@ -467,60 +479,60 @@ namespace PTGui_Language_Editor
 
             if (string.IsNullOrEmpty(search))
             {
-                StringsViewModel.AllDisplayRefStrings = EditorRef.Strings;
-                TooltipsViewModel.AllDisplayRefTooltips = EditorRef.Tooltips;
-                HelpViewModel.AllDisplayRefHelpPages = EditorRef.HelpPages;
+                StringsViewModel.EditStrings = editor.Strings;
+                TooltipsViewModel.EditTooltips = editor.Tooltips;
+                HelpViewModel.EditHelpPages = editor.HelpPages;
                 return;
             }
 
             //////////////
-            var strings = new List<EditorRefString>();
+            var strings = new List<EditorString>();
 
-            foreach (var str in EditorRef.Strings)
+            foreach (var item in editor.Strings)
             {
-                if (str.Id.Contains(search, StringComparison.InvariantCultureIgnoreCase)
-                    || str.Txt != null && str.Txt.Contains(search, StringComparison.InvariantCultureIgnoreCase)
-                    || str.EditorTranslate.Txt != null && str.EditorTranslate.Txt.Contains(search, StringComparison.InvariantCultureIgnoreCase))
+                if (item.Reference.Id.Contains(search, StringComparison.InvariantCultureIgnoreCase)
+                    || item.Reference.Txt != null && item.Reference.Txt.Contains(search, StringComparison.InvariantCultureIgnoreCase)
+                    || item.Translation.Txt != null && item.Translation.Txt.Contains(search, StringComparison.InvariantCultureIgnoreCase))
                 {
-                    strings.Add(str);
+                    strings.Add(item);
                 }
             }
 
-            StringsViewModel.AllDisplayRefStrings = strings;
+            StringsViewModel.EditStrings = strings;
 
             //////////////
-            var tooltips = new List<EditorRefTooltip>();
+            var tooltips = new List<EditorTooltip>();
 
-            foreach (var str in EditorRef.Tooltips)
+            foreach (var item in editor.Tooltips)
             {
-                if (str.Id.Contains(search, StringComparison.InvariantCultureIgnoreCase)
-                    || str.Label != null && str.Label.Contains(search, StringComparison.InvariantCultureIgnoreCase)
-                    || str.Helptext != null && str.Helptext.Contains(search, StringComparison.InvariantCultureIgnoreCase)
-                    || str.MoreHelptext != null && str.MoreHelptext.Contains(search, StringComparison.InvariantCultureIgnoreCase)
-                    || str.EditorTranslate.Label != null && str.EditorTranslate.Label.Contains(search, StringComparison.InvariantCultureIgnoreCase)
-                    || str.EditorTranslate.Helptext != null && str.EditorTranslate.Helptext.Contains(search, StringComparison.InvariantCultureIgnoreCase)
-                    || str.EditorTranslate.MoreHelptext != null && str.EditorTranslate.MoreHelptext.Contains(search, StringComparison.InvariantCultureIgnoreCase))
+                if (item.Reference.Id.Contains(search, StringComparison.InvariantCultureIgnoreCase)
+                    || item.Reference.Label != null && item.Reference.Label.Contains(search, StringComparison.InvariantCultureIgnoreCase)
+                    || item.Reference.Helptext != null && item.Reference.Helptext.Contains(search, StringComparison.InvariantCultureIgnoreCase)
+                    || item.Reference.MoreHelptext != null && item.Reference.MoreHelptext.Contains(search, StringComparison.InvariantCultureIgnoreCase)
+                    || item.Translation.Label != null && item.Translation.Label.Contains(search, StringComparison.InvariantCultureIgnoreCase)
+                    || item.Translation.Helptext != null && item.Translation.Helptext.Contains(search, StringComparison.InvariantCultureIgnoreCase)
+                    || item.Translation.MoreHelptext != null && item.Translation.MoreHelptext.Contains(search, StringComparison.InvariantCultureIgnoreCase))
                 {
-                    tooltips.Add(str);
+                    tooltips.Add(item);
                 }
             }
 
-            TooltipsViewModel.AllDisplayRefTooltips = tooltips;
+            TooltipsViewModel.EditTooltips = tooltips;
 
             //////////////
-            var helppages = new List<EditorRefHelpPage>();
+            var helppages = new List<EditorHelpPage>();
 
-            foreach (var str in EditorRef.HelpPages)
+            foreach (var item in editor.HelpPages)
             {
-                if (str.Id.Contains(search, StringComparison.InvariantCultureIgnoreCase)
-                    || str.Helptext != null && str.Helptext.Contains(search, StringComparison.InvariantCultureIgnoreCase)
-                    || str.EditorTranslate.Helptext != null && str.EditorTranslate.Helptext.Contains(search, StringComparison.InvariantCultureIgnoreCase))
+                if (item.Reference.Id.Contains(search, StringComparison.InvariantCultureIgnoreCase)
+                    || item.Reference.Helptext != null && item.Reference.Helptext.Contains(search, StringComparison.InvariantCultureIgnoreCase)
+                    || item.Translation.Helptext != null && item.Translation.Helptext.Contains(search, StringComparison.InvariantCultureIgnoreCase))
                 {
-                    helppages.Add(str);
+                    helppages.Add(item);
                 }
             }
 
-            HelpViewModel.AllDisplayRefHelpPages = helppages;
+            HelpViewModel.EditHelpPages = helppages;
         }
 
         private void SetModified()

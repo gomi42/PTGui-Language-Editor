@@ -44,7 +44,7 @@ namespace PTGui_Language_Editor
 
         private static void ClosingChanged(DependencyObject target, DependencyPropertyChangedEventArgs e)
         {
-            Window window = target as Window;
+            Window? window = target as Window;
 
             if (window != null)
             {
@@ -61,7 +61,8 @@ namespace PTGui_Language_Editor
 
         static void Window_Closing(object sender, CancelEventArgs e)
         {
-            ICommand closing = GetClosing(sender as Window);
+            ICommand? closing = GetClosing(sender as Window);
+
             if (closing != null)
             {
                 if (closing.CanExecute(null))

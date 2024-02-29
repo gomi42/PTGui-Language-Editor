@@ -2,7 +2,7 @@
 // Author:
 //   Michael Göricke
 //
-// Copyright (c) 2023
+// Copyright (c) 2024
 //
 // This file is part of PTGui Language Editor.
 //
@@ -20,10 +20,7 @@
 // along with this program. If not, see<http://www.gnu.org/licenses/>.
 
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace PTGui_Language_Editor
 {
@@ -36,14 +33,13 @@ namespace PTGui_Language_Editor
             setModified = setModifiedAction;
         }
 
-        public EditorRef EditorRef { get; set; } = null!;
-        public EditorTrans EditorTrans { get; set; } = null!;
+        public EditorGeneral EditGeneral { get; set; } = null!;
 
-        public string RefContributors
+        public string ReferenceContributors
         {
             get
             {
-                var contributors = EditorRef.Contributors;
+                var contributors = EditGeneral.Reference.Contributors;
 
                 if (contributors == null)
                 {
@@ -57,50 +53,50 @@ namespace PTGui_Language_Editor
             {
                 if (string.IsNullOrEmpty(value))
                 {
-                    EditorRef.Contributors = null;
+                    EditGeneral.Reference.Contributors = null;
                 }
                 else
                 {
-                    EditorRef.Contributors = value.Split('\n').ToList();
+                    EditGeneral.Reference.Contributors = value.Split('\n').ToList();
                 }
 
                 NotifyPropertyChanged();
             }
         }
 
-        public string? RefLanguageMameLocalized
+        public string? ReferenceLanguageMameLocalized
         {
             get
             {
-                return EditorRef.LanguageMameLocalized;
+                return EditGeneral.Reference.LanguageMameLocalized;
             }
 
             set
             {
-                EditorRef.LanguageMameLocalized = value;
+                EditGeneral.Reference.LanguageMameLocalized = value;
                 NotifyPropertyChanged();
             }
         }
 
-        public string? RefStartupMessage
+        public string? ReferenceStartupMessage
         {
             get
             {
-                return EditorRef.StartupMessage;
+                return EditGeneral.Reference.StartupMessage;
             }
 
             set
             {
-                EditorRef.StartupMessage = value;
+                EditGeneral.Reference.StartupMessage = value;
                 NotifyPropertyChanged();
             }
         }
 
-        public string TransContributors
+        public string TranslationContributors
         {
             get
             {
-                var contributors = EditorTrans.Contributors;
+                var contributors = EditGeneral.Translation.Contributors;
 
                 if (contributors == null)
                 {
@@ -114,41 +110,41 @@ namespace PTGui_Language_Editor
             {
                 if (string.IsNullOrEmpty(value))
                 {
-                    EditorTrans.Contributors = null;
+                    EditGeneral.Translation.Contributors = null;
                 }
                 else
                 {
-                    EditorTrans.Contributors = value.Split('\n').ToList();
+                    EditGeneral.Translation.Contributors = value.Split('\n').ToList();
                 }
 
                 setModified();
             }
         }
 
-        public string? TransLanguageMameLocalized
+        public string? TranslationLanguageMameLocalized
         {
             get
             {
-                return EditorTrans.LanguageMameLocalized;
+                return EditGeneral.Translation.LanguageMameLocalized;
             }
 
             set
             {
-                EditorTrans.LanguageMameLocalized= value;
+                EditGeneral.Translation.LanguageMameLocalized= value;
                 setModified();
             }
         }
 
-        public string? TransStartupMessage
+        public string? TranslationStartupMessage
         {
             get
             {
-                return EditorTrans.StartupMessage;
+                return EditGeneral.Translation.StartupMessage;
             }
 
             set
             {
-                EditorTrans.StartupMessage = value;
+                EditGeneral.Translation.StartupMessage = value;
                 setModified();
             }
         }

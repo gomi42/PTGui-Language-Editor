@@ -2,7 +2,7 @@
 // Author:
 //   Michael Göricke
 //
-// Copyright (c) 2023
+// Copyright (c) 2024
 //
 // This file is part of PTGui Language Editor.
 //
@@ -25,40 +25,12 @@ namespace PTGui_Language_Editor
 {
     //////////////////////////////////////
 
-    public class EditorBase
-    {
-        public JsonRoot Json { get; set; } = null!;
-        
-        public List<string>? Contributors
-        {
-            get => Json.contributors;
-            set => Json.contributors = value;
-        }
-
-        public string? LanguageMameLocalized
-        {
-            get => Json.languagenamelocalized;
-            set => Json.languagenamelocalized = value;
-        }
-
-        public string? StartupMessage
-        {
-            get => Json.startupmsg;
-            set => Json.startupmsg = value;
-        }
-    }
-
-    public class EditorTrans : EditorBase
-    {
-        public List<EditorTransHelpPage> HelpPages { get; set; } = null!;
-        public List<EditorTransString> Strings { get; set; } = null!;
-        public List<EditorTransTooltip> Tooltips { get; set; } = null!;
-    }
-
-    public class EditorTypeBase
+    public class LanguageTypeBase
     {
         protected JsonTypeBase JsonBase { get; init; } = null!;
+
         public string Id => JsonBase.id!;
+
         public bool? Machinetranslated
         {
             get => JsonBase.machinetranslated;
@@ -66,37 +38,31 @@ namespace PTGui_Language_Editor
         }
     }
 
-    public class EditorTransHelpPage : EditorTypeBase
+    public class LanguageString : LanguageTypeBase
     {
-        public JsonHelpPage Json
+        public LanguageString(JsonString json)
         {
-            get => (JsonHelpPage)JsonBase;
-            init => JsonBase = value;
+            Json = json;
         }
-        public string? Helptext
-        {
-            get => Json.helptext;
-            set => Json.helptext = value;
-        }
-    }
 
-    public class EditorTransString : EditorTypeBase
-    {
-        public JsonString Json
+        protected JsonString Json
         {
             get => (JsonString)JsonBase;
             init => JsonBase = value;
         }
+
         public string? Txt
         {
             get => Json.txt;
             set => Json.txt = value;
         }
+
         public string? Format
         {
             get => Json.format;
             set => Json.format = value;
         }
+
         public string? TxtFortranslate
         {
             get => Json.txtfortranslate;
@@ -104,23 +70,31 @@ namespace PTGui_Language_Editor
         }
     }
 
-    public class EditorTransTooltip : EditorTypeBase
+    public class LanguageTooltip : LanguageTypeBase
     {
-        public JsonTooltip Json
+        public LanguageTooltip(JsonTooltip json)
+        {
+            Json = json;
+        }
+
+        protected JsonTooltip Json
         {
             get => (JsonTooltip)JsonBase;
             init => JsonBase = value;
         }
+
         public string? Label
         {
             get => Json.label;
             set => Json.label = value;
         }
+
         public string? Helptext
         {
             get => Json.helptext;
             set => Json.helptext = value;
         }
+
         public string? MoreHelptext
         {
             get => Json.morehelptext;
@@ -128,28 +102,74 @@ namespace PTGui_Language_Editor
         }
     }
 
+    public class LanguageHelpPage : LanguageTypeBase
+    {
+        public LanguageHelpPage(JsonHelpPage json)
+        {
+            Json = json;
+        }
+
+        protected JsonHelpPage Json
+        {
+            get => (JsonHelpPage)JsonBase;
+            init => JsonBase = value;
+        }
+
+        public string? Helptext
+        {
+            get => Json.helptext;
+            set => Json.helptext = value;
+        }
+    }
+
+    public class LanguageGeneral : LanguageTypeBase
+    {
+        private JsonRoot json;
+
+        public LanguageGeneral(JsonRoot json)
+        {
+            this.json = json;
+        }
+        public List<string>? Contributors
+        {
+            get => json.contributors;
+            set => json.contributors = value;
+        }
+
+        public string? LanguageMameLocalized
+        {
+            get => json.languagenamelocalized;
+            set => json.languagenamelocalized = value;
+        }
+
+        public string? StartupMessage
+        {
+            get => json.startupmsg;
+            set => json.startupmsg = value;
+        }
+    }
+
+    public class Language
+    {
+        public LanguageGeneral General { get; set; } = null!;
+
+        public List<LanguageString> Strings { get; set; } = null!;
+
+        public List<LanguageTooltip> Tooltips { get; set; } = null!;
+
+        public List<LanguageHelpPage> HelpPages { get; set; } = null!;
+    }
+
     //////////////////////////////////////
 
-    public class EditorRef : EditorBase
-    {
-        public List<EditorRefHelpPage> HelpPages { get; set; } = null!;
-        public List<EditorRefString> Strings { get; set; } = null!;
-        public List<EditorRefTooltip> Tooltips { get; set; } = null!;
-    }
+    public record Editor(EditorGeneral General, List<EditorString> Strings, List<EditorTooltip> Tooltips, List<EditorHelpPage> HelpPages);
 
-    public class EditorRefHelpPage : EditorTransHelpPage
-    {
-        public EditorTransHelpPage EditorTranslate { get; init; } = null!;
-    }
+    public record EditorGeneral(LanguageGeneral Reference, LanguageGeneral Translation);
 
-    public class EditorRefString : EditorTransString
-    {
-        public EditorTransString EditorTranslate { get; init; } = null!;
-    }
+    public record EditorString(int Number, LanguageString Reference, LanguageString Translation);
 
-    public class EditorRefTooltip : EditorTransTooltip
-    {
-        public EditorTransTooltip EditorTranslate { get; init; } = null!;
-    }
+    public record EditorTooltip(int Number, LanguageTooltip Reference, LanguageTooltip Translation);
+
+    public record EditorHelpPage(int Number, LanguageHelpPage Reference, LanguageHelpPage Translation);
 }
 
