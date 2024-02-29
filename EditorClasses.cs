@@ -38,6 +38,33 @@ namespace PTGui_Language_Editor
         }
     }
 
+    public class LanguageGeneral : LanguageTypeBase
+    {
+        private JsonRoot json;
+
+        public LanguageGeneral(JsonRoot json)
+        {
+            this.json = json;
+        }
+        public List<string>? Contributors
+        {
+            get => json.contributors;
+            set => json.contributors = value;
+        }
+
+        public string? LanguageMameLocalized
+        {
+            get => json.languagenamelocalized;
+            set => json.languagenamelocalized = value;
+        }
+
+        public string? StartupMessage
+        {
+            get => json.startupmsg;
+            set => json.startupmsg = value;
+        }
+    }
+
     public class LanguageString : LanguageTypeBase
     {
         public LanguageString(JsonString json)
@@ -119,33 +146,6 @@ namespace PTGui_Language_Editor
         {
             get => Json.helptext;
             set => Json.helptext = value;
-        }
-    }
-
-    public class LanguageGeneral : LanguageTypeBase
-    {
-        private JsonRoot json;
-
-        public LanguageGeneral(JsonRoot json)
-        {
-            this.json = json;
-        }
-        public List<string>? Contributors
-        {
-            get => json.contributors;
-            set => json.contributors = value;
-        }
-
-        public string? LanguageMameLocalized
-        {
-            get => json.languagenamelocalized;
-            set => json.languagenamelocalized = value;
-        }
-
-        public string? StartupMessage
-        {
-            get => json.startupmsg;
-            set => json.startupmsg = value;
         }
     }
 
