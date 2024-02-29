@@ -211,7 +211,8 @@
                         <TextBlock Margin="2,0,0,0"
                                    VerticalAlignment="Center"
                                    FontSize="{StaticResource HintFontSize}">
-                            (<Run d:Text="1234" Text="{Binding NumberItems}" />
+                            (<Run d:Text="1234"
+                                 Text="{Binding NumberItems}" />
                             )</TextBlock>
                     </StackPanel>
                 </TabItem.Header>
@@ -532,7 +533,8 @@
                 <Grid DataContext="{Binding HelpViewModel}">
                     <StackPanel Margin="13,10,0,0"
                                 Orientation="Horizontal">
-                        <TextBlock Width="32"
+                        <TextBlock Height="24"
+                                   Margin="3,0,0,0"
                                    VerticalAlignment="Top"
                                    FontSize="{StaticResource IdFontSize}"
                                    Foreground="{StaticResource IdForegroundBrush}"
