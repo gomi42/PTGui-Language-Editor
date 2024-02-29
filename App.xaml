@@ -62,7 +62,7 @@
                              Color="{StaticResource CellBorderColor}" />
             <SolidColorBrush x:Key="CellBackgroundBrush"
                              Color="{StaticResource CellBackgroundColor}" />
-            <SolidColorBrush x:Key="CellBackgroundBrushPreview"
+            <SolidColorBrush x:Key="CellBackgroundPreviewBrush"
                              Color="#FFfcfcFc" />
 
             <!--  fonts  -->

@@ -101,7 +101,7 @@
                             <ColumnDefinition Width="1*" />
                             <ColumnDefinition Width="1*" />
                         </Grid.ColumnDefinitions>
-                        <Border Background="{StaticResource CellBackgroundBrushPreview}">
+                        <Border Background="{StaticResource CellBackgroundPreviewBrush}">
                             <Grid>
                                 <TextBlock Margin="10,0,0,0"
                                            HorizontalAlignment="Left"
@@ -137,7 +137,7 @@
                             <ColumnDefinition Width="1*" />
                             <ColumnDefinition Width="1*" />
                         </Grid.ColumnDefinitions>
-                        <Border Background="{StaticResource CellBackgroundBrushPreview}">
+                        <Border Background="{StaticResource CellBackgroundPreviewBrush}">
                             <Grid>
                                 <TextBlock Margin="10,0,0,0"
                                            HorizontalAlignment="Left"
@@ -172,7 +172,7 @@
                             <ColumnDefinition Width="1*" />
                             <ColumnDefinition Width="1*" />
                         </Grid.ColumnDefinitions>
-                        <Border Background="{StaticResource CellBackgroundBrushPreview}">
+                        <Border Background="{StaticResource CellBackgroundPreviewBrush}">
                             <Grid>
                                 <TextBlock Margin="10,0,0,0"
                                            HorizontalAlignment="Left"
@@ -248,7 +248,7 @@
                                                                     Mode=OneWay}" />
                                         </StackPanel>
                                         <Border Margin="0,19,0,0"
-                                                Background="{StaticResource CellBackgroundBrushPreview}">
+                                                Background="{StaticResource CellBackgroundPreviewBrush}">
                                             <Grid>
                                                 <FlowDocumentScrollViewer Margin="0,0,0,0"
                                                                           Document="{Binding ReferenceView}"
@@ -265,7 +265,7 @@
                                         </Border>
                                         <Border Grid.Column="1"
                                                 Margin="2,19,0,0"
-                                                Background="{StaticResource CellBackgroundBrushPreview}">
+                                                Background="{StaticResource CellBackgroundPreviewBrush}">
                                             <FlowDocumentScrollViewer Margin="0,0,0,0"
                                                                       Document="{Binding TranslationPreview}"
                                                                       VerticalScrollBarVisibility="Hidden">
@@ -358,7 +358,7 @@
                                                 <RowDefinition Height="Auto" />
                                                 <RowDefinition Height="Auto" />
                                             </Grid.RowDefinitions>
-                                            <Border Background="{StaticResource CellBackgroundBrushPreview}">
+                                            <Border Background="{StaticResource CellBackgroundPreviewBrush}">
                                                 <Grid>
                                                     <TextBlock Height="24"
                                                                Margin="18,0,0,0"
@@ -380,7 +380,7 @@
                                             </Border>
                                             <Border Grid.Column="1"
                                                     Margin="2,0,0,0"
-                                                    Background="{StaticResource CellBackgroundBrushPreview}">
+                                                    Background="{StaticResource CellBackgroundPreviewBrush}">
                                                 <FlowDocumentScrollViewer Document="{Binding TranslationLabelPreview}"
                                                                           VerticalScrollBarVisibility="Disabled">
                                                     <FlowDocumentScrollViewer.Resources>
@@ -406,7 +406,7 @@
                                             <Border Grid.Row="1"
                                                     Grid.Column="0"
                                                     Margin="0,2,0,0"
-                                                    Background="{StaticResource CellBackgroundBrushPreview}">
+                                                    Background="{StaticResource CellBackgroundPreviewBrush}">
                                                 <Grid>
                                                     <TextBlock Height="24"
                                                                Margin="18,0,0,0"
@@ -429,7 +429,7 @@
                                             <Border Grid.Row="1"
                                                     Grid.Column="1"
                                                     Margin="2,2,0,0"
-                                                    Background="{StaticResource CellBackgroundBrushPreview}">
+                                                    Background="{StaticResource CellBackgroundPreviewBrush}">
                                                 <FlowDocumentScrollViewer Document="{Binding TranslationHelpTextPreview}"
                                                                           VerticalScrollBarVisibility="Disabled">
                                                     <FlowDocumentScrollViewer.Resources>
@@ -456,7 +456,7 @@
                                             <Border Grid.Row="2"
                                                     Grid.Column="0"
                                                     Margin="0,2,0,0"
-                                                    Background="{StaticResource CellBackgroundBrushPreview}">
+                                                    Background="{StaticResource CellBackgroundPreviewBrush}">
                                                 <Grid>
                                                     <TextBlock Height="24"
                                                                Margin="18,0,0,0"
@@ -479,7 +479,7 @@
                                             <Border Grid.Row="2"
                                                     Grid.Column="1"
                                                     Margin="2,2,0,0"
-                                                    Background="{StaticResource CellBackgroundBrushPreview}">
+                                                    Background="{StaticResource CellBackgroundPreviewBrush}">
                                                 <FlowDocumentScrollViewer Document="{Binding TranslationMoreHelpTextPreview}"
                                                                           VerticalScrollBarVisibility="Disabled">
                                                     <FlowDocumentScrollViewer.Resources>
@@ -555,7 +555,7 @@
                             <ColumnDefinition Width="1*" />
                         </Grid.ColumnDefinitions>
                         <Border Margin="0,0,0,0"
-                                Background="{StaticResource CellBackgroundBrushPreview}">
+                                Background="{StaticResource CellBackgroundPreviewBrush}">
                             <FlowDocumentScrollViewer Document="{Binding ReferenceHelpPagePreview}"
                                                       VerticalScrollBarVisibility="Auto">
                                 <FlowDocumentScrollViewer.Resources>
@@ -569,7 +569,7 @@
                         </Border>
                         <Border Grid.Column="1"
                                 Margin="2,0,0,0"
-                                Background="{StaticResource CellBackgroundBrushPreview}">
+                                Background="{StaticResource CellBackgroundPreviewBrush}">
                             <FlowDocumentScrollViewer Document="{Binding TranslationHelpPagePreview}"
                                                       VerticalScrollBarVisibility="Auto">
                                 <FlowDocumentScrollViewer.Resources>
