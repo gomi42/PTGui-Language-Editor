@@ -135,7 +135,7 @@ namespace PTGui_Language_Editor
 
                 if (!setFromCode)
                 {
-                    editString.Translation.Txt = PTGuiTextConverter.ConvertToHtml(translationEdit, isHtml);
+                    editString.Translation.Txt = isHtml ? PTGuiTextConverter.ConvertToHtml(translationEdit) : translationEdit;
                     editString.Translation.Machinetranslated = null;
                     setModified();
                 }
@@ -149,7 +149,7 @@ namespace PTGui_Language_Editor
 
             setFromCode = true;
             isHtml = editString.Translation.Format == "html";
-            TranslationEdit = PTGuiTextConverter.ConvertFromHtml(editString.Translation.Txt, isHtml);
+            TranslationEdit = isHtml ? PTGuiTextConverter.ConvertFromHtml(editString.Translation.Txt) : editString.Translation.Txt;
 
             setFromCode = false;
         }

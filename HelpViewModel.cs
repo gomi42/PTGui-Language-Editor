@@ -107,7 +107,7 @@ namespace PTGui_Language_Editor
                     if (!setFromCode)
                     {
                         var translateHelpPage = currentHelpPage!.Translation;
-                        translateHelpPage.Helptext = PTGuiTextConverter.ConvertToHtml(transHelpPageEdit, true);
+                        translateHelpPage.Helptext = PTGuiTextConverter.ConvertToHtml(transHelpPageEdit);
 
                         translateHelpPage.Machinetranslated = null;
                         setModified();
@@ -132,7 +132,7 @@ namespace PTGui_Language_Editor
 
                 ReferenceHelpPagePreview = PTGuiTextConverter.ConvertToFlowDocument(currentHelpPage.Reference.Helptext, true, y => referenceStrings.FirstOrDefault(x => x.Id == y)?.Txt);
                 var translateHelpPage = currentHelpPage.Translation;
-                TranslationHelpPageEdit = PTGuiTextConverter.ConvertFromHtml(translateHelpPage.Helptext, true);
+                TranslationHelpPageEdit = PTGuiTextConverter.ConvertFromHtml(translateHelpPage.Helptext);
             }
             else
             {

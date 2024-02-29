@@ -190,7 +190,7 @@ namespace PTGui_Language_Editor
 
                 if (!setFromCode)
                 {
-                    editorTooltip.Translation.MoreHelptext = PTGuiTextConverter.ConvertToHtml(translationMoreHelpTextEdit, true);
+                    editorTooltip.Translation.MoreHelptext = PTGuiTextConverter.ConvertToHtml(translationMoreHelpTextEdit);
                     editorTooltip.Translation.Machinetranslated = null;
                     setModified();
                 }
@@ -211,7 +211,7 @@ namespace PTGui_Language_Editor
 
                 if (!setFromCode)
                 {
-                    editorTooltip.Translation.Label = PTGuiTextConverter.ConvertToHtml(translationLabelEdit, true);
+                    editorTooltip.Translation.Label = PTGuiTextConverter.ConvertToHtml(translationLabelEdit);
                     editorTooltip.Translation.Machinetranslated = null;
                     setModified();
                 }
@@ -240,7 +240,7 @@ namespace PTGui_Language_Editor
 
                 if (!setFromCode)
                 {
-                    editorTooltip.Translation.Helptext = PTGuiTextConverter.ConvertToHtml(translationHelpTextEdit, true);
+                    editorTooltip.Translation.Helptext = PTGuiTextConverter.ConvertToHtml(translationHelpTextEdit);
                     editorTooltip.Translation.Machinetranslated = null;
                     setModified();
                 }
@@ -259,9 +259,9 @@ namespace PTGui_Language_Editor
             ReferenceHelpTextView = PTGuiTextConverter.ConvertToFlowDocument(editorTooltip.Reference.Helptext, true, y => referenceStrings.FirstOrDefault(x => x.Id == y)?.Txt);
             ReferenceMoreHelpTextView = PTGuiTextConverter.ConvertToFlowDocument(editorTooltip.Reference.MoreHelptext, true, y => referenceStrings.FirstOrDefault(x => x.Id == y)?.Txt);
 
-            TranslationLabelEdit = PTGuiTextConverter.ConvertFromHtml(editorTooltip.Translation.Label, true);
-            TransHelpTextEdit = PTGuiTextConverter.ConvertFromHtml(editorTooltip.Translation.Helptext, true);
-            TranslationMoreHelpTextEdit = PTGuiTextConverter.ConvertFromHtml(editorTooltip.Translation.MoreHelptext, true);
+            TranslationLabelEdit = PTGuiTextConverter.ConvertFromHtml(editorTooltip.Translation.Label);
+            TransHelpTextEdit = PTGuiTextConverter.ConvertFromHtml(editorTooltip.Translation.Helptext);
+            TranslationMoreHelpTextEdit = PTGuiTextConverter.ConvertFromHtml(editorTooltip.Translation.MoreHelptext);
 
             setFromCode = false;
         }

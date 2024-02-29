@@ -357,9 +357,9 @@ namespace PTGui_Language_Editor
             AddText();
         }
 
-        public static string? ConvertToHtml(string? str, bool isHtml)
+        public static string? ConvertToHtml(string? str)
         {
-            if (!string.IsNullOrEmpty(str) && isHtml)
+            if (!string.IsNullOrEmpty(str))
             {
                 return str?.Replace("\n", "<br>");
             }
@@ -367,9 +367,9 @@ namespace PTGui_Language_Editor
             return str;
         }
 
-        public static string? ConvertFromHtml(string? str, bool isHtml)
+        public static string? ConvertFromHtml(string? str)
         {
-            if (!string.IsNullOrEmpty(str) && isHtml)
+            if (!string.IsNullOrEmpty(str))
             {
                 return str?.Replace("<br>", "\n");
             }
