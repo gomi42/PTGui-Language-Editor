@@ -31,17 +31,18 @@ namespace PTGui_Language_Editor
         private List<LanguageString> referenceStrings;
         private List<LanguageString> translationStrings;
         private Action setModified;
-        private List<EditorTooltip> editTooltips = null!;
+        private List<EditTooltip> editTooltips = null!;
         private List<OneTooltip> displayPage = null!;
 
-        public TooltipsViewModel(List<LanguageString> referenceStrings, List<LanguageString> translationStrings, Action setModifiedAction)
+        public TooltipsViewModel(List<EditTooltip> editTooltips, List<LanguageString> referenceStrings, List<LanguageString> translationStrings, Action setModifiedAction)
         {
             this.referenceStrings = referenceStrings;
             this.translationStrings = translationStrings;
             setModified = setModifiedAction;
+            EditTooltips = editTooltips;
         }
 
-        public List<EditorTooltip> EditTooltips
+        public List<EditTooltip> EditTooltips
         {
             get
             {
@@ -88,7 +89,7 @@ namespace PTGui_Language_Editor
 
     public class OneTooltip : ViewModelBase
     {
-        EditorTooltip editorTooltip;
+        EditTooltip editTooltip;
         private List<LanguageString> referenceStrings = null!;
         private List<LanguageString> translationStrings = null!;
         private Action setModified;
@@ -104,9 +105,9 @@ namespace PTGui_Language_Editor
         private string? translationHelpTextEdit;
         private string? translationMoreHelpTextEdit;
 
-        public OneTooltip(EditorTooltip editorTooltip, List<LanguageString> referenceStrings, List<LanguageString> translationStrings, Action setModifiedAction)
+        public OneTooltip(EditTooltip editTooltip, List<LanguageString> referenceStrings, List<LanguageString> translationStrings, Action setModifiedAction)
         {
-            this.editorTooltip = editorTooltip;
+            this.editTooltip = editTooltip;
             this.referenceStrings = referenceStrings;
             this.translationStrings = translationStrings;
             setModified = setModifiedAction;
@@ -114,9 +115,9 @@ namespace PTGui_Language_Editor
             Init();
         }
 
-        public int Number => editorTooltip.Number;
+        public int Number => editTooltip.Number;
 
-        public string Id => editorTooltip.Reference.Id;
+        public string Id => editTooltip.Reference.Id;
 
         //////////////////////////////////////
 
@@ -190,8 +191,8 @@ namespace PTGui_Language_Editor
 
                 if (!setFromCode)
                 {
-                    editorTooltip.Translation.MoreHelptext = PTGuiTextConverter.ConvertToHtml(translationMoreHelpTextEdit);
-                    editorTooltip.Translation.Machinetranslated = null;
+                    editTooltip.Translation.MoreHelptext = PTGuiTextConverter.ConvertToHtml(translationMoreHelpTextEdit);
+                    editTooltip.Translation.Machinetranslated = null;
                     setModified();
                 }
 
@@ -211,8 +212,8 @@ namespace PTGui_Language_Editor
 
                 if (!setFromCode)
                 {
-                    editorTooltip.Translation.Label = PTGuiTextConverter.ConvertToHtml(translationLabelEdit);
-                    editorTooltip.Translation.Machinetranslated = null;
+                    editTooltip.Translation.Label = PTGuiTextConverter.ConvertToHtml(translationLabelEdit);
+                    editTooltip.Translation.Machinetranslated = null;
                     setModified();
                 }
 
@@ -240,8 +241,8 @@ namespace PTGui_Language_Editor
 
                 if (!setFromCode)
                 {
-                    editorTooltip.Translation.Helptext = PTGuiTextConverter.ConvertToHtml(translationHelpTextEdit);
-                    editorTooltip.Translation.Machinetranslated = null;
+                    editTooltip.Translation.Helptext = PTGuiTextConverter.ConvertToHtml(translationHelpTextEdit);
+                    editTooltip.Translation.Machinetranslated = null;
                     setModified();
                 }
 
@@ -255,13 +256,13 @@ namespace PTGui_Language_Editor
 
             NotifyPropertyChanged(nameof(Id));
 
-            ReferenceLabelView = PTGuiTextConverter.ConvertToFlowDocument(editorTooltip.Reference.Label, true, y => referenceStrings.FirstOrDefault(x => x.Id == y)?.Txt);
-            ReferenceHelpTextView = PTGuiTextConverter.ConvertToFlowDocument(editorTooltip.Reference.Helptext, true, y => referenceStrings.FirstOrDefault(x => x.Id == y)?.Txt);
-            ReferenceMoreHelpTextView = PTGuiTextConverter.ConvertToFlowDocument(editorTooltip.Reference.MoreHelptext, true, y => referenceStrings.FirstOrDefault(x => x.Id == y)?.Txt);
+            ReferenceLabelView = PTGuiTextConverter.ConvertToFlowDocument(editTooltip.Reference.Label, true, y => referenceStrings.FirstOrDefault(x => x.Id == y)?.Txt);
+            ReferenceHelpTextView = PTGuiTextConverter.ConvertToFlowDocument(editTooltip.Reference.Helptext, true, y => referenceStrings.FirstOrDefault(x => x.Id == y)?.Txt);
+            ReferenceMoreHelpTextView = PTGuiTextConverter.ConvertToFlowDocument(editTooltip.Reference.MoreHelptext, true, y => referenceStrings.FirstOrDefault(x => x.Id == y)?.Txt);
 
-            TranslationLabelEdit = PTGuiTextConverter.ConvertFromHtml(editorTooltip.Translation.Label);
-            TransHelpTextEdit = PTGuiTextConverter.ConvertFromHtml(editorTooltip.Translation.Helptext);
-            TranslationMoreHelpTextEdit = PTGuiTextConverter.ConvertFromHtml(editorTooltip.Translation.MoreHelptext);
+            TranslationLabelEdit = PTGuiTextConverter.ConvertFromHtml(editTooltip.Translation.Label);
+            TransHelpTextEdit = PTGuiTextConverter.ConvertFromHtml(editTooltip.Translation.Helptext);
+            TranslationMoreHelpTextEdit = PTGuiTextConverter.ConvertFromHtml(editTooltip.Translation.MoreHelptext);
 
             setFromCode = false;
         }

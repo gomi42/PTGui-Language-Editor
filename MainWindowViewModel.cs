@@ -47,7 +47,7 @@ namespace PTGui_Language_Editor
         JsonRoot translationJsonRoot = null!;
         Language translationLanguage = null!;
         Language referenceLanguage = null!;
-        Editor editor = null!;
+        EditData editData = null!;
         bool isModified;
         bool isAskSaveChangesDialogOpen;
 
@@ -294,12 +294,12 @@ namespace PTGui_Language_Editor
             LoadLanguageFiles();
             referenceLanguage = CreateLanguage(referenceJsonRoot);
             translationLanguage = CreateLanguage(translationJsonRoot);
-            CreateEditorData();
+            editData = CreateEditData(referenceLanguage, translationLanguage);
 
-            PrepareGeneral();
-            PrepareString();
-            PrepareTooltip();
-            PrepareHelp();
+            GeneralViewModel = new GeneralViewModel(editData.General, SetModified);
+            StringsViewModel = new StringsViewModel(editData.Strings, referenceLanguage.Strings, translationLanguage.Strings, SetModified);
+            TooltipsViewModel = new TooltipsViewModel(editData.Tooltips, referenceLanguage.Strings, translationLanguage.Strings, SetModified);
+            HelpViewModel = new HelpPagesViewModel(editData.HelpPages, referenceLanguage.Strings, translationLanguage.Strings, SetModified);
 
             SearchText = string.Empty;
             isModified = false;
@@ -357,13 +357,13 @@ namespace PTGui_Language_Editor
             return language;
         }
 
-        private void CreateEditorData()
+        private EditData CreateEditData(Language referenceLanguage, Language translationLanguage)
         {
-            var editorGeneral = new EditorGeneral(referenceLanguage.General, translationLanguage.General);
+            var editGeneral = new EditGeneral(referenceLanguage.General, translationLanguage.General);
 
             ///
 
-            var editorStrings = new List<EditorString>();
+            var editStrings = new List<EditString>();
             int number = 1;
 
             foreach (var item in referenceLanguage.Strings)
@@ -383,14 +383,14 @@ namespace PTGui_Language_Editor
                     translationLanguage.Strings.Add(translate);
                 }
 
-                var str = new EditorString(number, item, translate);
-                editorStrings.Add(str);
+                var str = new EditString(number, item, translate);
+                editStrings.Add(str);
                 number++;
             }
 
             ///
 
-            var editorTooltips = new List<EditorTooltip>();
+            var editTooltips = new List<EditTooltip>();
             number = 1;
 
             foreach (var item in referenceLanguage.Tooltips)
@@ -411,14 +411,14 @@ namespace PTGui_Language_Editor
                     translationLanguage.Tooltips.Add(translate);
                 }
 
-                var str = new EditorTooltip(number, item, translate);
-                editorTooltips.Add(str);
+                var str = new EditTooltip(number, item, translate);
+                editTooltips.Add(str);
                 number++;
             }
 
             ///
 
-            var editorHelpPages = new List<EditorHelpPage>();
+            var editHelpPages = new List<EditHelpPage>();
             number = 1;
 
             foreach (var item in referenceLanguage.HelpPages)
@@ -437,46 +437,21 @@ namespace PTGui_Language_Editor
                     translationLanguage.HelpPages.Add(translate);
                 }
 
-                var str = new EditorHelpPage(number, item, translate);
-                editorHelpPages.Add(str);
+                var str = new EditHelpPage(number, item, translate);
+                editHelpPages.Add(str);
                 number++;
             }
 
             ///
 
-            editor = new Editor(editorGeneral, editorStrings, editorTooltips, editorHelpPages);
+            return new EditData(editGeneral, editStrings, editTooltips, editHelpPages);
         }
 
         ////////////////////////////////////////////////////////////////////////////////////////////
 
         private void PrepareGeneral()
         {
-            var vm = new GeneralViewModel(SetModified);
-            vm.EditGeneral = editor.General;
-            GeneralViewModel = vm;
         }
-
-        private void PrepareString()
-        {
-            var vm = new StringsViewModel(referenceLanguage.Strings, translationLanguage.Strings, SetModified);
-            vm.EditStrings = editor.Strings;
-            StringsViewModel = vm;
-        }
-
-        private void PrepareTooltip()
-        {
-            var vm = new TooltipsViewModel(referenceLanguage.Strings, translationLanguage.Strings, SetModified);
-            vm.EditTooltips = editor.Tooltips;
-            TooltipsViewModel = vm;
-        }
-
-        private void PrepareHelp()
-        {
-            var vm = new HelpPagesViewModel(referenceLanguage.Strings, translationLanguage.Strings, SetModified);
-            vm.EditHelpPages = editor.HelpPages;
-            HelpViewModel = vm;
-        }
-
         ////////////////////////////////////////////////////////////////////////////////////////////
 
         private void OnSaveData()
@@ -509,16 +484,16 @@ namespace PTGui_Language_Editor
         {
             var search = SearchText;
 
-            if (editor == null)
+            if (editData == null)
             {
                 return;
             }
 
             if (string.IsNullOrEmpty(search))
             {
-                StringsViewModel.EditStrings = editor.Strings;
-                TooltipsViewModel.EditTooltips = editor.Tooltips;
-                HelpViewModel.EditHelpPages = editor.HelpPages;
+                StringsViewModel.EditStrings = editData.Strings;
+                TooltipsViewModel.EditTooltips = editData.Tooltips;
+                HelpViewModel.EditHelpPages = editData.HelpPages;
                 return;
             }
 
@@ -527,9 +502,9 @@ namespace PTGui_Language_Editor
             bool filterTranslation = selectedFilterArea == FilterArea.All || selectedFilterArea == FilterArea.Translation;
 
             //////////////
-            var strings = new List<EditorString>();
+            var strings = new List<EditString>();
 
-            foreach (var item in editor.Strings)
+            foreach (var item in editData.Strings)
             {
                 if (filterId && item.Reference.Id.Contains(search, StringComparison.InvariantCultureIgnoreCase)
                     || filterReference && item.Reference.Txt != null && item.Reference.Txt.Contains(search, StringComparison.InvariantCultureIgnoreCase)
@@ -542,9 +517,9 @@ namespace PTGui_Language_Editor
             StringsViewModel.EditStrings = strings;
 
             //////////////
-            var tooltips = new List<EditorTooltip>();
+            var tooltips = new List<EditTooltip>();
 
-            foreach (var item in editor.Tooltips)
+            foreach (var item in editData.Tooltips)
             {
                 if (filterId && item.Reference.Id.Contains(search, StringComparison.InvariantCultureIgnoreCase)
                     || filterReference &&
@@ -563,9 +538,9 @@ namespace PTGui_Language_Editor
             TooltipsViewModel.EditTooltips = tooltips;
 
             //////////////
-            var helppages = new List<EditorHelpPage>();
+            var helppages = new List<EditHelpPage>();
 
-            foreach (var item in editor.HelpPages)
+            foreach (var item in editData.HelpPages)
             {
                 if (filterId && item.Reference.Id.Contains(search, StringComparison.InvariantCultureIgnoreCase)
                     || filterReference && item.Reference.Helptext != null && item.Reference.Helptext.Contains(search, StringComparison.InvariantCultureIgnoreCase)
@@ -583,14 +558,14 @@ namespace PTGui_Language_Editor
             SearchText = string.Empty;
             SelectedFilterArea = FilterArea.All;
 
-            if (editor == null)
+            if (editData == null)
             {
                 return;
             }
 
-            StringsViewModel.EditStrings = editor.Strings;
-            TooltipsViewModel.EditTooltips = editor.Tooltips;
-            HelpViewModel.EditHelpPages = editor.HelpPages;
+            StringsViewModel.EditStrings = editData.Strings;
+            TooltipsViewModel.EditTooltips = editData.Tooltips;
+            HelpViewModel.EditHelpPages = editData.HelpPages;
         }
 
         private void SetModified()

@@ -31,18 +31,19 @@ namespace PTGui_Language_Editor
         private List<LanguageString> referenceStrings;
         private List<LanguageString> translationStrings;
         private Action setModified;
-        private List<EditorString> editStrings = null!;
+        private List<EditString> editStrings = null!;
         private List<OneString> displayPage;
 
-        public StringsViewModel(List<LanguageString> referenceStrings, List<LanguageString> translationStrings, Action setModifiedAction)
+        public StringsViewModel(List<EditString> editStrings, List<LanguageString> referenceStrings, List<LanguageString> translationStrings, Action setModifiedAction)
         {
             this.referenceStrings = referenceStrings;
             this.translationStrings = translationStrings;
             setModified = setModifiedAction;
             displayPage = new List<OneString>();
+            EditStrings = editStrings;
         }
 
-        public List<EditorString> EditStrings
+        public List<EditString> EditStrings
         {
             get
             {
@@ -88,7 +89,7 @@ namespace PTGui_Language_Editor
 
     public class OneString : ViewModelBase
     {
-        private EditorString editString;
+        private EditString editString;
         private List<LanguageString> referenceStrings;
         private List<LanguageString> translationStrings;
         private Action setModified;
@@ -96,7 +97,7 @@ namespace PTGui_Language_Editor
         private string? translationEdit;
         private bool setFromCode;
 
-        public OneString(EditorString editString, List<LanguageString> referenceStrings, List<LanguageString> translationStrings, Action setModifiedAction)
+        public OneString(EditString editString, List<LanguageString> referenceStrings, List<LanguageString> translationStrings, Action setModifiedAction)
         {
             this.editString = editString;
             this.referenceStrings = referenceStrings;

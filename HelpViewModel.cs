@@ -33,22 +33,23 @@ namespace PTGui_Language_Editor
         private Action setModified;
 
         private bool setFromCode;
-        private List<EditorHelpPage> editHelpPages = null!;
-        private EditorHelpPage? currentHelpPage;
+        private List<EditHelpPage> editHelpPages = null!;
+        private EditHelpPage? currentHelpPage;
         
         private FlowDocument refHelpPagePreview = null!;
         private FlowDocument transHelpPagePreview = null!;
         private string? transHelpPageEdit;
 
-        public HelpPagesViewModel(List<LanguageString> referenceStrings, List<LanguageString> translationStrings, Action setModifiedAction)
+        public HelpPagesViewModel(List<EditHelpPage> editHelpPages, List<LanguageString> referenceStrings, List<LanguageString> translationStrings, Action setModifiedAction)
         {
             this.referenceStrings = referenceStrings;
             this.translationStrings = translationStrings;
             setModified = setModifiedAction;
             IsPageSelectionVisible = false;
+            EditHelpPages = editHelpPages;
         }
 
-        public List<EditorHelpPage> EditHelpPages
+        public List<EditHelpPage> EditHelpPages
         {
             get
             {

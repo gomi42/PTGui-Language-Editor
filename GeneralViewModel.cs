@@ -28,12 +28,13 @@ namespace PTGui_Language_Editor
     {
         private Action setModified;
         
-        public GeneralViewModel(Action setModifiedAction)
+        public GeneralViewModel(EditGeneral editGeneral, Action setModifiedAction)
         {
+            EditGeneral = editGeneral;
             setModified = setModifiedAction;
         }
 
-        public EditorGeneral EditGeneral { get; set; } = null!;
+        public EditGeneral EditGeneral { get; set; } = null!;
 
         public string ReferenceContributors
         {
