@@ -84,6 +84,20 @@
                                         Command="{Binding ReturnSearch}" />
                         </TextBox.InputBindings>
                     </TextBox>
+                    <local:LabelComboBox Width="Auto"
+                                         Margin="0,0,0,0"
+                                         HorizontalAlignment="Left"
+                                         VerticalAlignment="Center"
+                                         ItemsSource="{Binding FilterAreas}"
+                                         Label=""
+                                         SelectedItem="{Binding SelectedFilterArea}" />
+                    <Button Width="80"
+                            Height="32"
+                            Margin="9,0,0,0"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Center"
+                            Command="{Binding ClearFilter}"
+                            Content="Clear" />
                 </DockPanel>
             </Grid>
         </Border>

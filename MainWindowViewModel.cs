@@ -32,6 +32,14 @@ using System.Windows.Input;
 
 namespace PTGui_Language_Editor
 {
+    public enum FilterArea
+    {
+        All,
+        ID,
+        Reference,
+        Translation
+    }
+
     public class MainWindowViewModel : ViewModelBase
     {
         string languageFilesRoot = @"D:\Programme\Pano, Web\PtGui Localization";
@@ -51,6 +59,7 @@ namespace PTGui_Language_Editor
         private StringsViewModel stringsViewModel = null!;
         private TooltipsViewModel tooltipsViewModel = null!;
         private HelpPagesViewModel helpViewModel = null!;
+        private FilterArea selectedFilterArea;
 
         public MainWindowViewModel()
         {
@@ -58,6 +67,15 @@ namespace PTGui_Language_Editor
             LoadData = new DelegateCommand(OnLoadData);
             SaveData = new DelegateCommand(OnSaveData, CanSaveData);
             ReturnSearch = new DelegateCommand(OnReturnSearch);
+            ClearFilter = new DelegateCommand(OnClearFilter);
+
+            FilterAreas = new List<FilterArea>();
+
+            foreach (var area in Enum.GetValues(typeof(FilterArea)))
+            {
+                FilterAreas.Add((FilterArea)area);
+            }
+
             ScanLanguageFiles();
         }
 
@@ -89,6 +107,19 @@ namespace PTGui_Language_Editor
                 {
                     EditLanguage();
                 }
+            }
+        }
+
+        public List<FilterArea> FilterAreas { get; }
+        
+        public FilterArea SelectedFilterArea
+        {
+            get => selectedFilterArea;
+            set
+            {
+                selectedFilterArea = value;
+                NotifyPropertyChanged();
+                OnReturnSearch();
             }
         }
 
@@ -136,6 +167,7 @@ namespace PTGui_Language_Editor
         public DelegateCommand LoadData { get; init; }
         public DelegateCommand SaveData { get; init; }
         public DelegateCommand ReturnSearch { get; init; }
+        public DelegateCommand ClearFilter { get; init; }
 
         public string SearchText
         {
@@ -477,6 +509,11 @@ namespace PTGui_Language_Editor
         {
             var search = SearchText;
 
+            if (editor == null)
+            {
+                return;
+            }
+
             if (string.IsNullOrEmpty(search))
             {
                 StringsViewModel.EditStrings = editor.Strings;
@@ -485,14 +522,18 @@ namespace PTGui_Language_Editor
                 return;
             }
 
+            bool filterId = selectedFilterArea == FilterArea.All || selectedFilterArea == FilterArea.ID;
+            bool filterReference = selectedFilterArea == FilterArea.All || selectedFilterArea == FilterArea.Reference;
+            bool filterTranslation = selectedFilterArea == FilterArea.All || selectedFilterArea == FilterArea.Translation;
+
             //////////////
             var strings = new List<EditorString>();
 
             foreach (var item in editor.Strings)
             {
-                if (item.Reference.Id.Contains(search, StringComparison.InvariantCultureIgnoreCase)
-                    || item.Reference.Txt != null && item.Reference.Txt.Contains(search, StringComparison.InvariantCultureIgnoreCase)
-                    || item.Translation.Txt != null && item.Translation.Txt.Contains(search, StringComparison.InvariantCultureIgnoreCase))
+                if (filterId && item.Reference.Id.Contains(search, StringComparison.InvariantCultureIgnoreCase)
+                    || filterReference && item.Reference.Txt != null && item.Reference.Txt.Contains(search, StringComparison.InvariantCultureIgnoreCase)
+                    || filterTranslation && item.Translation.Txt != null && item.Translation.Txt.Contains(search, StringComparison.InvariantCultureIgnoreCase))
                 {
                     strings.Add(item);
                 }
@@ -505,13 +546,15 @@ namespace PTGui_Language_Editor
 
             foreach (var item in editor.Tooltips)
             {
-                if (item.Reference.Id.Contains(search, StringComparison.InvariantCultureIgnoreCase)
-                    || item.Reference.Label != null && item.Reference.Label.Contains(search, StringComparison.InvariantCultureIgnoreCase)
-                    || item.Reference.Helptext != null && item.Reference.Helptext.Contains(search, StringComparison.InvariantCultureIgnoreCase)
-                    || item.Reference.MoreHelptext != null && item.Reference.MoreHelptext.Contains(search, StringComparison.InvariantCultureIgnoreCase)
-                    || item.Translation.Label != null && item.Translation.Label.Contains(search, StringComparison.InvariantCultureIgnoreCase)
-                    || item.Translation.Helptext != null && item.Translation.Helptext.Contains(search, StringComparison.InvariantCultureIgnoreCase)
-                    || item.Translation.MoreHelptext != null && item.Translation.MoreHelptext.Contains(search, StringComparison.InvariantCultureIgnoreCase))
+                if (filterId && item.Reference.Id.Contains(search, StringComparison.InvariantCultureIgnoreCase)
+                    || filterReference &&
+                         (item.Reference.Label != null && item.Reference.Label.Contains(search, StringComparison.InvariantCultureIgnoreCase)
+                       || item.Reference.Helptext != null && item.Reference.Helptext.Contains(search, StringComparison.InvariantCultureIgnoreCase)
+                       || item.Reference.MoreHelptext != null && item.Reference.MoreHelptext.Contains(search, StringComparison.InvariantCultureIgnoreCase))
+                    || filterTranslation &&
+                         (item.Translation.Label != null && item.Translation.Label.Contains(search, StringComparison.InvariantCultureIgnoreCase)
+                       || item.Translation.Helptext != null && item.Translation.Helptext.Contains(search, StringComparison.InvariantCultureIgnoreCase)
+                       || item.Translation.MoreHelptext != null && item.Translation.MoreHelptext.Contains(search, StringComparison.InvariantCultureIgnoreCase)))
                 {
                     tooltips.Add(item);
                 }
@@ -524,15 +567,30 @@ namespace PTGui_Language_Editor
 
             foreach (var item in editor.HelpPages)
             {
-                if (item.Reference.Id.Contains(search, StringComparison.InvariantCultureIgnoreCase)
-                    || item.Reference.Helptext != null && item.Reference.Helptext.Contains(search, StringComparison.InvariantCultureIgnoreCase)
-                    || item.Translation.Helptext != null && item.Translation.Helptext.Contains(search, StringComparison.InvariantCultureIgnoreCase))
+                if (filterId && item.Reference.Id.Contains(search, StringComparison.InvariantCultureIgnoreCase)
+                    || filterReference && item.Reference.Helptext != null && item.Reference.Helptext.Contains(search, StringComparison.InvariantCultureIgnoreCase)
+                    || filterTranslation && item.Translation.Helptext != null && item.Translation.Helptext.Contains(search, StringComparison.InvariantCultureIgnoreCase))
                 {
                     helppages.Add(item);
                 }
             }
 
             HelpViewModel.EditHelpPages = helppages;
+        }
+
+        void OnClearFilter()
+        {
+            SearchText = string.Empty;
+            SelectedFilterArea = FilterArea.All;
+
+            if (editor == null)
+            {
+                return;
+            }
+
+            StringsViewModel.EditStrings = editor.Strings;
+            TooltipsViewModel.EditTooltips = editor.Tooltips;
+            HelpViewModel.EditHelpPages = editor.HelpPages;
         }
 
         private void SetModified()
