@@ -38,6 +38,7 @@ namespace PTGui_Language_Editor
         static bool isRed;
         static bool isMac;
         static bool isWindows;
+        static bool isLinux;
         static bool isPro;
         static bool isError;
         static bool isHyperlink;
@@ -59,6 +60,7 @@ namespace PTGui_Language_Editor
                 isRed = false;
                 isMac = false;
                 isWindows = false;
+                isLinux = false;
                 isPro = false;
                 isError = false;
                 isHyperlink = false;
@@ -128,6 +130,11 @@ namespace PTGui_Language_Editor
             if (isWindows)
             {
                 run.Background = new SolidColorBrush(Color.FromRgb(200, 255, 255));
+            }
+            else
+            if (isLinux)
+            {
+                run.Background = new SolidColorBrush(Color.FromRgb(255, 200, 200));
             }
 
             if (isError)
@@ -265,6 +272,10 @@ namespace PTGui_Language_Editor
                             {
                                 isWindows = true;
                             }
+                            else if (cmd.Contains(" platform='linux'"))
+                            {
+                                isLinux = true;
+                            }
                             else if (cmd.Contains(" product='pro'"))
                             {
                                 isPro = true;
@@ -278,6 +289,7 @@ namespace PTGui_Language_Editor
                         {
                             isMac = false;
                             isWindows = false;
+                            isLinux = false;
                             isPro = false;
                             isError = false;
                         }
@@ -361,7 +373,7 @@ namespace PTGui_Language_Editor
         {
             if (!string.IsNullOrEmpty(str))
             {
-                return str?.Replace("\n", "<br>");
+                return str?.ReplaceLineEndings("<br>");
             }
 
             return str;

@@ -31,7 +31,6 @@ namespace PTGui_Language_Editor
     {
         public MainWindow()
         {
-            DataContext = new MainWindowViewModel();
             InitializeComponent();
 
             System.Reflection.Assembly assembly = System.Reflection.Assembly.GetExecutingAssembly();

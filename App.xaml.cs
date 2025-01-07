@@ -28,5 +28,14 @@ namespace PTGui_Language_Editor
     /// </summary>
     public partial class App : Application
     {
+        protected override void OnStartup(System.Windows.StartupEventArgs e)
+        {
+            base.OnStartup(e);
+
+            var window = new MainWindow();
+            window.DataContext = new MainWindowViewModel();
+            window.Show();
+            MainWindow = window;
+        }
     }
 }
