@@ -2,7 +2,7 @@
 // Author:
 //   Michael Göricke
 //
-// Copyright (c) 2024
+// Copyright (c) 2026
 //
 // This file is part of PTGui Language Editor.
 //
@@ -23,8 +23,6 @@ using System.Collections.Generic;
 
 namespace PTGui_Language_Editor
 {
-    //////////////////////////////////////
-
     public class LanguageTypeBase
     {
         protected JsonTypeBase JsonBase { get; init; } = null!;

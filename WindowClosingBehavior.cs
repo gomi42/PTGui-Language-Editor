@@ -2,7 +2,7 @@
 // Author:
 //   Michael Göricke
 //
-// Copyright (c) 2023
+// Copyright (c) 2026
 //
 // This file is part of PTGui Language Editor.
 //
@@ -37,31 +37,41 @@ namespace PTGui_Language_Editor
             obj.SetValue(ClosingProperty, value);
         }
 
-        public static readonly DependencyProperty ClosingProperty
-            = DependencyProperty.RegisterAttached(
-            "Closing", typeof(ICommand), typeof(WindowClosingBehavior),
-            new UIPropertyMetadata(new PropertyChangedCallback(ClosingChanged)));
+        public static readonly DependencyProperty ClosingProperty = DependencyProperty.RegisterAttached(
+                    "Closing",
+                    typeof(ICommand),
+                    typeof(WindowClosingBehavior),
+                    new UIPropertyMetadata(new PropertyChangedCallback(ClosingChanged)));
 
         private static void ClosingChanged(DependencyObject target, DependencyPropertyChangedEventArgs e)
         {
-            Window? window = target as Window;
+            var window = target as Window;
 
-            if (window != null)
+            if (window == null)
             {
-                if (e.NewValue != null)
-                {
-                    window.Closing += Window_Closing;
-                }
-                else
-                {
-                    window.Closing -= Window_Closing;
-                }
+                return;
+            }
+
+            if (e.NewValue != null)
+            {
+                window.Closing += WindowClosing;
+            }
+            else
+            {
+                window.Closing -= WindowClosing;
             }
         }
 
-        static void Window_Closing(object sender, CancelEventArgs e)
+        private static void WindowClosing(object? sender, CancelEventArgs e)
         {
-            ICommand? closing = GetClosing(sender as Window);
+            var window = sender as Window;
+
+            if (window == null)
+            {
+                return;
+            }
+
+            ICommand? closing = GetClosing(window);
 
             if (closing != null)
             {

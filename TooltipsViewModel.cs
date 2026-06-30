@@ -2,7 +2,7 @@
 // Author:
 //   Michael Göricke
 //
-// Copyright (c) 2024
+// Copyright (c) 2026
 //
 // This file is part of PTGui Language Editor.
 //
@@ -31,43 +31,33 @@ namespace PTGui_Language_Editor
         private List<LanguageString> referenceStrings;
         private List<LanguageString> translationStrings;
         private Action setModified;
-        private List<EditTooltip> editTooltips = null!;
-        private List<OneTooltip> displayPage = null!;
 
-        public TooltipsViewModel(List<EditTooltip> editTooltips, List<LanguageString> referenceStrings, List<LanguageString> translationStrings, Action setModifiedAction)
+        public TooltipsViewModel(List<EditTooltip> editTooltips,
+                                 List<LanguageString> referenceStrings,
+                                 List<LanguageString> translationStrings,
+                                 Action setModifiedAction)
         {
             this.referenceStrings = referenceStrings;
             this.translationStrings = translationStrings;
             setModified = setModifiedAction;
+            DisplayPage = null!;
             EditTooltips = editTooltips;
         }
 
         public List<EditTooltip> EditTooltips
         {
-            get
-            {
-                return editTooltips;
-            }
-
+            get => field;
             set
             {
-                editTooltips = value;
-                NumberItems = editTooltips.Count;
+                field = value;
+                NumberItems = field.Count;
             }
         }
 
         public List<OneTooltip> DisplayPage
         {
-            get
-            {
-                return displayPage;
-            }
-
-            set
-            {
-                displayPage = value;
-                NotifyPropertyChanged();
-            }
+            get => field;
+            set => SetProperty(ref field, value);
         }
 
         protected override void ShowPage(int showIndex)
@@ -95,12 +85,6 @@ namespace PTGui_Language_Editor
         private Action setModified;
         private bool setFromCode;
 
-        private FlowDocument referenceLabelPreview = null!;
-        private FlowDocument referenceHelpTextView = null!;
-        private FlowDocument referenceMoreHelpTextView = null!;
-        private FlowDocument translationLabelPreview = null!;
-        private FlowDocument translationHelpTextPreview = null!;
-        private FlowDocument translationMoreHelpTextPreview = null!;
         private string? translationLabelEdit;
         private string? translationHelpTextEdit;
         private string? translationMoreHelpTextEdit;
@@ -111,6 +95,12 @@ namespace PTGui_Language_Editor
             this.referenceStrings = referenceStrings;
             this.translationStrings = translationStrings;
             setModified = setModifiedAction;
+            ReferenceLabelView = null!;
+            ReferenceHelpTextView = null!;
+            ReferenceMoreHelpTextView = null!;
+            TranslationLabelPreview = null!;
+            TranslationHelpTextPreview = null!;
+            TranslationMoreHelpTextPreview = null!;
 
             Init();
         }
@@ -123,62 +113,34 @@ namespace PTGui_Language_Editor
 
         public FlowDocument ReferenceLabelView
         {
-            get
-            {
-                return referenceLabelPreview;
-            }
-
-            set
-            {
-                referenceLabelPreview = value;
-                NotifyPropertyChanged();
-            }
+            get => field;
+            set => SetProperty(ref field, value);
         }
 
         public FlowDocument ReferenceHelpTextView
         {
-            get
-            {
-                return referenceHelpTextView;
-            }
-
-            set
-            {
-                referenceHelpTextView = value;
-                NotifyPropertyChanged();
-            }
+            get => field;
+            set => SetProperty(ref field, value);
         }
 
         public FlowDocument ReferenceMoreHelpTextView
         {
-            get => referenceMoreHelpTextView;
-            set
-            {
-                referenceMoreHelpTextView = value;
-                NotifyPropertyChanged();
-            }
+            get => field;
+            set => SetProperty(ref field, value);
         }
 
         //////////////////////////////////////
 
         public FlowDocument TranslationLabelPreview
         {
-            get => translationLabelPreview;
-            set
-            {
-                translationLabelPreview = value;
-                NotifyPropertyChanged();
-            }
+            get => field;
+            set => SetProperty(ref field, value);
         }
 
         public FlowDocument TranslationMoreHelpTextPreview
         {
-            get => translationMoreHelpTextPreview;
-            set
-            {
-                translationMoreHelpTextPreview = value;
-                NotifyPropertyChanged();
-            }
+            get => field;
+            set => SetProperty(ref field, value);
         }
 
         public string? TranslationMoreHelpTextEdit
@@ -223,12 +185,8 @@ namespace PTGui_Language_Editor
 
         public FlowDocument TranslationHelpTextPreview
         {
-            get => translationHelpTextPreview;
-            set
-            {
-                translationHelpTextPreview = value;
-                NotifyPropertyChanged();
-            }
+            get => field;
+            set => SetProperty(ref field, value);
         }
 
         public string? TransHelpTextEdit

@@ -2,7 +2,7 @@
 // Author:
 //   Michael Göricke
 //
-// Copyright (c) 2024
+// Copyright (c) 2026
 //
 // This file is part of PTGui Language Editor.
 //
@@ -51,14 +51,8 @@ namespace PTGui_Language_Editor
         bool isModified;
         bool isAskSaveChangesDialogOpen;
 
-        private List<string> languageFiles = null!;
         private string? previousLanguageFile;
         private string? selectedLanguageFile;
-        private string searchText = string.Empty;
-        private GeneralViewModel generalViewModel = null!;
-        private StringsViewModel stringsViewModel = null!;
-        private TooltipsViewModel tooltipsViewModel = null!;
-        private HelpPagesViewModel helpViewModel = null!;
         private FilterArea selectedFilterArea;
 
         public MainWindowViewModel()
@@ -68,6 +62,12 @@ namespace PTGui_Language_Editor
             SaveData = new DelegateCommand(OnSaveData, CanSaveData);
             ReturnSearch = new DelegateCommand(OnReturnSearch);
             ClearFilter = new DelegateCommand(OnClearFilter);
+            LanguageFiles = null!;
+            GeneralViewModel = null!;
+            StringsViewModel = null!;
+            TooltipsViewModel = null!;
+            HelpViewModel = null!;
+            SearchText = string.Empty;
 
             FilterAreas = new List<FilterArea>();
 
@@ -81,12 +81,8 @@ namespace PTGui_Language_Editor
 
         public List<string> LanguageFiles
         {
-            get => languageFiles;
-            set
-            {
-                languageFiles = value;
-                NotifyPropertyChanged();
-            }
+            get => field;
+            set => SetProperty(ref field, value);
         }
 
         public string? SelectedLanguageFile
@@ -100,8 +96,7 @@ namespace PTGui_Language_Editor
                     AskContinue();
                 }
 
-                selectedLanguageFile = value;
-                NotifyPropertyChanged();
+                SetProperty(ref selectedLanguageFile, value);
                 
                 if (!isModified)
                 {
@@ -117,50 +112,33 @@ namespace PTGui_Language_Editor
             get => selectedFilterArea;
             set
             {
-                selectedFilterArea = value;
-                NotifyPropertyChanged();
+                SetProperty(ref selectedFilterArea, value);
                 OnReturnSearch();
             }
         }
 
         public GeneralViewModel GeneralViewModel
         {
-            get => generalViewModel;
-            set
-            {
-                generalViewModel = value;
-                NotifyPropertyChanged();
-            }
+            get => field;
+            set => SetProperty(ref field, value);
         }
 
         public StringsViewModel StringsViewModel
         {
-            get => stringsViewModel;
-            set
-            {
-                stringsViewModel = value;
-                NotifyPropertyChanged();
-            }
+            get => field;
+            set => SetProperty(ref field, value);
         }
 
         public TooltipsViewModel TooltipsViewModel
         {
-            get => tooltipsViewModel;
-            set
-            {
-                tooltipsViewModel = value;
-                NotifyPropertyChanged();
-            }
+            get => field;
+            set => SetProperty(ref field, value);
         }
 
         public HelpPagesViewModel HelpViewModel
         {
-            get => helpViewModel;
-            set
-            {
-                helpViewModel = value;
-                NotifyPropertyChanged();
-            }
+            get => field;
+            set => SetProperty(ref field, value);
         }
 
         public ICommand CloseCommand { get; init; }
@@ -171,12 +149,8 @@ namespace PTGui_Language_Editor
 
         public string SearchText
         {
-            get => searchText;
-            set
-            {
-                searchText = value;
-                NotifyPropertyChanged();
-            }
+            get => field;
+            set => SetProperty(ref field, value);
         }
 
         private void OnLoadData()

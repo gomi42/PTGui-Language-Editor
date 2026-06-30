@@ -2,16 +2,30 @@
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>net8.0-windows7.0</TargetFramework>
+    <TargetFramework>net10.0-windows10.0.17763.0</TargetFramework>
     <RootNamespace>PTGui_Language_Editor</RootNamespace>
     <Nullable>enable</Nullable>
     <UseWPF>true</UseWPF>
     <UseWindowsForms>true</UseWindowsForms>
     <ApplicationIcon>AppIcon.ico</ApplicationIcon>
-    <AssemblyVersion>1.0.5</AssemblyVersion>
-    <FileVersion>1.0.5</FileVersion>
-    <Version>1.0.5</Version>
+    <AssemblyVersion>1.0.7</AssemblyVersion>
+    <FileVersion>1.0.7</FileVersion>
+    <Version>1.0.7</Version>
+    <SupportedOSPlatformVersion>10.0.17763.0</SupportedOSPlatformVersion>
+    <Description>PTGui Language Editor</Description>
+    <Copyright>(c) Michael Göricke</Copyright>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove=".gitattributes" />
+    <None Remove=".gitignore" />
+    <None Remove="note-task-comment-message-edit-write_108613.svg" />
+    <None Remove="README.md" />
+    <None Remove="Settings.XamlStyler" />
+    <None Remove="Tooltips.png" />
+    <None Remove="Tooltips.psd" />
+    <None Remove="vecteezy_attention-icon-vector-design-template_9732974.eps" />
+  </ItemGroup>
 
   <ItemGroup>
     <Content Include="AppIcon.ico" />

@@ -28,4 +28,4 @@ The formatted preview formats:
 
 ![intro](/Tooltips.png)
 
-The language editor requires a .Net 8 runtime installation.
+The language editor requires a .Net 10 runtime installation.

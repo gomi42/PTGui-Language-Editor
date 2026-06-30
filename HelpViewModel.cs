@@ -2,7 +2,7 @@
 // Author:
 //   Michael Göricke
 //
-// Copyright (c) 2024
+// Copyright (c) 2026
 //
 // This file is part of PTGui Language Editor.
 //
@@ -30,38 +30,35 @@ namespace PTGui_Language_Editor
     {
         private List<LanguageString> referenceStrings;
         private List<LanguageString> translationStrings;
-        private Action setModified;
+        private readonly Action setModified;
 
         private bool setFromCode;
-        private List<EditHelpPage> editHelpPages = null!;
         private EditHelpPage? currentHelpPage;
         
-        private FlowDocument refHelpPagePreview = null!;
-        private FlowDocument transHelpPagePreview = null!;
-        private string? transHelpPageEdit;
-
-        public HelpPagesViewModel(List<EditHelpPage> editHelpPages, List<LanguageString> referenceStrings, List<LanguageString> translationStrings, Action setModifiedAction)
+        public HelpPagesViewModel(List<EditHelpPage> editHelpPages,
+                                  List<LanguageString> referenceStrings,
+                                  List<LanguageString> translationStrings,
+                                  Action setModifiedAction)
         {
+            TranslationHelpPagePreview = null!;
+            ReferenceHelpPagePreview = null!;
             this.referenceStrings = referenceStrings;
             this.translationStrings = translationStrings;
             setModified = setModifiedAction;
             IsPageSelectionVisible = false;
             EditHelpPages = editHelpPages;
+            SelectedItemsPerPage = 1;
         }
 
         public List<EditHelpPage> EditHelpPages
         {
-            get
-            {
-                return editHelpPages;
-            }
+            get => field;
 
             set
             {
-                editHelpPages = value;
+                field = value;
 
-                NumberItems = editHelpPages.Count;
-                SelectedItemsPerPage = 1;
+                NumberItems = field.Count;
             }
         }
 
@@ -72,43 +69,31 @@ namespace PTGui_Language_Editor
 
         public FlowDocument ReferenceHelpPagePreview
         {
-            get
-            {
-                return refHelpPagePreview;
-            }
-
-            set
-            {
-                refHelpPagePreview = value;
-                NotifyPropertyChanged();
-            }
+            get => field;
+            set => SetProperty(ref field, value);
         }
 
         public FlowDocument TranslationHelpPagePreview
         {
-            get => transHelpPagePreview;
-            set
-            {
-                transHelpPagePreview = value;
-                NotifyPropertyChanged();
-            }
+            get => field;
+            set => SetProperty(ref field, value);
         }
 
         public string? TranslationHelpPageEdit
         {
-            get => transHelpPageEdit;
+            get => field;
             set
             {
-                transHelpPageEdit = value;
+                field = value;
 
-                if (!string.IsNullOrEmpty(transHelpPageEdit))
+                if (!string.IsNullOrEmpty(field))
                 {
-                    TranslationHelpPagePreview = PTGuiTextConverter.ConvertToFlowDocument(transHelpPageEdit, true, y => translationStrings.FirstOrDefault(x => x.Id == y)?.Txt);
+                    TranslationHelpPagePreview = PTGuiTextConverter.ConvertToFlowDocument(field, true, y => translationStrings.FirstOrDefault(x => x.Id == y)?.Txt);
 
                     if (!setFromCode)
                     {
                         var translateHelpPage = currentHelpPage!.Translation;
-                        translateHelpPage.Helptext = PTGuiTextConverter.ConvertToHtml(transHelpPageEdit);
+                        translateHelpPage.Helptext = PTGuiTextConverter.ConvertToHtml(field);
 
                         translateHelpPage.Machinetranslated = null;
                         setModified();
@@ -127,9 +112,9 @@ namespace PTGui_Language_Editor
         {
             setFromCode = true;
 
-            if (editHelpPages.Count != 0)
+            if (EditHelpPages.Count != 0)
             {
-                currentHelpPage = editHelpPages[currentIndex];
+                currentHelpPage = EditHelpPages[currentIndex];
 
                 ReferenceHelpPagePreview = PTGuiTextConverter.ConvertToFlowDocument(currentHelpPage.Reference.Helptext, true, y => referenceStrings.FirstOrDefault(x => x.Id == y)?.Txt);
                 var translateHelpPage = currentHelpPage.Translation;

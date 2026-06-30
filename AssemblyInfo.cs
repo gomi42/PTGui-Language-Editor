@@ -2,7 +2,7 @@
 // Author:
 //   Michael Göricke
 //
-// Copyright (c) 2023
+// Copyright (c) 2026
 //
 // This file is part of PTGui Language Editor.
 //

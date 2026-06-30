@@ -2,7 +2,7 @@
 // Author:
 //   Michael Göricke
 //
-// Copyright (c) 2023
+// Copyright (c) 2026
 //
 // This file is part of PTGui Language Editor.
 //
@@ -33,6 +33,19 @@ namespace PTGui_Language_Editor
         protected void NotifyPropertyChanged([CallerMemberName] string propertyName = "")
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        //////////////////////////////////////////////
+
+        public void SetProperty<T>(ref T field, T value, [CallerMemberName] string propertyName = null!)
+        {
+            if (Equals(field, value))
+            {
+                return;
+            }
+
+            field = value;
+            NotifyPropertyChanged(propertyName);
         }
     }
 }

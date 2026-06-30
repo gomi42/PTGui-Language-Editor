@@ -2,7 +2,7 @@
 // Author:
 //   Michael Göricke
 //
-// Copyright (c) 2024
+// Copyright (c) 2026
 //
 // This file is part of PTGui Language Editor.
 //
@@ -31,43 +31,33 @@ namespace PTGui_Language_Editor
         private List<LanguageString> referenceStrings;
         private List<LanguageString> translationStrings;
         private Action setModified;
-        private List<EditString> editStrings = null!;
-        private List<OneString> displayPage;
 
-        public StringsViewModel(List<EditString> editStrings, List<LanguageString> referenceStrings, List<LanguageString> translationStrings, Action setModifiedAction)
+        public StringsViewModel(List<EditString> editStrings,
+                                List<LanguageString> referenceStrings,
+                                List<LanguageString> translationStrings,
+                                Action setModifiedAction)
         {
             this.referenceStrings = referenceStrings;
             this.translationStrings = translationStrings;
             setModified = setModifiedAction;
-            displayPage = new List<OneString>();
+            DisplayPage = new List<OneString>();
             EditStrings = editStrings;
         }
 
         public List<EditString> EditStrings
         {
-            get
-            {
-                return editStrings;
-            }
+            get => field;
             set
             {
-                editStrings = value;
-                NumberItems = editStrings.Count;
+                field = value;
+                NumberItems = field.Count;
             }
         }
 
         public List<OneString> DisplayPage
         {
-            get
-            {
-                return displayPage;
-            }
-
-            set
-            {
-                displayPage = value;
-                NotifyPropertyChanged();
-            }
+            get => field;
+            set => SetProperty(ref field, value);
         }
 
         protected override void ShowPage(int showIndex)
@@ -93,12 +83,14 @@ namespace PTGui_Language_Editor
         private List<LanguageString> referenceStrings;
         private List<LanguageString> translationStrings;
         private Action setModified;
-        private FlowDocument translationPreview = null!;
-        private string? translationEdit;
         private bool setFromCode;
 
-        public OneString(EditString editString, List<LanguageString> referenceStrings, List<LanguageString> translationStrings, Action setModifiedAction)
+        public OneString(EditString editString,
+                         List<LanguageString> referenceStrings,
+                         List<LanguageString> translationStrings,
+                         Action setModifiedAction)
         {
+            TranslationPreview = null!;
             this.editString = editString;
             this.referenceStrings = referenceStrings;
             this.translationStrings = translationStrings;
@@ -117,26 +109,22 @@ namespace PTGui_Language_Editor
 
         public FlowDocument TranslationPreview
         {
-            get => translationPreview;
-            set
-            {
-                translationPreview = value;
-                NotifyPropertyChanged();
-            }
+            get => field;
+            set => SetProperty(ref field, value);
         }
 
         public string? TranslationEdit
         {
-            get => translationEdit;
+            get => field;
             set
             {
-                translationEdit = value;
+                field = value;
                 bool isHtml = editString.Translation.Format == "html";
-                TranslationPreview = PTGuiTextConverter.ConvertToFlowDocument(translationEdit, isHtml, y => translationStrings.FirstOrDefault(x => x.Id == y)?.Txt);
+                TranslationPreview = PTGuiTextConverter.ConvertToFlowDocument(field, isHtml, y => translationStrings.FirstOrDefault(x => x.Id == y)?.Txt);
 
                 if (!setFromCode)
                 {
-                    editString.Translation.Txt = isHtml ? PTGuiTextConverter.ConvertToHtml(translationEdit) : translationEdit;
+                    editString.Translation.Txt = isHtml ? PTGuiTextConverter.ConvertToHtml(field) : field;
                     editString.Translation.Machinetranslated = null;
                     setModified();
                 }

@@ -2,7 +2,7 @@
 // Author:
 //   Michael Göricke
 //
-// Copyright (c) 2023
+// Copyright (c) 2026
 //
 // This file is part of PTGui Language Editor.
 //
@@ -19,10 +19,6 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program. If not, see<http://www.gnu.org/licenses/>.
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace PTGui_Language_Editor
